@@ -1,9 +1,9 @@
+import { AddBox } from '@mui/icons-material'
+import { Grid, IconButton, Paper, TextField } from '@mui/material'
 import React, { FC, useEffect } from 'react'
-import { useDispatch } from 'react-redux'
-import { ToDolListType } from '../../api/toDoListsAPI'
 import { ToDoList } from '../../components/ToDoList/ToDoList'
-import { useAppSelector } from '../../hooks/useAppSelector'
-import { getToDoListsTC, ToDoListSupplementedType } from '../../redux/toDoListsReducer'
+import { useTypedDispatch, useTypedSelector } from '../../redux/store'
+import { getToDoListsTC } from '../../redux/toDoListsReducer'
 
 type ToDoListsListPropsType = {
 
@@ -11,17 +11,30 @@ type ToDoListsListPropsType = {
 
 export const ToDoListsList: FC<ToDoListsListPropsType> = ({ }) => {
 
-	const dispatch = useDispatch()
-	const toDoLists = useAppSelector<Array<ToDoListSupplementedType>>(state => state.toDoLists.toDoLists)
+	const dispatch = useTypedDispatch()
+	const { toDoLists } = useTypedSelector(state => state.toDoLists)
 
 	useEffect(() => {
-		//@ts-ignore
 		dispatch(getToDoListsTC())
 	}, [])
 
 	return (
-		<div>
-			{toDoLists.map(tl => <ToDoList key={tl.id} toDoList={tl} />)}
-		</div>
+		<>
+			<Grid container style={{ padding: '20px' }}>
+				<TextField variant='outlined' label='Title' />
+				<IconButton color='primary' >
+					<AddBox />
+				</IconButton>
+			</Grid>
+			<Grid container spacing={3}>
+				{toDoLists.map(tl => {
+					return <Grid item key={tl.id}>
+						<Paper style={{ padding: '10px' }}>
+							<ToDoList toDoList={tl} />
+						</Paper>
+					</Grid>
+				})}
+			</Grid>
+		</>
 	)
 }

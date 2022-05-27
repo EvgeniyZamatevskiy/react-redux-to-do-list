@@ -1,5 +1,5 @@
 import { tasksAPI, TaskType } from '../api/tasksAPI'
-import { AppThunkType } from './store'
+import { ThunkType } from './store'
 import { GetToDoListsActionType } from './toDoListsReducer'
 
 const initState: InitStateType = {
@@ -26,7 +26,7 @@ export const tasksReducer = (state: InitStateType = initState, action: TasksRedu
 export const getTasksAC = (toDoListId: string, tasks: Array<TaskType>) => ({ type: 'GET-TASKS', toDoListId, tasks } as const)
 
 // ThunkCreators
-export const getTasksTC = (toDoListId: string): AppThunkType => (dispatch) => {
+export const getTasksTC = (toDoListId: string): ThunkType => (dispatch) => {
 	tasksAPI.getTasks(toDoListId)
 		.then((res) => dispatch(getTasksAC(toDoListId, res.data.items)))
 }
