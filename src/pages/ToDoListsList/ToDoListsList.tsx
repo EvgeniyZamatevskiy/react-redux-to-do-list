@@ -1,9 +1,10 @@
 import { AddBox } from '@mui/icons-material'
-import { Grid, IconButton, Paper, TextField } from '@mui/material'
+import { Grid, Paper } from '@mui/material'
 import React, { FC, useEffect } from 'react'
+import { AddItemForm } from '../../components/AddItemForm/AddItemForm'
 import { ToDoList } from '../../components/ToDoList/ToDoList'
 import { useTypedDispatch, useTypedSelector } from '../../redux/store'
-import { getToDoListsTC } from '../../redux/toDoListsReducer'
+import { addToDoListTC, getToDoListsTC } from '../../redux/toDoListsReducer'
 
 type ToDoListsListPropsType = {
 
@@ -18,13 +19,14 @@ export const ToDoListsList: FC<ToDoListsListPropsType> = ({ }) => {
 		dispatch(getToDoListsTC())
 	}, [])
 
+	const addToDoList = (title: string) => {
+		dispatch(addToDoListTC(title))
+	}
+
 	return (
 		<>
 			<Grid container style={{ padding: '20px' }}>
-				<TextField variant='outlined' label='Title' />
-				<IconButton color='primary' >
-					<AddBox />
-				</IconButton>
+				<AddItemForm addItem={addToDoList} />
 			</Grid>
 			<Grid container spacing={3}>
 				{toDoLists.map(tl => {

@@ -1,8 +1,15 @@
 import { instance } from './instance'
+import { CommonResponseType } from './toDoListsAPI'
 
 export const tasksAPI = {
 	getTasks(toDoListId: string) {
 		return instance.get<TasksType>(`todo-lists/${toDoListId}/tasks`)
+	},
+	addTask(toDoListId: string, title: string) {
+		return instance.post<CommonResponseType<{ item: TaskType }>>(`todo-lists/${toDoListId}/tasks`, { title })
+	},
+	removeTask(toDoListId: string, taskId: string) {
+		return instance.delete<CommonResponseType>(`todo-lists/${toDoListId}/tasks/${taskId}`)
 	}
 }
 
