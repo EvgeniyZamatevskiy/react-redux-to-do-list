@@ -10,6 +10,9 @@ export const tasksAPI = {
 	},
 	removeTask(toDoListId: string, taskId: string) {
 		return instance.delete<CommonResponseType>(`todo-lists/${toDoListId}/tasks/${taskId}`)
+	},
+	updateTask(toDoListId: string, taskId: string, model: UpdateTaskModelType) {
+		return instance.put<CommonResponseType<{ item: TaskType }>>(`todo-lists/${toDoListId}/tasks/${taskId}`, model)
 	}
 }
 
@@ -33,8 +36,17 @@ export type TaskType = {
 	addedDate: string
 }
 
+export type UpdateTaskModelType = {
+	title: string
+	description: string,
+	status: TaskStatus
+	priority: TaskPriority
+	startDate: string
+	deadline: string
+}
+
 export enum TaskStatus {
-	New = 0,
+	Active = 0,
 	InProgress = 1,
 	Completed = 2,
 	Draft = 3

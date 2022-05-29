@@ -1,5 +1,6 @@
 import { toDoListsAPI, ToDolListType } from '../api/toDoListsAPI'
-import { setErrorStatusAC, setLoadingStatusAC, StatusType } from './appReducer'
+import { serverAppErrorHandler, serverNetworkErrorHandler } from '../utils/errorUtils'
+import { setLoadingStatusAC, StatusType } from './appReducer'
 import { ThunkType } from './store'
 
 const initState: InitStateType = {
@@ -8,16 +9,18 @@ const initState: InitStateType = {
 
 export const toDoListsReducer = (state: InitStateType = initState, action: ToDoListsReducerActionsType): InitStateType => {
 	switch (action.type) {
-		case 'GET-TO-DO-LISTS':
+		case 'TO-DO-LIST/GET-TO-DO-LISTS':
 			return { ...state, toDoLists: action.toDoLists.map(tl => ({ ...tl, filter: 'all', disabledStatus: 'idle' })) }
-		case 'ADD-TO-DO-LIST':
+		case 'TO-DO-LIST/ADD-TO-DO-LIST':
 			return { ...state, toDoLists: [{ ...action.toDoList, filter: 'all', disabledStatus: 'idle' }, ...state.toDoLists] }
-		case 'REMOVE-TO-DO-LIST':
+		case 'TO-DO-LIST/REMOVE-TO-DO-LIST':
 			return { ...state, toDoLists: state.toDoLists.filter(tl => tl.id !== action.id) }
-		case 'SET-DISABLED-STATUS':
+		case 'TO-DO-LIST/SET-DISABLED-STATUS':
 			return { ...state, toDoLists: state.toDoLists.map(tl => tl.id === action.id ? { ...tl, disabledStatus: action.disabledStatus } : tl) }
-		case 'CHANGE-TO-DO-LIST-TITLE':
+		case 'TO-DO-LIST/CHANGE-TO-DO-LIST-TITLE':
 			return { ...state, toDoLists: state.toDoLists.map(tl => tl.id === action.id ? { ...tl, title: action.title } : tl) }
+		case 'TO-DO-LIST/CHANGE-TO-DO-LIST-FILTER':
+			return { ...state, toDoLists: state.toDoLists.map(tl => tl.id === action.id ? { ...tl, filter: action.value } : tl) }
 
 		default:
 			return state
@@ -25,15 +28,17 @@ export const toDoListsReducer = (state: InitStateType = initState, action: ToDoL
 }
 
 // ActionCreators
-export const getToDoListsAC = (toDoLists: Array<ToDolListType>) => ({ type: 'GET-TO-DO-LISTS', toDoLists } as const)
+export const getToDoListsAC = (toDoLists: Array<ToDolListType>) => ({ type: 'TO-DO-LIST/GET-TO-DO-LISTS', toDoLists } as const)
 
-export const addToDoListAC = (toDoList: ToDolListType) => ({ type: 'ADD-TO-DO-LIST', toDoList } as const)
+export const addToDoListAC = (toDoList: ToDolListType) => ({ type: 'TO-DO-LIST/ADD-TO-DO-LIST', toDoList } as const)
 
-export const removeToDoListAC = (id: string) => ({ type: 'REMOVE-TO-DO-LIST', id } as const)
+export const removeToDoListAC = (id: string) => ({ type: 'TO-DO-LIST/REMOVE-TO-DO-LIST', id } as const)
 
-export const setDisabledStatusAC = (id: string, disabledStatus: StatusType) => ({ type: 'SET-DISABLED-STATUS', id, disabledStatus } as const)
+export const setDisabledStatusAC = (id: string, disabledStatus: StatusType) => ({ type: 'TO-DO-LIST/SET-DISABLED-STATUS', id, disabledStatus } as const)
 
-export const changeToDoListTitleAC = (id: string, title: string) => ({ type: 'CHANGE-TO-DO-LIST-TITLE', id, title } as const)
+export const changeToDoListTitleAC = (id: string, title: string) => ({ type: 'TO-DO-LIST/CHANGE-TO-DO-LIST-TITLE', id, title } as const)
+
+export const changeToDoListFilterAC = (id: string, value: FilterValuesType) => ({ type: 'TO-DO-LIST/CHANGE-TO-DO-LIST-FILTER', id, value } as const)
 
 // ThunkCreators
 export const getToDoListsTC = (): ThunkType => (dispatch) => {
@@ -53,17 +58,11 @@ export const addToDoListTC = (title: string): ThunkType => (dispatch) => {
 				dispatch(addToDoListAC(res.data.data.item))
 				dispatch(setLoadingStatusAC('succeeded'))
 			} else {
-				if (res.data.messages.length) {
-					dispatch(setErrorStatusAC(res.data.messages[0]))
-				} else {
-					dispatch(setErrorStatusAC('Some error occurred'))
-				}
-				dispatch(setLoadingStatusAC('failed'))
+				serverAppErrorHandler(res.data, dispatch)
 			}
 		})
 		.catch((error) => {
-			dispatch(setErrorStatusAC(error.message ? error.message : 'Some error occurred'))
-			dispatch(setLoadingStatusAC('failed'))
+			serverNetworkErrorHandler(error, dispatch)
 		}
 		)
 }
@@ -77,19 +76,11 @@ export const removeToDoListTC = (id: string): ThunkType => (dispatch) => {
 				dispatch(removeToDoListAC(id))
 				dispatch(setLoadingStatusAC('succeeded'))
 			} else {
-				if (res.data.messages.length) {
-					dispatch(setErrorStatusAC(res.data.messages[0]))
-					dispatch(setLoadingStatusAC('failed'))
-				} else {
-					dispatch(setErrorStatusAC('Some error occurred'))
-					dispatch(setLoadingStatusAC('failed'))
-				}
-				dispatch(setLoadingStatusAC('failed'))
+				serverAppErrorHandler(res.data, dispatch)
 			}
 		})
 		.catch((error) => {
-			dispatch(setErrorStatusAC(error.message ? error.message : 'Some error occurred'))
-			dispatch(setLoadingStatusAC('failed'))
+			serverNetworkErrorHandler(error, dispatch)
 		})
 }
 
@@ -101,19 +92,11 @@ export const changeToDoListTitleTC = (toDoListId: string, toDoListTitle: string)
 				dispatch(changeToDoListTitleAC(toDoListId, toDoListTitle))
 				dispatch(setLoadingStatusAC('succeeded'))
 			} else {
-				if (res.data.messages.length) {
-					dispatch(setErrorStatusAC(res.data.messages[0]))
-					dispatch(setLoadingStatusAC('failed'))
-				} else {
-					dispatch(setErrorStatusAC('Some error occurred'))
-					dispatch(setLoadingStatusAC('failed'))
-				}
-				dispatch(setLoadingStatusAC('failed'))
+				serverAppErrorHandler(res.data, dispatch)
 			}
 		})
 		.catch((error) => {
-			setErrorStatusAC(error.message ? error.message : 'Some error occurred')
-			dispatch(setLoadingStatusAC('failed'))
+			serverNetworkErrorHandler(error, dispatch)
 		})
 }
 
@@ -124,13 +107,14 @@ type InitStateType = {
 
 export type ToDoListsReducerActionsType =
 	GetToDoListsActionType | AddToDoListActionType | RemoveToDoListActionType |
-	SetDisabledStatusActionType | ChangeToDoListTitleActionType
+	SetDisabledStatusActionType | ChangeToDoListTitleActionType | ChangeToDoListFilterActionType
 
 export type GetToDoListsActionType = ReturnType<typeof getToDoListsAC>
 export type AddToDoListActionType = ReturnType<typeof addToDoListAC>
 export type RemoveToDoListActionType = ReturnType<typeof removeToDoListAC>
 export type SetDisabledStatusActionType = ReturnType<typeof setDisabledStatusAC>
 export type ChangeToDoListTitleActionType = ReturnType<typeof changeToDoListTitleAC>
+export type ChangeToDoListFilterActionType = ReturnType<typeof changeToDoListFilterAC>
 
 export type FilterValuesType = 'all' | 'active' | 'completed'
 export type ToDoListSupplementedType = ToDolListType & {

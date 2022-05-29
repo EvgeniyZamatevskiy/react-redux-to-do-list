@@ -1,14 +1,17 @@
-import React, { FC } from 'react'
+import React from 'react'
 import { AppBar, Toolbar, Typography, Button, LinearProgress } from '@mui/material'
-import { useTypedSelector } from '../../redux/store'
+import { useTypedDispatch, useTypedSelector } from '../../redux/store'
+import { logoutTC } from '../../redux/authReducer'
 
-type HeaderPropsType = {
+export const Header = () => {
 
-}
-
-export const Header: FC<HeaderPropsType> = ({ }) => {
-
+	const dispatch = useTypedDispatch()
 	const { loadingStatus } = useTypedSelector(state => state.app)
+	const { isAuth } = useTypedSelector(state => state.auth)
+
+	const logoutHandler = () => {
+		dispatch(logoutTC())
+	}
 
 	return (
 		<AppBar position='static'>
@@ -16,7 +19,7 @@ export const Header: FC<HeaderPropsType> = ({ }) => {
 				<Typography variant='h6' component='div' sx={{ flexGrow: 1 }}>
 					To-Do List
 				</Typography>
-				<Button color='inherit'>Logout</Button>
+				{isAuth && <Button onClick={logoutHandler} color='inherit'>Logout</Button>}
 			</Toolbar>
 			{loadingStatus === 'loading' && <LinearProgress />}
 		</AppBar>

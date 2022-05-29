@@ -1,23 +1,25 @@
-import { AddBox } from '@mui/icons-material'
-import { Grid, Paper } from '@mui/material'
 import React, { FC, useEffect } from 'react'
+import { Grid, Paper } from '@mui/material'
+import { useNavigate } from 'react-router-dom'
 import { AddItemForm } from '../../components/AddItemForm/AddItemForm'
 import { ToDoList } from '../../components/ToDoList/ToDoList'
 import { useTypedDispatch, useTypedSelector } from '../../redux/store'
 import { addToDoListTC, getToDoListsTC } from '../../redux/toDoListsReducer'
 
-type ToDoListsListPropsType = {
-
-}
-
-export const ToDoListsList: FC<ToDoListsListPropsType> = ({ }) => {
+export const ToDoListsList = () => {
 
 	const dispatch = useTypedDispatch()
+	const navigate = useNavigate()
 	const { toDoLists } = useTypedSelector(state => state.toDoLists)
+	const { isAuth } = useTypedSelector(state => state.auth)
 
 	useEffect(() => {
-		dispatch(getToDoListsTC())
-	}, [])
+		if (isAuth) {
+			dispatch(getToDoListsTC())
+		} else {
+			navigate('login')
+		}
+	}, [isAuth])
 
 	const addToDoList = (title: string) => {
 		dispatch(addToDoListTC(title))

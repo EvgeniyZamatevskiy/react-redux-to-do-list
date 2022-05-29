@@ -1,11 +1,12 @@
-import { AddBox, Delete } from '@mui/icons-material'
-import { Button, IconButton, TextField } from '@mui/material'
+import { Delete } from '@mui/icons-material'
+import { Button, IconButton } from '@mui/material'
 import React, { FC, useEffect } from 'react'
+import { TaskStatus } from '../../api/tasksAPI'
 import { useTypedDispatch, useTypedSelector } from '../../redux/store'
 import { addTaskTC, getTasksTC, TaskStateType } from '../../redux/tasksReducer'
-import { changeToDoListTitleTC, removeToDoListTC, ToDoListSupplementedType } from '../../redux/toDoListsReducer'
+import { changeToDoListTitleTC, FilterValuesType, removeToDoListTC, changeToDoListFilterAC, ToDoListSupplementedType } from '../../redux/toDoListsReducer'
 import { AddItemForm } from '../AddItemForm/AddItemForm'
-import { EditableSpan } from '../EditableSpan/EditableSpanю'
+import { EditableSpan } from '../EditableSpan/EditableSpan'
 import { Task } from '../Task/Task'
 
 type ToDoListPropsType = {
@@ -29,8 +30,20 @@ export const ToDoList: FC<ToDoListPropsType> = ({ toDoList }) => {
 		dispatch(addTaskTC(toDoList.id, title))
 	}
 
-	const changeToDoListTitle = (toDoListTitle: string) => {
-		dispatch(changeToDoListTitleTC(toDoList.id, toDoListTitle))
+	const changeToDoListTitle = (newToDoListTitle: string) => {
+		dispatch(changeToDoListTitleTC(toDoList.id, newToDoListTitle))
+	}
+
+	const filteredTasksHandler = (value: FilterValuesType) => {
+		dispatch(changeToDoListFilterAC(toDoList.id, value))
+	}
+
+	let filteredTasks = tasks
+	if (toDoList.filter === 'active') {
+		filteredTasks = tasks.filter(t => t.status === TaskStatus.Active)
+	}
+	if (toDoList.filter === 'completed') {
+		filteredTasks = tasks.filter(t => t.status === TaskStatus.Completed)
 	}
 
 	return (
@@ -43,12 +56,15 @@ export const ToDoList: FC<ToDoListPropsType> = ({ toDoList }) => {
 			</h3>
 			<AddItemForm addItem={addTask} disabledStatus={toDoList.disabledStatus} />
 			<div>
-				{tasks.map(t => <Task key={t.id} disabledStatus={toDoList.disabledStatus} task={t} />)}
+				{filteredTasks.map(t => <Task key={t.id} disabledStatus={toDoList.disabledStatus} task={t} />)}
 			</div>
 			<div style={{ paddingTop: '10px' }}>
-				<Button variant={'text'} color={'primary'}>All</Button>
-				<Button variant={'text'} color={'primary'}>Active</Button>
-				<Button variant={'text'} color={'primary'}>Completed</Button>
+				<Button
+					onClick={() => filteredTasksHandler('all')} variant={toDoList.filter === 'all' ? 'outlined' : 'text'} color={'primary'}>All</Button>
+				<Button
+					onClick={() => filteredTasksHandler('active')} variant={toDoList.filter === 'active' ? 'outlined' : 'text'} color={'primary'}>Active</Button>
+				<Button
+					onClick={() => filteredTasksHandler('completed')} variant={toDoList.filter === 'completed' ? 'outlined' : 'text'} color={'primary'}>Completed</Button>
 			</div>
 		</div>
 	)
