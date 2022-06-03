@@ -26,7 +26,7 @@ export const App = () => {
   }
 
   return (
-    <div>
+    <div className='App'>
       <ErrorSnackbar />
       <Header />
       <Container fixed>

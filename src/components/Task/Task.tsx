@@ -1,4 +1,4 @@
-import React, { ChangeEvent, FC } from 'react'
+import React, { ChangeEvent, FC, memo, useCallback } from 'react'
 import { Delete } from '@mui/icons-material'
 import { Checkbox, IconButton } from '@mui/material'
 import { TaskStatus, TaskType } from '../../api/tasksAPI'
@@ -12,7 +12,8 @@ type TaskPropsType = {
 	disabledStatus: StatusType
 }
 
-export const Task: FC<TaskPropsType> = ({ task, disabledStatus }) => {
+export const Task: FC<TaskPropsType> = memo(({ task, disabledStatus }) => {
+	console.log('Task')
 
 	const dispatch = useTypedDispatch()
 
@@ -24,9 +25,9 @@ export const Task: FC<TaskPropsType> = ({ task, disabledStatus }) => {
 		dispatch(updateTaskTC(task.todoListId, task.id, { status: e.currentTarget.checked ? TaskStatus.Completed : TaskStatus.Active }))
 	}
 
-	const changeTaskTitleHandler = (newTaskTitle: string) => {
+	const changeTaskTitleHandler = useCallback((newTaskTitle: string) => {
 		dispatch(updateTaskTC(task.todoListId, task.id, { title: newTaskTitle }))
-	}
+	}, [task.todoListId, task.id, dispatch])
 
 	return (
 		<div>
@@ -37,4 +38,4 @@ export const Task: FC<TaskPropsType> = ({ task, disabledStatus }) => {
 			</IconButton>
 		</div>
 	)
-}
+})

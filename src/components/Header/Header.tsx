@@ -14,8 +14,8 @@ export const Header = () => {
 	}
 
 	return (
-		<AppBar position='static'>
-			<Toolbar>
+		<AppBar position='fixed' >
+			<Toolbar >
 				<Typography variant='h6' component='div' sx={{ flexGrow: 1 }}>
 					To-Do List
 				</Typography>

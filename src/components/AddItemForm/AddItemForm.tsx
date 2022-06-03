@@ -1,4 +1,4 @@
-import React, { ChangeEvent, FC, KeyboardEvent, useState } from 'react'
+import React, { ChangeEvent, FC, KeyboardEvent, memo, useState } from 'react'
 import { AddBox } from '@mui/icons-material'
 import { TextField, IconButton } from '@mui/material'
 import { StatusType } from '../../redux/appReducer'
@@ -8,7 +8,8 @@ type AddItemFormPropsType = {
 	disabledStatus?: StatusType
 }
 
-export const AddItemForm: FC<AddItemFormPropsType> = ({ addItem, disabledStatus }) => {
+export const AddItemForm: FC<AddItemFormPropsType> = memo(({ addItem, disabledStatus }) => {
+	console.log('AddItemForm')
 
 	const [value, setValue] = useState<string>('')
 	const [error, setError] = useState<string>('')
@@ -52,4 +53,4 @@ export const AddItemForm: FC<AddItemFormPropsType> = ({ addItem, disabledStatus 
 			</IconButton>
 		</div>
 	)
-}
+})

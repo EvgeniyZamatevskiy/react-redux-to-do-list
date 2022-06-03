@@ -1,22 +1,23 @@
+import React, { FC, memo, useCallback, useEffect } from 'react'
 import { Delete } from '@mui/icons-material'
 import { Button, IconButton } from '@mui/material'
-import React, { FC, useEffect } from 'react'
-import { TaskStatus } from '../../api/tasksAPI'
-import { useTypedDispatch, useTypedSelector } from '../../redux/store'
-import { addTaskTC, getTasksTC, TaskStateType } from '../../redux/tasksReducer'
-import { changeToDoListTitleTC, FilterValuesType, removeToDoListTC, changeToDoListFilterAC, ToDoListSupplementedType } from '../../redux/toDoListsReducer'
+import { TaskStatus, TaskType } from '../../api/tasksAPI'
+import { useTypedDispatch } from '../../redux/store'
+import { addTaskTC, getTasksTC } from '../../redux/tasksReducer'
+import { changeToDoListTitleTC, removeToDoListTC, changeToDoListFilterAC, ToDoListSupplementedType } from '../../redux/toDoListsReducer'
 import { AddItemForm } from '../AddItemForm/AddItemForm'
 import { EditableSpan } from '../EditableSpan/EditableSpan'
 import { Task } from '../Task/Task'
 
 type ToDoListPropsType = {
 	toDoList: ToDoListSupplementedType
+	tasks: Array<TaskType>
 }
 
-export const ToDoList: FC<ToDoListPropsType> = ({ toDoList }) => {
+export const ToDoList: FC<ToDoListPropsType> = memo(({ toDoList, tasks }) => {
+	console.log('ToDoList')
 
 	const dispatch = useTypedDispatch()
-	const tasks = useTypedSelector<TaskStateType>(state => state.tasks.tasks)[toDoList.id]
 
 	useEffect(() => {
 		dispatch(getTasksTC(toDoList.id))
@@ -26,16 +27,24 @@ export const ToDoList: FC<ToDoListPropsType> = ({ toDoList }) => {
 		dispatch(removeToDoListTC(toDoList.id))
 	}
 
-	const addTask = (title: string) => {
+	const addTask = useCallback((title: string) => {
 		dispatch(addTaskTC(toDoList.id, title))
-	}
+	}, [toDoList.id, dispatch])
 
-	const changeToDoListTitle = (newToDoListTitle: string) => {
+	const changeToDoListTitle = useCallback((newToDoListTitle: string) => {
 		dispatch(changeToDoListTitleTC(toDoList.id, newToDoListTitle))
+	}, [toDoList.id, dispatch])
+
+	const onClickAllHandler = () => {
+		dispatch(changeToDoListFilterAC(toDoList.id, 'all'))
 	}
 
-	const filteredTasksHandler = (value: FilterValuesType) => {
-		dispatch(changeToDoListFilterAC(toDoList.id, value))
+	const onClickActiveHandler = () => {
+		dispatch(changeToDoListFilterAC(toDoList.id, 'active'))
+	}
+
+	const onClickCompletedHandler = () => {
+		dispatch(changeToDoListFilterAC(toDoList.id, 'completed'))
 	}
 
 	let filteredTasks = tasks
@@ -59,13 +68,10 @@ export const ToDoList: FC<ToDoListPropsType> = ({ toDoList }) => {
 				{filteredTasks.map(t => <Task key={t.id} disabledStatus={toDoList.disabledStatus} task={t} />)}
 			</div>
 			<div style={{ paddingTop: '10px' }}>
-				<Button
-					onClick={() => filteredTasksHandler('all')} variant={toDoList.filter === 'all' ? 'outlined' : 'text'} color={'primary'}>All</Button>
-				<Button
-					onClick={() => filteredTasksHandler('active')} variant={toDoList.filter === 'active' ? 'outlined' : 'text'} color={'primary'}>Active</Button>
-				<Button
-					onClick={() => filteredTasksHandler('completed')} variant={toDoList.filter === 'completed' ? 'outlined' : 'text'} color={'primary'}>Completed</Button>
+				<Button onClick={onClickAllHandler} variant={toDoList.filter === 'all' ? 'outlined' : 'text'} color={'primary'}>All</Button>
+				<Button onClick={onClickActiveHandler} variant={toDoList.filter === 'active' ? 'outlined' : 'text'} color={'primary'}>Active</Button>
+				<Button onClick={onClickCompletedHandler} variant={toDoList.filter === 'completed' ? 'outlined' : 'text'} color={'primary'}>Completed</Button>
 			</div>
 		</div>
 	)
-}
+})
