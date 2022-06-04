@@ -15,7 +15,6 @@ type ToDoListPropsType = {
 }
 
 export const ToDoList: FC<ToDoListPropsType> = memo(({ toDoList, tasks }) => {
-	console.log('ToDoList')
 
 	const dispatch = useTypedDispatch()
 

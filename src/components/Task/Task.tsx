@@ -13,7 +13,6 @@ type TaskPropsType = {
 }
 
 export const Task: FC<TaskPropsType> = memo(({ task, disabledStatus }) => {
-	console.log('Task')
 
 	const dispatch = useTypedDispatch()
 

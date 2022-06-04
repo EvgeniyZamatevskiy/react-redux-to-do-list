@@ -9,7 +9,6 @@ type AddItemFormPropsType = {
 }
 
 export const AddItemForm: FC<AddItemFormPropsType> = memo(({ addItem, disabledStatus }) => {
-	console.log('AddItemForm')
 
 	const [value, setValue] = useState<string>('')
 	const [error, setError] = useState<string>('')
