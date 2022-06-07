@@ -19,7 +19,7 @@ export const Header = () => {
 				<Typography variant='h6' component='div' sx={{ flexGrow: 1 }}>
 					To-Do List
 				</Typography>
-				{isAuth && <Button onClick={logoutHandler} color='inherit'>Logout</Button>}
+				{isAuth && <Button onClick={logoutHandler} color='inherit'>Log out</Button>}
 			</Toolbar>
 			{loadingStatus === 'loading' && <LinearProgress />}
 		</AppBar>

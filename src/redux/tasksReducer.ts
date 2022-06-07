@@ -1,5 +1,5 @@
 import { serverAppErrorHandler, serverNetworkErrorHandler } from './../utils/errorUtils'
-import { UpdateTaskModelType, TaskPriority, tasksAPI, TaskStatus, TaskType } from '../api/tasksAPI'
+import { UpdateTaskModelType, tasksAPI, TaskType, UpdateDomainTaskModelType } from '../api/tasksAPI'
 import { setLoadingStatusAC } from './appReducer'
 import { ThunkType } from './store'
 import { AddToDoListActionType, GetToDoListsActionType, RemoveToDoListActionType, setDisabledStatusAC } from './toDoListsReducer'
@@ -33,7 +33,7 @@ export const tasksReducer = (state: InitStateType = initState, action: TasksRedu
 			return {
 				...state, tasks: {
 					...state.tasks, [action.toDoListId]: state.tasks[action.toDoListId].map(t => t.id === action.taskId
-						? { ...t, ...action.taskModel } : t)
+						? { ...t, ...action.domainModel } : t)
 				}
 			}
 
@@ -43,13 +43,17 @@ export const tasksReducer = (state: InitStateType = initState, action: TasksRedu
 }
 
 // ActionCreators
-export const getTasksAC = (toDoListId: string, tasks: Array<TaskType>) => ({ type: 'TASKS/GET-TASKS', toDoListId, tasks } as const)
+export const getTasksAC = (toDoListId: string, tasks: Array<TaskType>) =>
+	({ type: 'TASKS/GET-TASKS', toDoListId, tasks } as const)
 
-export const addTaskAC = (task: TaskType) => ({ type: 'TASKS/ADD-TASK', task } as const)
+export const addTaskAC = (task: TaskType) =>
+	({ type: 'TASKS/ADD-TASK', task } as const)
 
-export const removeTaskAC = (toDoListId: string, taskId: string) => ({ type: 'TASKS/REMOVE-TASK', toDoListId, taskId } as const)
+export const removeTaskAC = (toDoListId: string, taskId: string) =>
+	({ type: 'TASKS/REMOVE-TASK', toDoListId, taskId } as const)
 
-export const updateTaskAC = (toDoListId: string, taskId: string, taskModel: UpdateDomainTaskModelType) => ({ type: 'TASKS/UPDATE-TASK', toDoListId, taskId, taskModel } as const)
+export const updateTaskAC = (toDoListId: string, taskId: string, domainModel: UpdateDomainTaskModelType) =>
+	({ type: 'TASKS/UPDATE-TASK', toDoListId, taskId, domainModel } as const)
 
 // ThunkCreators
 export const getTasksTC = (toDoListId: string): ThunkType => (dispatch) => {
@@ -99,36 +103,60 @@ export const removeTaskTC = (toDoListId: string, taskId: string): ThunkType => (
 
 export const updateTaskTC = (toDoListId: string, taskId: string, domainModel: UpdateDomainTaskModelType): ThunkType => (dispatch, getState) => {
 	const state = getState()
-	const task = state.tasks.tasks[toDoListId].find((t) => t.id === taskId)
-	if (!task) {
-		console.warn('task not found in the state')
-		return
+	const task = state.tasks.tasks[toDoListId].find(t => t.id === taskId)
+	if (task) {
+		const model: UpdateTaskModelType = {
+			deadline: task.deadline,
+			description: task.description,
+			priority: task.priority,
+			startDate: task.startDate,
+			title: task.title,
+			status: task.status,
+			...domainModel
+		}
+		dispatch(setLoadingStatusAC('loading'))
+		tasksAPI.updateTask(toDoListId, taskId, model)
+			.then((res) => {
+				if (res.data.resultCode === 0) {
+					dispatch(updateTaskAC(toDoListId, taskId, domainModel))
+					dispatch(setLoadingStatusAC('succeeded'))
+				} else {
+					serverAppErrorHandler(res.data, dispatch)
+				}
+			})
+			.catch((error) => {
+				serverNetworkErrorHandler(error, dispatch)
+			})
 	}
-
-	const apiModel: UpdateTaskModelType = {
-		deadline: task.deadline,
-		description: task.description,
-		priority: task.priority,
-		startDate: task.startDate,
-		title: task.title,
-		status: task.status,
-		...domainModel
-	}
-
-	dispatch(setLoadingStatusAC('loading'))
-	tasksAPI.updateTask(toDoListId, taskId, apiModel)
-		.then((res) => {
-			if (res.data.resultCode === 0) {
-				dispatch(updateTaskAC(toDoListId, taskId, domainModel))
-				dispatch(setLoadingStatusAC('succeeded'))
-			} else {
-				serverAppErrorHandler(res.data, dispatch)
-			}
-		})
-		.catch((error) => {
-			serverNetworkErrorHandler(error, dispatch)
-		})
 }
+
+// export const updateTaskStatusTC = (toDoListId: string, taskId: string, updatedStatus: TaskStatus): ThunkType => (dispatch, getState) => {
+// 	const state = getState()
+// 	const task = state.tasks.tasks[toDoListId].find(t => t.id === taskId)
+// 	if (task) {
+// 		const model: UpdateTaskModelType = {
+// 			deadline: task.deadline,
+// 			description: task.description,
+// 			priority: task.priority,
+// 			startDate: task.startDate,
+// 			title: task.title,
+// 			status: updatedStatus
+// 		}
+// 		dispatch(setLoadingStatusAC('loading'))
+// 		tasksAPI.updateTask(toDoListId, taskId, model)
+// 			.then((res) => {
+// 				if (res.data.resultCode === 0) {
+// 					dispatch(updateTaskAC(toDoListId, taskId, updatedStatus))
+// 					dispatch(setLoadingStatusAC('succeeded'))
+// 				} else {
+// 					serverAppErrorHandler(res.data, dispatch)
+// 				}
+// 			})
+// 			.catch((error) => {
+// 				serverNetworkErrorHandler(error, dispatch)
+// 			})
+// 	}
+// }
 
 // types
 type InitStateType = {
@@ -147,13 +175,4 @@ type UpdateTaskActionType = ReturnType<typeof updateTaskAC>
 
 export type TaskStateType = {
 	[key: string]: Array<TaskType>
-}
-
-export type UpdateDomainTaskModelType = {
-	title?: string
-	description?: string,
-	status?: TaskStatus
-	priority?: TaskPriority
-	startDate?: string
-	deadline?: string
 }

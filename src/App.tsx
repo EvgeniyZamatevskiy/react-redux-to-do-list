@@ -29,7 +29,7 @@ export const App = () => {
     <div className='App'>
       <ErrorSnackbar />
       <Header />
-      <Container fixed>
+      <Container fixed maxWidth={'xl'}>
         <Routes>
           <Route path={'/'} element={<ToDoListsList />} />
           <Route path={'login'} element={<Login />} />

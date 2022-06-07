@@ -1,5 +1,5 @@
 import React, { memo, useCallback, useEffect } from 'react'
-import { Grid, Paper } from '@mui/material'
+import { Grid } from '@mui/material'
 import { useNavigate } from 'react-router-dom'
 import { AddItemForm } from '../../components/AddItemForm/AddItemForm'
 import { ToDoList } from '../../components/ToDoList/ToDoList'
@@ -31,12 +31,12 @@ export const ToDoListsList = memo(() => {
 			<Grid container style={{ padding: '20px' }}>
 				<AddItemForm addItem={addToDoList} />
 			</Grid>
-			<Grid container spacing={3}>
+			<Grid container spacing={3} style={{ flexWrap: 'nowrap', overflowX: 'scroll', padding: '10px' }}>
 				{toDoLists.map(tl => {
 					return <Grid item key={tl.id}>
-						<Paper style={{ padding: '10px' }}>
+						<div style={{ width: '300px' }}>
 							<ToDoList toDoList={tl} tasks={tasks[tl.id]} />
-						</Paper>
+						</div>
 					</Grid>
 				})}
 			</Grid>

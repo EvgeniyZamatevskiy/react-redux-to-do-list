@@ -5,3 +5,8 @@ body {
 .App {
   margin-top: 60px;
 }
+
+.taskCompleted {
+  opacity: 0.4;
+  text-decoration: line-through;
+}

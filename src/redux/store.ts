@@ -1,5 +1,5 @@
 import { TypedUseSelectorHook, useDispatch, useSelector } from 'react-redux'
-import { applyMiddleware, combineReducers, createStore } from 'redux'
+import { AnyAction, applyMiddleware, combineReducers, createStore } from 'redux'
 import { composeWithDevTools } from 'redux-devtools-extension'
 import thunk, { ThunkAction, ThunkDispatch } from 'redux-thunk'
 import { appReducer, AppReducerActionsType } from './appReducer'
@@ -24,4 +24,4 @@ export const useTypedSelector: TypedUseSelectorHook<RootReducerType> = useSelect
 export type RootReducerType = ReturnType<typeof rootReducer>
 export type AllActionsType = TasksReducerActionsType | ToDoListsReducerActionsType | AppReducerActionsType | AuthReducerActionsType
 export type ThunkType<ReturnType = void> = ThunkAction<ReturnType, RootReducerType, unknown, AllActionsType>
-export type DispatchType = ThunkDispatch<RootReducerType, any, AllActionsType>
+export type DispatchType = ThunkDispatch<RootReducerType, unknown, AnyAction>

@@ -47,7 +47,7 @@ export const AddItemForm: FC<AddItemFormPropsType> = memo(({ addItem, disabledSt
 				helperText={error}
 				disabled={disabledStatus === 'loading'}
 			/>
-			<IconButton color='primary' onClick={addItemHandler} disabled={disabledStatus === 'loading'} >
+			<IconButton color='primary' onClick={addItemHandler} disabled={disabledStatus === 'loading'} style={{ marginLeft: '5px' }} >
 				<AddBox />
 			</IconButton>
 		</div>
