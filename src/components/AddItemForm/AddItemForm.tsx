@@ -1,6 +1,7 @@
 import React, { ChangeEvent, FC, KeyboardEvent, memo, useState } from 'react'
-import { AddBox } from '@mui/icons-material'
-import { TextField, IconButton } from '@mui/material'
+import AddBox from '@mui/icons-material/AddBox'
+import TextField from '@mui/material/TextField'
+import IconButton from '@mui/material/IconButton'
 import { StatusType } from '../../redux/appReducer'
 
 type AddItemFormPropsType = {

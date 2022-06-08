@@ -2,7 +2,7 @@ import { Dispatch } from 'redux'
 import { CommonResponseType } from '../api/toDoListsAPI'
 import { setErrorStatusAC, SetErrorStatusActionType, setLoadingStatusAC, SetLoadingStatusActionType } from './../redux/appReducer'
 
-export const serverAppErrorHandler = <D>(data: CommonResponseType<D>, dispatch: Dispatch<SetErrorStatusActionType | SetLoadingStatusActionType>) => {
+export const serverAppErrorHandler = <T>(data: CommonResponseType<T>, dispatch: ErrorUtilsDispatchType) => {
 	if (data.messages.length) {
 		dispatch(setErrorStatusAC(data.messages[0]))
 	} else {
@@ -11,7 +11,9 @@ export const serverAppErrorHandler = <D>(data: CommonResponseType<D>, dispatch: 
 	dispatch(setLoadingStatusAC('failed'))
 }
 
-export const serverNetworkErrorHandler = (error: { message: string }, dispatch: Dispatch<SetErrorStatusActionType | SetLoadingStatusActionType>) => {
+export const serverNetworkErrorHandler = (error: { message: string }, dispatch: ErrorUtilsDispatchType) => {
 	dispatch(setErrorStatusAC(error.message ? error.message : 'Some error occurred'))
 	dispatch(setLoadingStatusAC('failed'))
 }
+
+type ErrorUtilsDispatchType = Dispatch<SetErrorStatusActionType | SetLoadingStatusActionType>

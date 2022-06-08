@@ -1,5 +1,9 @@
 import React from 'react'
-import { AppBar, Toolbar, Typography, Button, LinearProgress } from '@mui/material'
+import AppBar from '@mui/material/AppBar'
+import Toolbar from '@mui/material/Toolbar'
+import Typography from '@mui/material/Typography'
+import Button from '@mui/material/Button'
+import LinearProgress from '@mui/material/LinearProgress'
 import { useTypedDispatch, useTypedSelector } from '../../redux/store'
 import { logoutTC } from '../../redux/authReducer'
 

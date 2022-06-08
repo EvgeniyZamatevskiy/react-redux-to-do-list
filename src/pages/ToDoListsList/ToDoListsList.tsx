@@ -1,5 +1,5 @@
 import React, { memo, useCallback, useEffect } from 'react'
-import { Grid } from '@mui/material'
+import Grid from '@mui/material/Grid'
 import { useNavigate } from 'react-router-dom'
 import { AddItemForm } from '../../components/AddItemForm/AddItemForm'
 import { ToDoList } from '../../components/ToDoList/ToDoList'

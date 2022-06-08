@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react'
-import { CircularProgress, Container } from '@mui/material'
+import CircularProgress from '@mui/material/CircularProgress'
+import Container from '@mui/material/Container'
 import { ToDoListsList } from './pages/ToDoListsList/ToDoListsList'
 import { Header } from './components/Header/Header'
 import { ErrorSnackbar } from './components/ErrorSnackbar/ErrorSnackbar'
