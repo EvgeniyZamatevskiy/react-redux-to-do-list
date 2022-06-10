@@ -32,7 +32,7 @@ export const Task: FC<TaskPropsType> = memo(({ task, disabledStatus }) => {
 	return (
 		<div className={task.status === TaskStatus.Completed ? 'taskCompleted' : ''} style={{ position: 'relative' }}>
 			<Checkbox color='primary' checked={task.status === TaskStatus.Completed} onChange={changeHandler} />
-			<EditableSpan title={task.title} onChange={changeTaskTitleHandler} />
+			<EditableSpan currentValue={task.title} changeValue={changeTaskTitleHandler} />
 			<IconButton size={'small'} disabled={disabledStatus === 'loading'} onClick={removeTask} style={{ position: 'absolute', top: '2px', right: '2px' }}>
 				<Delete fontSize={'small'} />
 			</IconButton>

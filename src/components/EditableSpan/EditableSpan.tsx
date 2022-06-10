@@ -1,42 +1,44 @@
-import React, { ChangeEvent, FC, KeyboardEvent, memo, useState } from 'react'
+import React, { ChangeEvent, FC, KeyboardEvent, useState } from 'react'
 import TextField from '@mui/material/TextField'
+import s from './EditableSpan.module.css'
 
 type EditableSpanPropsType = {
-	title: string
-	onChange: (title: string) => void
+	currentValue: string
+	changeValue: (newValue: string) => void
+	secondSpanClassName?: string
 }
 
-export const EditableSpan: FC<EditableSpanPropsType> = memo(({ title, onChange }) => {
+export const EditableSpan: FC<EditableSpanPropsType> = ({ currentValue, changeValue, secondSpanClassName }) => {
 
 	const [editMode, setEditMode] = useState<boolean>(false)
-	const [changeTitle, setChangeTitle] = useState<string>('')
+	const [newValue, setNewValue] = useState<string>('')
 
-	const changeHandler = (e: ChangeEvent<HTMLInputElement>) => {
-		setChangeTitle(e.currentTarget.value)
+	const onChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {
+		setNewValue(e.currentTarget.value)
 	}
 
-	const doubleClickHandler = () => {
+	const onDoubleClickHandler = () => {
 		setEditMode(true)
-		setChangeTitle(title)
+		setNewValue(currentValue)
 	}
 
-	const keyPressHandler = (e: KeyboardEvent<HTMLInputElement>) => {
+	const onBlurHandler = () => {
+		setEditMode(false)
+		changeValue(newValue)
+	}
+
+	const onKeyDownHandler = (e: KeyboardEvent<HTMLDivElement>) => {
 		if (e.key === 'Enter') {
 			setEditMode(false)
-			onChange(changeTitle)
+			changeValue(newValue)
 		}
-	}
-
-	const blurHandler = () => {
-		setEditMode(false)
-		onChange(changeTitle)
 	}
 
 	return (
 		<>
 			{editMode
-				? <TextField value={changeTitle} onChange={changeHandler} autoFocus onKeyPress={keyPressHandler} onBlur={blurHandler} variant={'standard'} />
-				: <span onDoubleClick={doubleClickHandler}>{title}</span>}
+				? <TextField variant={'standard'} autoFocus value={newValue} onChange={onChangeHandler} onBlur={onBlurHandler} onKeyDown={onKeyDownHandler} />
+				: <span className={`${s.span} ${secondSpanClassName ? secondSpanClassName : ''}`} onDoubleClick={onDoubleClickHandler}>{currentValue}</span>}
 		</>
 	)
-})
+}

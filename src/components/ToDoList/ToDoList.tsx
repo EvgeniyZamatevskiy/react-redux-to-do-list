@@ -66,7 +66,7 @@ export const ToDoList: FC<ToDoListPropsType> = memo(({ toDoList, tasks }) => {
 				<Delete fontSize={'small'} />
 			</IconButton>
 			<h3>
-				<EditableSpan title={toDoList.title} onChange={changeToDoListTitle} />
+				<EditableSpan currentValue={toDoList.title} changeValue={changeToDoListTitle} />
 			</h3>
 			<AddItemForm addItem={addTask} disabledStatus={toDoList.disabledStatus} />
 			<div>
