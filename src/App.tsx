@@ -1,29 +1,34 @@
 import React, { useEffect } from 'react'
 import CircularProgress from '@mui/material/CircularProgress'
 import Container from '@mui/material/Container'
-import { ToDoListsList } from './pages/ToDoListsList/ToDoListsList'
 import { Header } from './components/Header/Header'
 import { ErrorSnackbar } from './components/ErrorSnackbar/ErrorSnackbar'
 import { Navigate, Route, Routes } from 'react-router-dom'
 import { Login } from './pages/Login/Login'
-import { initializeAppTC } from './redux/appReducer'
-import { useTypedDispatch, useTypedSelector } from './redux/store'
+import { NotFound } from './pages/NotFound/NotFound'
+import { TodolistsList } from './pages/TodolistsList/TodolistsList'
+import { appActionCreators } from './redux/reducers/app-reducer'
+import { selectIsInitialized } from './redux/reducers/app-reducer/selectors'
+import { useSelector } from 'react-redux'
+import { useActions } from './redux/hooks/useActions'
 import './App.css'
 
 export const App = () => {
 
-  const dispatch = useTypedDispatch()
-  const { isInitialized } = useTypedSelector(state => state.app)
+  const isInitialized = useSelector(selectIsInitialized)
+  const { initializeAppTC } = useActions(appActionCreators)
 
   useEffect(() => {
-    dispatch(initializeAppTC())
+    initializeAppTC()
   }, [])
 
   if (!isInitialized) {
-    return <div
-      style={{ position: 'fixed', top: '30%', textAlign: 'center', width: '100%' }}>
-      <CircularProgress />
-    </div>
+    return (
+      <div
+        style={{ position: 'fixed', top: '30%', textAlign: 'center', width: '100%' }}>
+        <CircularProgress />
+      </div>
+    )
   }
 
   return (
@@ -32,9 +37,9 @@ export const App = () => {
       <Header />
       <Container fixed maxWidth={'xl'}>
         <Routes>
-          <Route path={'/'} element={<ToDoListsList />} />
+          <Route path={'/'} element={<TodolistsList />} />
           <Route path={'login'} element={<Login />} />
-          <Route path={'404'} element={<h1 style={{ textAlign: 'center' }}>404 page not found</h1>} />
+          <Route path={'404'} element={<NotFound />} />
           <Route path={'*'} element={<Navigate to={'404'} />} />
         </Routes>
       </Container>

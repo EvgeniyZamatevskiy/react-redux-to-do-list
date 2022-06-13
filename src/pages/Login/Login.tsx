@@ -8,9 +8,11 @@ import FormLabel from '@mui/material/FormLabel'
 import TextField from '@mui/material/TextField'
 import Button from '@mui/material/Button'
 import { useFormik } from 'formik'
-import { loginTC } from '../../redux/authReducer'
 import { Navigate } from 'react-router-dom'
-import { useTypedDispatch, useTypedSelector } from '../../redux/store'
+import { authActionCreators } from '../../redux/reducers/auth-reducer'
+import { selectIsAuth } from '../../redux/reducers/auth-reducer/selectors'
+import { useSelector } from 'react-redux'
+import { useActions } from '../../redux/hooks/useActions'
 
 type FormikErrorType = {
 	email?: string
@@ -20,8 +22,8 @@ type FormikErrorType = {
 
 export const Login = () => {
 
-	const dispatch = useTypedDispatch()
-	const { isAuth } = useTypedSelector(state => state.auth)
+	const { loginTC } = useActions(authActionCreators)
+	const isAuth = useSelector(selectIsAuth)
 
 	const formik = useFormik({
 		initialValues: {
@@ -38,16 +40,16 @@ export const Login = () => {
 			}
 
 			if (!values.password) {
-				errors.password = 'Пароль обязателен!'
+				errors.password = 'Password is required'
 			} else if (values.password.length < 3) {
-				errors.password = 'Пароль должен быть больше 3 символов!'
+				errors.password = 'Password must be more than 3 characters!'
 			}
 
 			return errors
 		},
 		onSubmit: values => {
-			dispatch(loginTC(values))
-			// formik.resetForm() // Очистка формы
+			loginTC(values)
+			// formik.resetForm()
 		},
 	})
 
@@ -55,44 +57,46 @@ export const Login = () => {
 		return <Navigate to={'/'} />
 	}
 
-	return <Grid container justifyContent={'center'}>
-		<Grid item justifyContent={'center'}>
-			<FormControl>
-				<FormLabel>
-					<p>To log in get registered
-						<a href={'https://social-network.samuraijs.com/'}
-							target={'_blank'}> here
-						</a>
-					</p>
-					<p>or use common test account credentials:</p>
-					<p>Email: free@samuraijs.com</p>
-					<p>Password: free</p>
-				</FormLabel>
-				<form onSubmit={formik.handleSubmit}>
-					<FormGroup>
-						<TextField
-							label='Email'
-							margin='normal'
-							{...formik.getFieldProps('email')}
-						/>
-						{formik.touched.email && formik.errors.email && <div style={{ color: 'red' }}>{formik.errors.email}</div>}
-						<TextField
-							type='password'
-							label='Password'
-							margin='normal'
-							{...formik.getFieldProps('password')}
-						/>
-						{formik.touched.password && formik.errors.password && <div style={{ color: 'red' }}>{formik.errors.password}</div>}
-						<FormControlLabel label={'Remember me'} control={<Checkbox
-							// checked={formik.values.rememberMe} // Сброс checkbox
-							{...formik.getFieldProps('rememberMe')}
-						/>} />
-						<Button type={'submit'} variant={'contained'} color={'primary'}>
-							Login
-						</Button>
-					</FormGroup>
-				</form>
-			</FormControl>
+	return (
+		<Grid container justifyContent={'center'}>
+			<Grid item justifyContent={'center'}>
+				<FormControl>
+					<FormLabel>
+						<p>To log in get registered
+							<a href={'https://social-network.samuraijs.com/'}
+								target={'_blank'}> here
+							</a>
+						</p>
+						<p>or use common test account credentials:</p>
+						<p>Email: free@samuraijs.com</p>
+						<p>Password: free</p>
+					</FormLabel>
+					<form onSubmit={formik.handleSubmit}>
+						<FormGroup>
+							<TextField
+								label='Email'
+								margin='normal'
+								{...formik.getFieldProps('email')}
+							/>
+							{formik.touched.email && formik.errors.email && <div style={{ color: 'red' }}>{formik.errors.email}</div>}
+							<TextField
+								type='password'
+								label='Password'
+								margin='normal'
+								{...formik.getFieldProps('password')}
+							/>
+							{formik.touched.password && formik.errors.password && <div style={{ color: 'red' }}>{formik.errors.password}</div>}
+							<FormControlLabel label={'Remember me'} control={<Checkbox
+								// checked={formik.values.rememberMe}
+								{...formik.getFieldProps('rememberMe')}
+							/>} />
+							<Button type={'submit'} variant={'contained'} color={'primary'}>
+								Login
+							</Button>
+						</FormGroup>
+					</form>
+				</FormControl>
+			</Grid>
 		</Grid>
-	</Grid>
+	)
 }
