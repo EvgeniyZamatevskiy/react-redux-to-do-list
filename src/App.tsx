@@ -6,11 +6,11 @@ import { ErrorSnackbar } from './components/ErrorSnackbar/ErrorSnackbar'
 import { Navigate, Route, Routes } from 'react-router-dom'
 import { Login } from './pages/Login/Login'
 import { NotFound } from './pages/NotFound/NotFound'
-import { TodolistsList } from './pages/TodolistsList/TodolistsList'
 import { appActionCreators } from './redux/reducers/app-reducer'
 import { selectIsInitialized } from './redux/reducers/app-reducer/selectors'
 import { useSelector } from 'react-redux'
 import { useActions } from './redux/hooks/useActions'
+import { TodolistsList } from './pages/TodolistsList/ToDoListsList'
 import './App.css'
 
 export const App = () => {

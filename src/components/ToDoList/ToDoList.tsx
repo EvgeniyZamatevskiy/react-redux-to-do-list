@@ -11,6 +11,7 @@ import { TaskStatus, TaskType } from '../../api/types'
 import { tasksActionCreators } from '../../redux/reducers/tasks-reducer'
 import { todolistsActionCreators } from '../../redux/reducers/todolists-reducer'
 import { useActions } from '../../redux/hooks/useActions'
+import { FilterValuesType } from '../../redux/reducers/todolists-reducer/actions'
 
 type TodolistPropsType = {
 	todolist: TodolistSupplementedType
@@ -22,9 +23,7 @@ export const Todolist: FC<TodolistPropsType> = memo(({ todolist, tasks }) => {
 	const { removeTodolistTC, changeTodolistTitleTC, changeTodolistFilterAC } = useActions(todolistsActionCreators)
 	const { getTasksTC, addTaskTC } = useActions(tasksActionCreators)
 
-	useEffect(() => {
-		getTasksTC(todolist.id)
-	}, [])
+	const FilterValues: FilterValuesType[] = ['all', 'active', 'completed']
 
 	const removeTodolistHandler = () => {
 		removeTodolistTC(todolist.id)
@@ -38,17 +37,9 @@ export const Todolist: FC<TodolistPropsType> = memo(({ todolist, tasks }) => {
 		changeTodolistTitleTC(todolist.id, newToDoListTitle)
 	}, [todolist.id])
 
-	const onClickAllHandler = () => {
-		changeTodolistFilterAC(todolist.id, 'all')
-	}
-
-	const onClickActiveHandler = () => {
-		changeTodolistFilterAC(todolist.id, 'active')
-	}
-
-	const onClickCompletedHandler = () => {
-		changeTodolistFilterAC(todolist.id, 'completed')
-	}
+	useEffect(() => {
+		getTasksTC(todolist.id)
+	}, [])
 
 	let filteredTasks = tasks
 	if (todolist.filter === 'active') {
@@ -76,9 +67,21 @@ export const Todolist: FC<TodolistPropsType> = memo(({ todolist, tasks }) => {
 				{!filteredTasks.length && <div style={{ padding: '10px', color: 'grey' }}>No task</div>}
 			</div>
 			<div style={{ paddingTop: '10px' }}>
-				<Button onClick={onClickAllHandler} variant={todolist.filter === 'all' ? 'outlined' : 'text'} color={'primary'}>All</Button>
-				<Button onClick={onClickActiveHandler} variant={todolist.filter === 'active' ? 'outlined' : 'text'} color={'primary'}>Active</Button>
-				<Button onClick={onClickCompletedHandler} variant={todolist.filter === 'completed' ? 'outlined' : 'text'} color={'primary'}>Completed</Button>
+				{FilterValues.map((filterValue, index) => {
+
+					const onSelectFilterValueClick = () => changeTodolistFilterAC(todolist.id, filterValue)
+
+					return (
+						<Button
+							key={index}
+							variant={todolist.filter === filterValue ? 'outlined' : 'text'}
+							color={'primary'}
+							onClick={onSelectFilterValueClick}
+						>
+							{filterValue}
+						</Button>
+					)
+				})}
 			</div>
 		</Paper>
 	)

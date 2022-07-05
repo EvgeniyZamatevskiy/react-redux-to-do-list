@@ -1,9 +1,6 @@
-import { useMemo } from 'react'
-import { TypedUseSelectorHook, useDispatch, useSelector } from 'react-redux'
-import { ActionCreatorsMapObject, AnyAction, applyMiddleware, bindActionCreators, combineReducers, createStore } from 'redux'
+import { applyMiddleware, combineReducers, legacy_createStore as createStore } from 'redux'
 import { composeWithDevTools } from 'redux-devtools-extension'
 import thunk, { ThunkAction, ThunkDispatch } from 'redux-thunk'
-import { useTypedDispatch } from './hooks/useTypedDispatch'
 import { AppReducerActionsType } from './reducers/app-reducer/actions'
 import { appReducer } from './reducers/app-reducer/app-reducer'
 import { AuthReducerActionsType } from './reducers/auth-reducer/actions'
@@ -26,4 +23,4 @@ export const store = createStore(rootReducer, composeWithDevTools(applyMiddlewar
 export type RootReducerType = ReturnType<typeof rootReducer>
 export type AllActionsType = TasksReducerActionsType | TodolistsReducerActionsType | AppReducerActionsType | AuthReducerActionsType
 export type ThunkType<ReturnType = void> = ThunkAction<ReturnType, RootReducerType, unknown, AllActionsType>
-export type DispatchType = ThunkDispatch<RootReducerType, unknown, AnyAction>
+export type DispatchType = ThunkDispatch<RootReducerType, unknown, AllActionsType>
