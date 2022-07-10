@@ -1,4 +1,4 @@
-import { TodolistType } from '../../../api/types'
+import { TodolistType } from '../../../api/todolists/types'
 import { StatusType } from '../app-reducer/app-reducer'
 import { FilterValuesType, TodolistsReducerActionsType } from './actions'
 

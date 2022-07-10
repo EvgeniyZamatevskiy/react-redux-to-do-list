@@ -7,11 +7,11 @@ import { TodolistSupplementedType } from '../../redux/reducers/todolists-reducer
 import { AddItemForm } from '../AddItemForm/AddItemForm'
 import { EditableSpan } from '../EditableSpan/EditableSpan'
 import { Task } from '../Task/Task'
-import { TaskStatus, TaskType } from '../../api/types'
 import { tasksActionCreators } from '../../redux/reducers/tasks-reducer'
 import { todolistsActionCreators } from '../../redux/reducers/todolists-reducer'
 import { useActions } from '../../redux/hooks/useActions'
 import { FilterValuesType } from '../../redux/reducers/todolists-reducer/actions'
+import { TaskType, TaskStatus } from '../../api/tasks/types'
 
 type TodolistPropsType = {
 	todolist: TodolistSupplementedType

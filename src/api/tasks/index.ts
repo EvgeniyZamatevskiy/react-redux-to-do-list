@@ -1,7 +1,8 @@
-import { instance } from './instance'
-import { CommonResponseType, TasksType, TaskType, UpdateTaskModelType } from './types'
+import { instance } from '../config'
+import { CommonResponseType } from '../types'
+import { TasksType, TaskType, UpdateTaskModelType } from './types'
 
-export const tasksAPI = {
+export const TASKS = {
 	getTasks(todolistId: string) {
 		return instance.get<TasksType>(`todo-lists/${todolistId}/tasks`)
 	},

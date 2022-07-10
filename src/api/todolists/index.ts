@@ -1,7 +1,8 @@
-import { instance } from './instance'
-import { TodolistType, CommonResponseType } from './types'
+import { instance } from '../config'
+import { CommonResponseType } from '../types'
+import { TodolistType } from './types'
 
-export const todolistsAPI = {
+export const TODOLISTS = {
 	getTodolists() {
 		return instance.get<TodolistType[]>('todo-lists')
 	},

@@ -1,5 +1,5 @@
-import { tasksAPI } from '../../../api/tasksAPI'
-import { TaskType, UpdateDomainTaskModelType, UpdateTaskModelType } from '../../../api/types'
+import { TASKS } from '../../../api/tasks'
+import { TaskType, UpdateDomainTaskModelType, UpdateTaskModelType } from '../../../api/tasks/types'
 import { serverNetworkErrorHandler, serverAppErrorHandler } from '../../../utils/error-utils'
 import { ThunkType } from '../../store'
 import { setLoadingStatusAC } from '../app-reducer/actions'
@@ -22,7 +22,7 @@ export const updateTaskAC = (toDoListId: string, taskId: string, domainModel: Up
 export const getTasksTC = (toDoListId: string): ThunkType => async (dispatch) => {
 	dispatch(setLoadingStatusAC('loading'))
 	try {
-		const res = await tasksAPI.getTasks(toDoListId)
+		const res = await TASKS.getTasks(toDoListId)
 		dispatch(getTasksAC(toDoListId, res.data.items))
 		dispatch(setLoadingStatusAC('succeeded'))
 	} catch (error: any) {
@@ -32,7 +32,7 @@ export const getTasksTC = (toDoListId: string): ThunkType => async (dispatch) =>
 
 export const addTaskTC = (toDoListId: string, title: string): ThunkType => async (dispatch) => {
 	dispatch(setLoadingStatusAC('loading'))
-	const res = await tasksAPI.addTask(toDoListId, title)
+	const res = await TASKS.addTask(toDoListId, title)
 	try {
 		if (res.data.resultCode === 0) {
 			dispatch(addTaskAC(res.data.data.item))
@@ -49,7 +49,7 @@ export const removeTaskTC = (toDoListId: string, taskId: string): ThunkType => a
 	dispatch(setLoadingStatusAC('loading'))
 	dispatch(setDisabledStatusAC(toDoListId, 'loading'))
 	try {
-		const res = await tasksAPI.removeTask(toDoListId, taskId)
+		const res = await TASKS.removeTask(toDoListId, taskId)
 		if (res.data.resultCode === 0) {
 			dispatch(removeTaskAC(toDoListId, taskId))
 			dispatch(setLoadingStatusAC('succeeded'))
@@ -79,7 +79,7 @@ export const updateTaskTC = (toDoListId: string, taskId: string, domainModel: Up
 		}
 		dispatch(setLoadingStatusAC('loading'))
 		try {
-			const res = await tasksAPI.updateTask(toDoListId, taskId, model)
+			const res = await TASKS.updateTask(toDoListId, taskId, model)
 			if (res.data.resultCode === 0) {
 				dispatch(updateTaskAC(toDoListId, taskId, domainModel))
 				dispatch(setLoadingStatusAC('succeeded'))
@@ -106,7 +106,7 @@ export const updateTaskTC = (toDoListId: string, taskId: string, domainModel: Up
 // 		}
 // 		dispatch(setLoadingStatusAC('loading'))
 // 		try {
-// 			const res = await tasksAPI.updateTask(toDoListId, taskId, model)
+// 			const res = await TASKS.updateTask(toDoListId, taskId, model)
 // 			if (res.data.resultCode === 0) {
 // 				dispatch(updateTaskAC(toDoListId, taskId, updatedStatus))
 // 				dispatch(setLoadingStatusAC('succeeded'))

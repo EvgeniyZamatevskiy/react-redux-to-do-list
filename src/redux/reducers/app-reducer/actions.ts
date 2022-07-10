@@ -1,4 +1,4 @@
-import { authAPI } from '../../../api/auth'
+import { AUTH } from '../../../api/auth'
 import { serverAppErrorHandler, serverNetworkErrorHandler } from '../../../utils/error-utils'
 import { ThunkType } from '../../store'
 import { setIsAuthAC } from '../auth-reducer/actions'
@@ -15,7 +15,7 @@ export const setAppIsInitializedAC = (isInitialized: boolean) => ({ type: 'APP/S
 export const initializeAppTC = (): ThunkType => async (dispatch) => {
 	dispatch(setLoadingStatusAC('loading'))
 	try {
-		const res = await authAPI.me()
+		const res = await AUTH.me()
 		if (res.data.resultCode === 0) {
 			dispatch(setIsAuthAC(true))
 			dispatch(setLoadingStatusAC('succeeded'))

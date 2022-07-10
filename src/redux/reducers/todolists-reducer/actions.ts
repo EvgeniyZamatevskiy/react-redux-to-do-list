@@ -1,5 +1,5 @@
-import { todolistsAPI } from '../../../api/todolistsAPI'
-import { TodolistType } from '../../../api/types'
+import { TODOLISTS } from '../../../api/todolists'
+import { TodolistType } from '../../../api/todolists/types'
 import { serverNetworkErrorHandler, serverAppErrorHandler } from '../../../utils/error-utils'
 import { ThunkType } from '../../store'
 import { setLoadingStatusAC } from '../app-reducer/actions'
@@ -22,7 +22,7 @@ export const changeTodolistFilterAC = (id: string, value: FilterValuesType) => (
 export const getTodolistsTC = (): ThunkType => async (dispatch) => {
 	dispatch(setLoadingStatusAC('loading'))
 	try {
-		const res = await todolistsAPI.getTodolists()
+		const res = await TODOLISTS.getTodolists()
 		dispatch(getTodolistsAC(res.data))
 		dispatch(setLoadingStatusAC('succeeded'))
 	} catch (error: any) {
@@ -33,7 +33,7 @@ export const getTodolistsTC = (): ThunkType => async (dispatch) => {
 export const addTodolistTC = (title: string): ThunkType => async (dispatch) => {
 	dispatch(setLoadingStatusAC('loading'))
 	try {
-		const res = await todolistsAPI.addTodolist(title)
+		const res = await TODOLISTS.addTodolist(title)
 		if (res.data.resultCode === 0) {
 			dispatch(addTodolistAC(res.data.data.item))
 			dispatch(setLoadingStatusAC('succeeded'))
@@ -49,7 +49,7 @@ export const removeTodolistTC = (id: string): ThunkType => async (dispatch) => {
 	dispatch(setLoadingStatusAC('loading'))
 	dispatch(setDisabledStatusAC(id, 'loading'))
 	try {
-		const res = await todolistsAPI.removeTodolist(id)
+		const res = await TODOLISTS.removeTodolist(id)
 		if (res.data.resultCode === 0) {
 			dispatch(removeTodolistAC(id))
 			dispatch(setLoadingStatusAC('succeeded'))
@@ -65,7 +65,7 @@ export const removeTodolistTC = (id: string): ThunkType => async (dispatch) => {
 export const changeTodolistTitleTC = (todolistId: string, toDoListTitle: string): ThunkType => async (dispatch) => {
 	dispatch(setLoadingStatusAC('loading'))
 	try {
-		const res = await todolistsAPI.updateTodolist(todolistId, toDoListTitle)
+		const res = await TODOLISTS.updateTodolist(todolistId, toDoListTitle)
 		if (res.data.resultCode === 0) {
 			dispatch(changeTodolistTitleAC(todolistId, toDoListTitle))
 			dispatch(setLoadingStatusAC('succeeded'))

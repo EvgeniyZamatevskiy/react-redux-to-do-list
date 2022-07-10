@@ -1,5 +1,5 @@
-import { authAPI } from '../../../api/auth'
-import { LoginParamsType } from '../../../api/types'
+import { AUTH } from '../../../api/auth'
+import { LoginParamsType } from '../../../api/auth/types'
 import { serverAppErrorHandler, serverNetworkErrorHandler } from '../../../utils/error-utils'
 import { ThunkType } from '../../store'
 import { setLoadingStatusAC } from '../app-reducer/actions'
@@ -11,7 +11,7 @@ export const setIsAuthAC = (isAuth: boolean) => ({ type: 'AUTH/SET-IS-AUTH', isA
 export const loginTC = (data: LoginParamsType): ThunkType => async (dispatch) => {
 	dispatch(setLoadingStatusAC('loading'))
 	try {
-		const res = await authAPI.login(data)
+		const res = await AUTH.login(data)
 		if (res.data.resultCode === 0) {
 			dispatch(setIsAuthAC(true))
 			dispatch(setLoadingStatusAC('succeeded'))
@@ -26,7 +26,7 @@ export const loginTC = (data: LoginParamsType): ThunkType => async (dispatch) =>
 export const logoutTC = (): ThunkType => async (dispatch) => {
 	dispatch(setLoadingStatusAC('loading'))
 	try {
-		const res = await authAPI.logout()
+		const res = await AUTH.logout()
 		if (res.data.resultCode === 0) {
 			dispatch(setIsAuthAC(false))
 			dispatch(setLoadingStatusAC('succeeded'))

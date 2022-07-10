@@ -1,4 +1,4 @@
-import { TaskType } from '../../../api/types'
+import { TaskType } from '../../../api/tasks/types'
 import { TasksReducerActionsType } from './actions'
 
 const initState: InitStateType = {

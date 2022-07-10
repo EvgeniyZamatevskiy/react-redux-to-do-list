@@ -4,10 +4,10 @@ import Checkbox from '@mui/material/Checkbox'
 import IconButton from '@mui/material/IconButton'
 import { StatusType } from '../../redux/reducers/app-reducer/app-reducer'
 import { EditableSpan } from '../EditableSpan/EditableSpan'
-import { TaskStatus, TaskType } from '../../api/types'
 import { tasksActionCreators } from '../../redux/reducers/tasks-reducer'
 import { useActions } from '../../redux/hooks/useActions'
 import s from './Task.module.css'
+import { TaskType, TaskStatus } from '../../api/tasks/types'
 
 type TaskPropsType = {
 	task: TaskType
