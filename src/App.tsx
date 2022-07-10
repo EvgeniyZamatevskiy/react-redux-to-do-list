@@ -1,25 +1,25 @@
 import React, { useEffect } from 'react'
 import CircularProgress from '@mui/material/CircularProgress'
 import Container from '@mui/material/Container'
-import { Header } from './components/Header/Header'
-import { ErrorSnackbar } from './components/ErrorSnackbar/ErrorSnackbar'
 import { Navigate, Route, Routes } from 'react-router-dom'
-import { Login } from './pages/Login/Login'
-import { NotFound } from './pages/NotFound/NotFound'
-import { appActionCreators } from './redux/reducers/app-reducer'
-import { selectIsInitialized } from './redux/reducers/app-reducer/selectors'
 import { useSelector } from 'react-redux'
-import { useActions } from './redux/hooks/useActions'
-import { TodolistsList } from './pages/TodolistsList/ToDoListsList'
+import { useTypedDispatch } from './redux/hooks/useTypedDispatch'
+import { initializeAppTC } from './redux/app/asyncActions'
+import { TodolistsList, NotFound, Login } from 'pages'
+import { Header } from 'components'
+import { ErrorSnackbar } from 'components/common'
+import { selectIsInitialized } from 'redux/app/selectors'
+import { Path } from 'enums/Path'
 import './App.css'
 
 export const App = () => {
 
+  const dispatch = useTypedDispatch()
+
   const isInitialized = useSelector(selectIsInitialized)
-  const { initializeAppTC } = useActions(appActionCreators)
 
   useEffect(() => {
-    initializeAppTC()
+    dispatch(initializeAppTC())
   }, [])
 
   if (!isInitialized) {
@@ -37,10 +37,10 @@ export const App = () => {
       <Header />
       <Container fixed maxWidth={'xl'}>
         <Routes>
-          <Route path={'/'} element={<TodolistsList />} />
-          <Route path={'login'} element={<Login />} />
-          <Route path={'404'} element={<NotFound />} />
-          <Route path={'*'} element={<Navigate to={'404'} />} />
+          <Route path={Path.HOME} element={<TodolistsList />} />
+          <Route path={Path.LOGIN} element={<Login />} />
+          <Route path={Path.ERROR_404} element={<NotFound />} />
+          <Route path={Path.NOT_FOUND} element={<Navigate to={Path.ERROR_404} />} />
         </Routes>
       </Container>
     </div >

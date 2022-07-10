@@ -1,26 +1,24 @@
-import { applyMiddleware, combineReducers, legacy_createStore as createStore } from 'redux'
-import { composeWithDevTools } from 'redux-devtools-extension'
-import thunk, { ThunkAction, ThunkDispatch } from 'redux-thunk'
-import { AppReducerActionsType } from './reducers/app-reducer/actions'
-import { appReducer } from './reducers/app-reducer/app-reducer'
-import { AuthReducerActionsType } from './reducers/auth-reducer/actions'
-import { authReducer } from './reducers/auth-reducer/auth-reducer'
-import { TasksReducerActionsType } from './reducers/tasks-reducer/actions'
-import { tasksReducer } from './reducers/tasks-reducer/tasks-reducer'
-import { TodolistsReducerActionsType } from './reducers/todolists-reducer/actions'
-import { todolistsReducer } from './reducers/todolists-reducer/todolists-reducer'
+import { configureStore } from '@reduxjs/toolkit'
+import appSlice from './app/slice'
+import authSlice from './auth/slice'
+import todolistsSlice from './todolists/slice'
+import tasksSlice from './tasks/slice'
 
-const rootReducer = combineReducers({
-	app: appReducer,
-	auth: authReducer,
-	todolists: todolistsReducer,
-	tasks: tasksReducer
+export const store = configureStore({
+	reducer: {
+		app: appSlice,
+		auth: authSlice,
+		todolists: todolistsSlice,
+		tasks: tasksSlice
+	}
 })
 
-export const store = createStore(rootReducer, composeWithDevTools(applyMiddleware(thunk)))
-
 // types
-export type RootReducerType = ReturnType<typeof rootReducer>
-export type AllActionsType = TasksReducerActionsType | TodolistsReducerActionsType | AppReducerActionsType | AuthReducerActionsType
-export type ThunkType<ReturnType = void> = ThunkAction<ReturnType, RootReducerType, unknown, AllActionsType>
-export type DispatchType = ThunkDispatch<RootReducerType, unknown, AllActionsType>
+export type RootStateType = ReturnType<typeof store.getState>
+
+export type ThunkError = { rejectValue: { errors: string[], fieldsErrors?: FieldErrorType[] } }
+
+export type FieldErrorType = {
+	field: string
+	error: string
+}
