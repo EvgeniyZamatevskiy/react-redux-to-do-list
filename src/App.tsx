@@ -5,7 +5,6 @@ import { TodolistsList, NotFound, Login } from 'pages'
 import { Header } from 'components'
 import { ErrorSnackbar } from 'components/common'
 import { Path } from 'enums/Path'
-import './App.css'
 
 export const App: FC = () => {
   return (
