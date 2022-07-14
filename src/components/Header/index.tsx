@@ -5,8 +5,14 @@ import Typography from '@mui/material/Typography'
 import Button from '@mui/material/Button'
 import IconButton from '@mui/material/IconButton'
 import { Menu } from '@mui/icons-material'
+import { LinearProgress } from '@mui/material'
+import { useSelector } from 'react-redux'
+import { selectIsLoading } from 'redux/app/selectors'
 
 export const Header = () => {
+
+	const isLoading = useSelector(selectIsLoading)
+
 	return (
 		<AppBar position='fixed' >
 			<Toolbar >
@@ -18,7 +24,7 @@ export const Header = () => {
 				</Typography>
 				<Button color='inherit'>Log out</Button>
 			</Toolbar>
-			{/* <LinearProgress /> */}
+			{isLoading && <LinearProgress />}
 		</AppBar>
 	)
 }

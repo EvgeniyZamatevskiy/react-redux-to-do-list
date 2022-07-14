@@ -1,0 +1,1 @@
+export { useTypedDispatch } from './useTypedDispatch'

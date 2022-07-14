@@ -8,7 +8,7 @@ import FormLabel from '@mui/material/FormLabel'
 import TextField from '@mui/material/TextField'
 import Button from '@mui/material/Button'
 
-export const Login = () => {
+const Login = () => {
 	return (
 		<Grid container justifyContent={'center'}>
 			<Grid item justifyContent={'center'}>
@@ -46,3 +46,5 @@ export const Login = () => {
 		</Grid>
 	)
 }
+
+export default Login
