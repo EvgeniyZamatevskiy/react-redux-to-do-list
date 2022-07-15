@@ -2,14 +2,14 @@ import React, { FC, useEffect } from 'react'
 import Grid from '@mui/material/Grid'
 import { Todolist } from '../../components/Todolist'
 import { AddItemForm } from 'components/common'
-import { useTypedDispatch } from 'hooks'
-import { getTodolists } from 'redux/todolists/asyncActions'
+import { useAppDispatch } from 'redux/hooks'
+import { addTodolist, getTodolists } from 'redux/todolists/asyncActions'
 import { useSelector } from 'react-redux'
 import { selectTodolists } from 'redux/todolists/selectors'
 
 export const Todolists: FC = () => {
 
-	const dispatch = useTypedDispatch()
+	const dispatch = useAppDispatch()
 
 	const todolists = useSelector(selectTodolists)
 
@@ -23,6 +23,10 @@ export const Todolists: FC = () => {
 		)
 	})
 
+	const handleAddTodolistClick = (title: string) => {
+		dispatch(addTodolist(title))
+	}
+
 	useEffect(() => {
 		dispatch(getTodolists())
 	}, [])
@@ -30,7 +34,7 @@ export const Todolists: FC = () => {
 	return (
 		<>
 			<Grid container style={{ padding: '20px' }}>
-				<AddItemForm />
+				<AddItemForm addItem={handleAddTodolistClick} />
 			</Grid>
 			<Grid container spacing={3} style={{ flexWrap: 'nowrap', overflowX: 'scroll', padding: '10px' }}>
 				{todolistsRender}

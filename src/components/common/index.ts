@@ -1,3 +1,3 @@
 export { AddItemForm } from './AddItemForm'
-export { EditableSpan } from './EditableSpan'
+export { EditableItem } from './EditableItem'
 export { ErrorSnackbar } from './ErrorSnackbar'

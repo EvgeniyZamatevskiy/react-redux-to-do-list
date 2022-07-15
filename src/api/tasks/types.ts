@@ -17,6 +17,24 @@ export type TaskType = {
 	addedDate: string
 }
 
+export type PayloadType = {
+	title: string
+	description: string,
+	status: TaskStatus
+	priority: TaskPriority
+	startDate: string
+	deadline: string
+}
+
+export type DomainPayloadType = {
+	title?: string
+	description?: string
+	status?: TaskStatus
+	priority?: TaskPriority
+	startDate?: string
+	deadline?: string
+}
+
 export enum TaskStatus {
 	Active = 0,
 	InProgress = 1,
