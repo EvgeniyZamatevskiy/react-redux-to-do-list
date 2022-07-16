@@ -3,6 +3,7 @@ import { TODOLISTS } from 'api'
 import { TodolistType } from 'api/todolists/types'
 import { ResponseCode } from 'enums/ResponseCode'
 import { setError, setIsLoading } from 'redux/app/slice'
+import { setisDisabled } from './slice'
 
 export const getTodolists = createAsyncThunk
 	<TodolistType[], undefined, { rejectValue: { errors: string[] } }>
@@ -76,6 +77,7 @@ export const removeTodolist = createAsyncThunk
 	('todolists/removeTodolist', async (todolistId, { dispatch, rejectWithValue }) => {
 		try {
 			dispatch(setIsLoading(true))
+			dispatch(setisDisabled({ todolistId, isDisabled: true }))
 
 			const response = await TODOLISTS.removeTodolist(todolistId)
 			const { resultCode, messages } = response.data
@@ -86,11 +88,13 @@ export const removeTodolist = createAsyncThunk
 			} else {
 				dispatch(setError(messages[0]))
 				dispatch(setIsLoading(false))
+				dispatch(setisDisabled({ todolistId, isDisabled: false }))
 				return rejectWithValue({ errors: messages })
 			}
 		} catch (error: any) {
 			dispatch(setError(error.message))
 			dispatch(setIsLoading(false))
+			dispatch(setisDisabled({ todolistId, isDisabled: false }))
 			return rejectWithValue({ errors: [error.message] })
 		}
 	})

@@ -5,9 +5,10 @@ import IconButton from '@mui/material/IconButton'
 
 type AddItemFormPropsType = {
 	addItem: (value: string) => void
+	isDisabled?: boolean
 }
 
-export const AddItemForm: FC<AddItemFormPropsType> = ({ addItem }) => {
+export const AddItemForm: FC<AddItemFormPropsType> = ({ addItem, isDisabled }) => {
 
 	const [value, setValue] = useState('')
 	const [error, setError] = useState('')
@@ -46,8 +47,9 @@ export const AddItemForm: FC<AddItemFormPropsType> = ({ addItem }) => {
 				onKeyDown={onAddItemKeyDown}
 				error={!!error}
 				helperText={error}
+				disabled={isDisabled}
 			/>
-			<IconButton color='primary' onClick={onAddItemClick} style={{ marginLeft: '5px' }} >
+			<IconButton color='primary' disabled={isDisabled} onClick={onAddItemClick} style={{ marginLeft: '5px' }} >
 				<AddBox />
 			</IconButton>
 		</div>

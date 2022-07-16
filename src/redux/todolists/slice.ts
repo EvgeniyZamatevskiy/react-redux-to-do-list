@@ -1,6 +1,6 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import { addTodolist, changeTodolistTitle, getTodolists, removeTodolist } from './asyncActions'
-import { TodolistsSliceInitialStateType } from './types'
+import { FilterValuesType, TodolistsSliceInitialStateType } from './types'
 
 const initialState: TodolistsSliceInitialStateType = {
 	todolists: []
@@ -10,14 +10,23 @@ const todolistsSlice = createSlice({
 	name: 'todolists',
 	initialState,
 	reducers: {
-		action(state, action: PayloadAction<any>) {
-
+		changeTodolistFilter(state, action: PayloadAction<{ todolistId: string, value: FilterValuesType }>) {
+			const todolist = state.todolists.find(todolist => todolist.id === action.payload.todolistId)
+			if (todolist) {
+				todolist.filter = action.payload.value
+			}
 		},
+		setisDisabled(state, action: PayloadAction<{ todolistId: string, isDisabled: boolean }>) {
+			const todolist = state.todolists.find(todolist => todolist.id === action.payload.todolistId)
+			if (todolist) {
+				todolist.isDisabled = action.payload.isDisabled
+			}
+		}
 	},
 	extraReducers(builder) {
 		builder
 			.addCase(getTodolists.fulfilled, (state, action) => {
-				state.todolists = action.payload.map(todolist => ({ ...todolist, filter: 'all', disabledStatus: false }))
+				state.todolists = action.payload.map(todolist => ({ ...todolist, filter: 'all', isDisabled: false }))
 			})
 			.addCase(changeTodolistTitle.fulfilled, (state, action) => {
 				const todolist = state.todolists.find(todolist => todolist.id === action.payload.todolistId)
@@ -26,7 +35,7 @@ const todolistsSlice = createSlice({
 				}
 			})
 			.addCase(addTodolist.fulfilled, (state, action) => {
-				state.todolists.unshift({ ...action.payload, filter: 'all', disabledStatus: false })
+				state.todolists.unshift({ ...action.payload, filter: 'all', isDisabled: false })
 			})
 			.addCase(removeTodolist.fulfilled, (state, action) => {
 				state.todolists = state.todolists.filter(todolist => todolist.id !== action.payload)
@@ -34,6 +43,6 @@ const todolistsSlice = createSlice({
 	},
 })
 
-export const { action } = todolistsSlice.actions
+export const { changeTodolistFilter, setisDisabled } = todolistsSlice.actions
 
 export default todolistsSlice.reducer

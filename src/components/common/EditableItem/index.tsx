@@ -5,9 +5,10 @@ import s from './EditableItem.module.css'
 type EditableItemPropsType = {
 	currentValue: string
 	changeCurrentValue: (newValue: string) => void
+	isDisabled?: boolean
 }
 
-export const EditableItem: FC<EditableItemPropsType> = ({ currentValue, changeCurrentValue }) => {
+export const EditableItem: FC<EditableItemPropsType> = ({ currentValue, changeCurrentValue, isDisabled }) => {
 
 	const [editMode, setEditMode] = useState(false)
 	const [newValue, setNewValue] = useState('')
@@ -35,7 +36,7 @@ export const EditableItem: FC<EditableItemPropsType> = ({ currentValue, changeCu
 
 	return (
 		<>
-			{editMode
+			{editMode && !isDisabled
 				? <TextField
 					variant={'standard'}
 					value={newValue}

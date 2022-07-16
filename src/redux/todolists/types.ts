@@ -5,6 +5,8 @@ export interface TodolistsSliceInitialStateType {
 }
 
 export type TodolistSupplementedType = TodolistType & {
-	filter: string
-	disabledStatus: boolean
+	filter: FilterValuesType
+	isDisabled: boolean
 }
+
+export type FilterValuesType = 'all' | 'active' | 'completed'
