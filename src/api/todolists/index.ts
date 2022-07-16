@@ -1,18 +1,18 @@
 import { instance } from 'api/config'
 import { CommonResponseType } from 'api/types'
-import { TodolistType } from './types'
+import { ToDoListType } from './types'
 
 export const TODOLISTS = {
-	getTodolists() {
-		return instance.get<TodolistType[]>('todo-lists')
+	getToDoLists() {
+		return instance.get<ToDoListType[]>('todo-lists')
 	},
-	changeTodolistTitle(todolistId: string, title: string) {
-		return instance.put<CommonResponseType>(`todo-lists/${todolistId}`, { title })
+	changeToDoListTitle(toDoListId: string, title: string) {
+		return instance.put<CommonResponseType>(`todo-lists/${toDoListId}`, { title })
 	},
-	addTodolist(title: string) {
-		return instance.post<CommonResponseType<{ item: TodolistType }>>('todo-lists', { title })
+	addToDoList(title: string) {
+		return instance.post<CommonResponseType<{ item: ToDoListType }>>('todo-lists', { title })
 	},
-	removeTodolist(todolistId: string) {
-		return instance.delete<CommonResponseType>(`todo-lists/${todolistId}`)
+	removeToDoList(toDoListId: string) {
+		return instance.delete<CommonResponseType>(`todo-lists/${toDoListId}`)
 	}
 }

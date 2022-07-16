@@ -1,34 +1,33 @@
-import React, { FC, useEffect } from 'react'
+import React, { FC, ReactElement, useCallback, useEffect } from 'react'
 import Delete from '@mui/icons-material/Delete'
-import Button from '@mui/material/Button'
-import IconButton from '@mui/material/IconButton'
-import Paper from '@mui/material/Paper'
-import { Task } from '../Task'
+import { Button, IconButton, Paper } from '@mui/material'
 import { useSelector } from 'react-redux'
 import { useAppDispatch } from 'redux/hooks'
 import { addTask, getTasks } from 'redux/tasks/asyncActions'
-import { FilterValuesType, TodolistSupplementedType } from 'redux/todolists/types'
+import { FilterValuesType, ToDoListSupplementedType } from 'redux/toDoLists/types'
 import { selectTasks } from 'redux/tasks/selectors'
-import { EditableItem, AddItemForm } from 'components/common'
-import { changeTodolistTitle, removeTodolist } from 'redux/todolists/asyncActions'
 import { TaskStatus } from 'api/tasks/types'
-import { changeTodolistFilter } from 'redux/todolists/slice'
+import { changeToDoListTitle, removeToDoList } from 'redux/toDoLists/asyncActions'
+import { changeToDoListFilter } from 'redux/toDoLists/slice'
+import { Task } from 'components/Task'
+import { EditableItem, AddItemForm } from 'components/common'
+import style from './ToDoList.module.css'
 
-type TodolistPropsType = {
-	todolist: TodolistSupplementedType
+type ToDoListPropsType = {
+	toDoList: ToDoListSupplementedType
 }
 
-const filterValue: FilterValuesType[] = ['all', 'active', 'completed']
+const filterValues: FilterValuesType[] = ['all', 'active', 'completed']
 
-export const Todolist: FC<TodolistPropsType> = ({ todolist }) => {
+export const ToDoList: FC<ToDoListPropsType> = ({ toDoList }): ReactElement => {
 
-	const { isDisabled, filter, id: todolistId, title } = todolist
+	const { isDisabled, filter, id: toDoListId, title } = toDoList
 
 	const dispatch = useAppDispatch()
 
 	const tasks = useSelector(selectTasks)
 
-	let filteredTask = tasks[todolistId]
+	let filteredTask = tasks[toDoListId]
 	if (filter === 'active') {
 		filteredTask = filteredTask.filter(task => task.status === TaskStatus.Active)
 	}
@@ -38,10 +37,10 @@ export const Todolist: FC<TodolistPropsType> = ({ todolist }) => {
 
 	const tasksRender = filteredTask.map(task => <Task key={task.id} task={task} isDisabled={isDisabled} />)
 
-	const filterValuesRender = filterValue.map((value, index) => {
+	const filterValuesRender = filterValues.map((value, index) => {
 
-		const onChangeTodolistFilterClick = () => {
-			dispatch(changeTodolistFilter({ todolistId, value }))
+		const onChangeToDoListFilterClick = (): void => {
+			dispatch(changeToDoListFilter({ toDoListId, value }))
 		}
 
 		return (
@@ -50,48 +49,48 @@ export const Todolist: FC<TodolistPropsType> = ({ todolist }) => {
 				variant={filter === value ? 'outlined' : 'text'}
 				color={'primary'}
 				disabled={isDisabled}
-				onClick={onChangeTodolistFilterClick}>
+				onClick={onChangeToDoListFilterClick}>
 				{value}
 			</Button>
 		)
 	})
 
-	const handleChangeTodolistTitle = (newTitle: string) => {
-		dispatch(changeTodolistTitle({ todolistId, title: newTitle }))
+	const handleChangeToDoListTitle = useCallback((newTitle: string): void => {
+		dispatch(changeToDoListTitle({ toDoListId, title: newTitle }))
+	}, [toDoListId])
+
+	const onRemoveToDoListClick = (): void => {
+		dispatch(removeToDoList(toDoListId))
 	}
 
-	const onRemoveTodolistClick = () => {
-		dispatch(removeTodolist(todolistId))
-	}
-
-	const handleAddTaskClick = (title: string) => {
-		dispatch(addTask({ todolistId, title }))
-	}
+	const handleAddTaskClick = useCallback((title: string): void => {
+		dispatch(addTask({ toDoListId, title }))
+	}, [toDoListId])
 
 	useEffect(() => {
-		dispatch(getTasks({ todolistId }))
+		dispatch(getTasks({ toDoListId }))
 	}, [])
 
 	return (
-		<Paper style={{ padding: '10px', position: 'relative' }}>
+		<Paper sx={{ position: 'relative', padding: '10px' }}>
 			<IconButton
 				size={'small'}
-				style={{ position: 'absolute', right: '5px', top: '5px' }}
+				sx={{ position: 'absolute', right: '5px', top: '5px' }}
 				disabled={isDisabled}
-				onClick={onRemoveTodolistClick}
+				onClick={onRemoveToDoListClick}
 			>
 				<Delete fontSize={'small'} />
 			</IconButton>
 			<h3>
-				<EditableItem currentValue={title} changeCurrentValue={handleChangeTodolistTitle} isDisabled={isDisabled} />
+				<EditableItem currentValue={title} changeCurrentValue={handleChangeToDoListTitle} isDisabled={isDisabled} />
 			</h3>
 			<AddItemForm addItem={handleAddTaskClick} isDisabled={isDisabled} />
 			<div>
 				{tasksRender}
-				{!tasks[todolistId].length
-					&& <div style={{ padding: '10px', color: 'grey', textAlign: 'center' }}>No task</div>}
+				{!tasks[toDoListId].length
+					&& <div className={style.noTask}>No task</div>}
 			</div>
-			<div style={{ paddingTop: '10px' }}>
+			<div className={style.filterValues}>
 				{filterValuesRender}
 			</div>
 		</Paper>

@@ -1,4 +1,4 @@
 import { RootStateType } from 'redux/store'
-import { TodolistSupplementedType } from './types'
+import { ToDoListSupplementedType } from './types'
 
-export const selectTodolists = (state: RootStateType): TodolistSupplementedType[] => state.todolists.todolists
+export const selectToDoLists = (state: RootStateType): ToDoListSupplementedType[] => state.toDoLists.toDoLists

@@ -1,31 +1,31 @@
 import { createAsyncThunk } from '@reduxjs/toolkit'
 import { TODOLISTS } from 'api'
-import { TodolistType } from 'api/todolists/types'
+import { ToDoListType } from 'api/toDoLists/types'
 import { ResponseCode } from 'enums/ResponseCode'
 import { setIsDisabled } from './slice'
 
-export const getTodolists = createAsyncThunk
-	<TodolistType[], undefined, { rejectValue: { errors: string[] } }>
-	('todolists/getTodolists', async (_, { rejectWithValue }) => {
+export const getToDoLists = createAsyncThunk
+	<ToDoListType[], undefined, { rejectValue: { errors: string[] } }>
+	('toDoLists/getToDoLists', async (_, { rejectWithValue }) => {
 		try {
-			const response = await TODOLISTS.getTodolists()
-			const todolists = response.data
+			const response = await TODOLISTS.getToDoLists()
+			const toDoLists = response.data
 
-			return todolists
+			return toDoLists
 		} catch (error: any) {
 			return rejectWithValue({ errors: [error.message] })
 		}
 	})
 
-export const changeTodolistTitle = createAsyncThunk
-	<{ todolistId: string, title: string }, { todolistId: string, title: string }, { rejectValue: { errors: string[] } }>
-	('todolists/changeTodolistTitle', async (params, { rejectWithValue }) => {
+export const changeToDoListTitle = createAsyncThunk
+	<{ toDoListId: string, title: string }, { toDoListId: string, title: string }, { rejectValue: { errors: string[] } }>
+	('toDoLists/changeToDoListTitle', async (params, { rejectWithValue }) => {
 		try {
-			const response = await TODOLISTS.changeTodolistTitle(params.todolistId, params.title)
+			const response = await TODOLISTS.changeToDoListTitle(params.toDoListId, params.title)
 			const { resultCode, messages } = response.data
 
 			if (resultCode === ResponseCode.SUCCESS) {
-				return { todolistId: params.todolistId, title: params.title }
+				return { toDoListId: params.toDoListId, title: params.title }
 			} else {
 				return rejectWithValue({ errors: messages })
 			}
@@ -34,16 +34,16 @@ export const changeTodolistTitle = createAsyncThunk
 		}
 	})
 
-export const addTodolist = createAsyncThunk
-	<TodolistType, string, { rejectValue: { errors: string[] } }>
-	('todolists/addTodolist', async (title, { rejectWithValue }) => {
+export const addToDoList = createAsyncThunk
+	<ToDoListType, string, { rejectValue: { errors: string[] } }>
+	('toDoLists/addToDoList', async (title, { rejectWithValue }) => {
 		try {
-			const response = await TODOLISTS.addTodolist(title)
+			const response = await TODOLISTS.addToDoList(title)
 			const { resultCode, messages } = response.data
-			const todolist = response.data.data.item
+			const toDoList = response.data.data.item
 
 			if (resultCode === ResponseCode.SUCCESS) {
-				return todolist
+				return toDoList
 			} else {
 				return rejectWithValue({ errors: messages })
 			}
@@ -52,23 +52,23 @@ export const addTodolist = createAsyncThunk
 		}
 	})
 
-export const removeTodolist = createAsyncThunk
+export const removeToDoList = createAsyncThunk
 	<string, string, { rejectValue: { errors: string[] } }>
-	('todolists/removeTodolist', async (todolistId, { dispatch, rejectWithValue }) => {
+	('toDoLists/removeToDoList', async (toDoListId, { dispatch, rejectWithValue }) => {
 		try {
-			dispatch(setIsDisabled({ todolistId, isDisabled: true }))
+			dispatch(setIsDisabled({ toDoListId, isDisabled: true }))
 
-			const response = await TODOLISTS.removeTodolist(todolistId)
+			const response = await TODOLISTS.removeToDoList(toDoListId)
 			const { resultCode, messages } = response.data
 
 			if (resultCode === ResponseCode.SUCCESS) {
-				return todolistId
+				return toDoListId
 			} else {
-				dispatch(setIsDisabled({ todolistId, isDisabled: false }))
+				dispatch(setIsDisabled({ toDoListId, isDisabled: false }))
 				return rejectWithValue({ errors: messages })
 			}
 		} catch (error: any) {
-			dispatch(setIsDisabled({ todolistId, isDisabled: false }))
+			dispatch(setIsDisabled({ toDoListId, isDisabled: false }))
 			return rejectWithValue({ errors: [error.message] })
 		}
 	})

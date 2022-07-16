@@ -1,4 +1,4 @@
-import React, { ChangeEvent, FC, KeyboardEvent, useState } from 'react'
+import React, { ChangeEvent, FC, KeyboardEvent, memo, ReactElement, useState } from 'react'
 import AddBox from '@mui/icons-material/AddBox'
 import TextField from '@mui/material/TextField'
 import IconButton from '@mui/material/IconButton'
@@ -8,19 +8,19 @@ type AddItemFormPropsType = {
 	isDisabled?: boolean
 }
 
-export const AddItemForm: FC<AddItemFormPropsType> = ({ addItem, isDisabled }) => {
+export const AddItemForm: FC<AddItemFormPropsType> = memo(({ addItem, isDisabled }): ReactElement => {
 
 	const [value, setValue] = useState('')
 	const [error, setError] = useState('')
 
-	const onInputChange = (e: ChangeEvent<HTMLInputElement>) => {
+	const onInputChange = (e: ChangeEvent<HTMLInputElement>): void => {
 		setValue(e.currentTarget.value)
 		if (error) {
 			setError('')
 		}
 	}
 
-	const onAddItemClick = () => {
+	const onAddItemClick = (): void => {
 		const trimmedValue = value.trim()
 
 		if (trimmedValue !== '') {
@@ -31,7 +31,7 @@ export const AddItemForm: FC<AddItemFormPropsType> = ({ addItem, isDisabled }) =
 		}
 	}
 
-	const onAddItemKeyDown = (e: KeyboardEvent<HTMLDivElement>) => {
+	const onAddItemKeyDown = (e: KeyboardEvent<HTMLDivElement>): void => {
 		if (e.key === 'Enter') {
 			onAddItemClick()
 		}
@@ -49,9 +49,14 @@ export const AddItemForm: FC<AddItemFormPropsType> = ({ addItem, isDisabled }) =
 				helperText={error}
 				disabled={isDisabled}
 			/>
-			<IconButton color='primary' disabled={isDisabled} onClick={onAddItemClick} style={{ marginLeft: '5px' }} >
+			<IconButton
+				color='primary'
+				disabled={isDisabled}
+				onClick={onAddItemClick}
+				sx={{ ml: '15px' }}
+			>
 				<AddBox />
 			</IconButton>
 		</div>
 	)
-}
+})

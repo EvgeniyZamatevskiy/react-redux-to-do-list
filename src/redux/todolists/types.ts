@@ -1,10 +1,10 @@
-import { TodolistType } from 'api/todolists/types'
+import { ToDoListType } from 'api/toDoLists/types'
 
-export interface TodolistsSliceInitialStateType {
-	todolists: TodolistSupplementedType[]
+export interface ToDoListsSliceInitialStateType {
+	toDoLists: ToDoListSupplementedType[]
 }
 
-export type TodolistSupplementedType = TodolistType & {
+export type ToDoListSupplementedType = ToDoListType & {
 	filter: FilterValuesType
 	isDisabled: boolean
 }

@@ -5,24 +5,24 @@ import { ResponseCode } from 'enums/ResponseCode'
 import { RootStateType } from 'redux/store'
 
 export const getTasks = createAsyncThunk
-	<{ tasks: TaskType[], todolistId: string }, { todolistId: string }, { rejectValue: { errors: string[] } }>
+	<{ tasks: TaskType[], toDoListId: string }, { toDoListId: string }, { rejectValue: { errors: string[] } }>
 	('tasks/getTasks', async (params, { rejectWithValue }) => {
 		try {
 
-			const response = await TASKS.getTasks(params.todolistId)
+			const response = await TASKS.getTasks(params.toDoListId)
 			const tasks = response.data.items
 
-			return { tasks, todolistId: params.todolistId }
+			return { tasks, toDoListId: params.toDoListId }
 		} catch (error: any) {
 			return rejectWithValue({ errors: [error.message] })
 		}
 	})
 
 export const addTask = createAsyncThunk
-	<TaskType, { todolistId: string, title: string }, { rejectValue: { errors: string[] } }>
+	<TaskType, { toDoListId: string, title: string }, { rejectValue: { errors: string[] } }>
 	('tasks/addTask', async (params, { rejectWithValue }) => {
 		try {
-			const response = await TASKS.addTask(params.todolistId, params.title)
+			const response = await TASKS.addTask(params.toDoListId, params.title)
 			const { resultCode, messages } = response.data
 			const task = response.data.data.item
 
@@ -37,14 +37,14 @@ export const addTask = createAsyncThunk
 	})
 
 export const removeTask = createAsyncThunk
-	<{ todolistId: string, taskId: string }, { todolistId: string, taskId: string }, { rejectValue: { errors: string[] } }>
+	<{ toDoListId: string, taskId: string }, { toDoListId: string, taskId: string }, { rejectValue: { errors: string[] } }>
 	('tasks/removeTask', async (params, { rejectWithValue }) => {
 		try {
-			const response = await TASKS.removeTask(params.todolistId, params.taskId)
+			const response = await TASKS.removeTask(params.toDoListId, params.taskId)
 			const { resultCode, messages } = response.data
 
 			if (resultCode === ResponseCode.SUCCESS) {
-				return { todolistId: params.todolistId, taskId: params.taskId }
+				return { toDoListId: params.toDoListId, taskId: params.taskId }
 			} else {
 				return rejectWithValue({ errors: messages })
 			}
@@ -54,12 +54,12 @@ export const removeTask = createAsyncThunk
 	})
 
 export const updateTask = createAsyncThunk
-	<{ todolistId: string, taskId: string, domainPayload: DomainPayloadType },
-		{ todolistId: string, taskId: string, domainPayload: DomainPayloadType },
+	<{ toDoListId: string, taskId: string, domainPayload: DomainPayloadType },
+		{ toDoListId: string, taskId: string, domainPayload: DomainPayloadType },
 		{ rejectValue: { errors: string[] }, state: RootStateType }
 	>
 	('tasks/updateTask', async (params, { rejectWithValue, getState }) => {
-		const task = getState().tasks.tasks[params.todolistId].find(task => task.id === params.taskId)
+		const task = getState().tasks.tasks[params.toDoListId].find(task => task.id === params.taskId)
 
 		if (!task) {
 			return rejectWithValue({ errors: ['Task not found in the state!'] })
@@ -75,7 +75,7 @@ export const updateTask = createAsyncThunk
 			...params.domainPayload
 		}
 		try {
-			const response = await TASKS.updateTask(params.todolistId, params.taskId, payload)
+			const response = await TASKS.updateTask(params.toDoListId, params.taskId, payload)
 			const { resultCode, messages } = response.data
 
 			if (resultCode === ResponseCode.SUCCESS) {

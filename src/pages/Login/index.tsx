@@ -1,12 +1,5 @@
-import React from 'react'
-import Grid from '@mui/material/Grid'
-import Checkbox from '@mui/material/Checkbox'
-import FormControl from '@mui/material/FormControl'
-import FormControlLabel from '@mui/material/FormControlLabel'
-import FormGroup from '@mui/material/FormGroup'
-import FormLabel from '@mui/material/FormLabel'
-import TextField from '@mui/material/TextField'
-import Button from '@mui/material/Button'
+import React, { ReactElement } from 'react'
+import { Grid, Checkbox, FormControl, FormControlLabel, FormGroup, FormLabel, TextField, Button } from '@mui/material'
 import { useFormik } from 'formik'
 import { useAppDispatch } from 'redux/hooks'
 import { login } from 'redux/auth/asyncActions'
@@ -14,6 +7,7 @@ import { useSelector } from 'react-redux'
 import { selectIsAuth } from 'redux/auth/selectors'
 import { Navigate } from 'react-router-dom'
 import { Path } from 'enums/Path'
+import style from './Login.module.css'
 
 type FormikErrorType = {
 	email?: string
@@ -21,36 +15,33 @@ type FormikErrorType = {
 	rememberMe?: boolean
 }
 
-const Login = () => {
+const Login = (): ReactElement => {
 
 	const dispatch = useAppDispatch()
 
 	const isAuth = useSelector(selectIsAuth)
 
 	const formik = useFormik({
-		initialValues: {
-			email: '',
-			password: '',
-			rememberMe: false
-		},
-		validate: (values) => {
+
+		initialValues: { email: '', password: '', rememberMe: false },
+		validate: values => {
 			const errors: FormikErrorType = {}
 			if (!values.email) {
 				errors.email = 'Email is required!'
-			} else if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(values.email)) {
+			}
+			if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(values.email)) {
 				errors.email = 'Invalid email address'
 			}
-
 			if (!values.password) {
 				errors.password = 'Password is required!'
-			} else if (values.password.length < 3) {
+			}
+			if (values.password.length < 3) {
 				errors.password = 'Password must be more than 3 characters!'
 			}
 
 			return errors
 		},
 		onSubmit: values => {
-			// formik.resetForm()
 			dispatch(login(values))
 		},
 	})
@@ -65,9 +56,7 @@ const Login = () => {
 				<FormControl>
 					<FormLabel>
 						<p>To log in get registered
-							<a href={'https://social-network.samuraijs.com/'}
-								target={'_blank'}> here
-							</a>
+							<a href={'https://social-network.samuraijs.com/'} target={'_blank'}>here</a>
 						</p>
 						<p>or use common test account credentials:</p>
 						<p>Email: free@samuraijs.com</p>
@@ -80,18 +69,21 @@ const Login = () => {
 								margin='normal'
 								{...formik.getFieldProps('email')}
 							/>
-							{formik.touched.email && formik.errors.email && <div style={{ color: 'red' }}>{formik.errors.email}</div>}
+							{formik.touched.email && formik.errors.email &&
+								<div className={style.errorMessage}>{formik.errors.email}</div>}
 							<TextField
 								type='password'
 								label='Password'
 								margin='normal'
 								{...formik.getFieldProps('password')}
 							/>
-							{formik.touched.password && formik.errors.password && <div style={{ color: 'red' }}>{formik.errors.password}</div>}
-							<FormControlLabel label={'Remember me'} control={<Checkbox
-								// checked={formik.values.rememberMe}
-								{...formik.getFieldProps('rememberMe')}
-							/>} />
+							{formik.touched.password && formik.errors.password &&
+								<div className={style.errorMessage}>{formik.errors.password}</div>}
+							<FormControlLabel
+								label={'Remember me'}
+								control={<Checkbox
+									{...formik.getFieldProps('rememberMe')}
+								/>} />
 							<Button type={'submit'} variant={'contained'} color={'primary'}>
 								Login
 							</Button>

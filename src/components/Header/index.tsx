@@ -1,18 +1,13 @@
-import React from 'react'
-import AppBar from '@mui/material/AppBar'
-import Toolbar from '@mui/material/Toolbar'
-import Typography from '@mui/material/Typography'
-import Button from '@mui/material/Button'
-import IconButton from '@mui/material/IconButton'
-import { Menu } from '@mui/icons-material'
-import { LinearProgress } from '@mui/material'
+import React, { FC, ReactElement } from 'react'
+import { AppBar, Toolbar, Typography, Button, LinearProgress } from '@mui/material'
 import { useSelector } from 'react-redux'
 import { selectIsLoading } from 'redux/app/selectors'
 import { selectAuthorizedUserData, selectIsAuth } from 'redux/auth/selectors'
 import { useAppDispatch } from 'redux/hooks'
 import { logOut } from 'redux/auth/asyncActions'
+import style from './Header.module.css'
 
-export const Header = () => {
+export const Header: FC = (): ReactElement => {
 
 	const dispatch = useAppDispatch()
 
@@ -20,23 +15,20 @@ export const Header = () => {
 	const isAuth = useSelector(selectIsAuth)
 	const authorizedUserData = useSelector(selectAuthorizedUserData)
 
-	const onLogOutClick = () => {
+	const onLogOutClick = (): void => {
 		dispatch(logOut())
 	}
 
 	return (
 		<AppBar position='fixed' >
-			<Toolbar >
-				<IconButton edge='start' color='inherit' aria-label='menu'>
-					<Menu />
-				</IconButton>
+			<Toolbar>
 				<Typography variant='h6' component='div' sx={{ flexGrow: 1 }}>
 					To Do List
 				</Typography>
 				{isAuth && (
 					<>
+						<div className={style.login}>{authorizedUserData?.login}</div>
 						<Button color='inherit' onClick={onLogOutClick}>Log out</Button>
-						<div>{authorizedUserData?.login}</div>
 					</>
 				)}
 			</Toolbar>

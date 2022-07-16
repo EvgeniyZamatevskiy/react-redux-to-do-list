@@ -1,39 +1,39 @@
-import React, { FC, useEffect } from 'react'
+import React, { FC, ReactElement, useCallback, useEffect } from 'react'
 import Grid from '@mui/material/Grid'
-import { Todolist } from '../../components/Todolist'
-import { AddItemForm } from 'components/common'
 import { useAppDispatch } from 'redux/hooks'
-import { addTodolist, getTodolists } from 'redux/todolists/asyncActions'
+import { addToDoList, getToDoLists } from 'redux/toDoLists/asyncActions'
 import { useSelector } from 'react-redux'
-import { selectTodolists } from 'redux/todolists/selectors'
+import { selectToDoLists } from 'redux/toDoLists/selectors'
 import { selectIsAuth } from 'redux/auth/selectors'
 import { Navigate } from 'react-router-dom'
 import { Path } from 'enums/Path'
+import { ToDoList, AddItemForm } from 'components'
+import style from './ToDoLists.module.css'
 
-export const Todolists: FC = () => {
+export const ToDoLists: FC = (): ReactElement => {
 
 	const dispatch = useAppDispatch()
 
-	const todolists = useSelector(selectTodolists)
+	const toDoLists = useSelector(selectToDoLists)
 	const isAuth = useSelector(selectIsAuth)
 
-	const todolistsRender = todolists.map(todolist => {
+	const toDoListsRender = toDoLists.map(toDoList => {
 		return (
-			<Grid item key={todolist.id}>
-				<div style={{ width: '300px' }}>
-					<Todolist todolist={todolist} />
+			<Grid item key={toDoList.id}>
+				<div className={style.container}>
+					<ToDoList toDoList={toDoList} />
 				</div>
 			</Grid>
 		)
 	})
 
-	const handleAddTodolistClick = (title: string) => {
-		dispatch(addTodolist(title))
-	}
+	const handleAddToDoListClick = useCallback((title: string): void => {
+		dispatch(addToDoList(title))
+	}, [])
 
 	useEffect(() => {
 		if (isAuth) {
-			dispatch(getTodolists())
+			dispatch(getToDoLists())
 		}
 	}, [])
 
@@ -43,11 +43,11 @@ export const Todolists: FC = () => {
 
 	return (
 		<>
-			<Grid container style={{ padding: '20px' }}>
-				<AddItemForm addItem={handleAddTodolistClick} />
+			<Grid container className={style.content}>
+				<AddItemForm addItem={handleAddToDoListClick} />
 			</Grid>
-			<Grid container spacing={3} style={{ flexWrap: 'nowrap', overflowX: 'scroll', padding: '10px' }}>
-				{todolistsRender}
+			<Grid container spacing={3} sx={{ flexWrap: 'nowrap', overflowX: 'scroll', padding: '10px' }}>
+				{toDoListsRender}
 			</Grid>
 		</>
 	)

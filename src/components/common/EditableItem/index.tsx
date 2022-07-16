@@ -1,4 +1,4 @@
-import React, { ChangeEvent, FC, KeyboardEvent, useState } from 'react'
+import React, { ChangeEvent, FC, KeyboardEvent, memo, ReactElement, useState } from 'react'
 import TextField from '@mui/material/TextField'
 import s from './EditableItem.module.css'
 
@@ -8,26 +8,26 @@ type EditableItemPropsType = {
 	isDisabled?: boolean
 }
 
-export const EditableItem: FC<EditableItemPropsType> = ({ currentValue, changeCurrentValue, isDisabled }) => {
+export const EditableItem: FC<EditableItemPropsType> = memo(({ currentValue, changeCurrentValue, isDisabled }): ReactElement => {
 
 	const [editMode, setEditMode] = useState(false)
 	const [newValue, setNewValue] = useState('')
 
-	const onInputChange = (e: ChangeEvent<HTMLInputElement>) => {
+	const onInputChange = (e: ChangeEvent<HTMLInputElement>): void => {
 		setNewValue(e.currentTarget.value)
 	}
 
-	const onActivateEditModeClick = () => {
+	const onActivateEditModeClick = (): void => {
 		setEditMode(true)
 		setNewValue(currentValue)
 	}
 
-	const onChangeCurrentValueBlur = () => {
+	const onChangeCurrentValueBlur = (): void => {
 		setEditMode(false)
 		changeCurrentValue(newValue)
 	}
 
-	const onChangeCurrentValueKeyDown = (e: KeyboardEvent<HTMLDivElement>) => {
+	const onChangeCurrentValueKeyDown = (e: KeyboardEvent<HTMLDivElement>): void => {
 		if (e.key === 'Enter') {
 			setEditMode(false)
 			changeCurrentValue(newValue)
@@ -47,4 +47,4 @@ export const EditableItem: FC<EditableItemPropsType> = ({ currentValue, changeCu
 				: <span className={s.span} onClick={onActivateEditModeClick}>{currentValue}</span>}
 		</>
 	)
-}
+})

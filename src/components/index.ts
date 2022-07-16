@@ -1,3 +1,6 @@
 export { Header } from './Header'
 export { Task } from './Task'
-export { Todolist } from './Todolist'
+export { ToDoList } from './ToDoList'
+export { AddItemForm } from './common/AddItemForm'
+export { EditableItem } from './common/EditableItem'
+export { ErrorSnackbar } from './common/ErrorSnackbar'

@@ -1,3 +1,7 @@
+.task {
+	position: relative;
+}
+
 .taskCompleted {
 	opacity: 0.5;
 }
