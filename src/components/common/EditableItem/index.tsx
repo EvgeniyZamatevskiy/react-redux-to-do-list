@@ -13,7 +13,7 @@ export const EditableItem: FC<EditableItemPropsType> = ({ currentValue, changeCu
 	const [editMode, setEditMode] = useState(false)
 	const [newValue, setNewValue] = useState('')
 
-	const onNewValueChange = (e: ChangeEvent<HTMLInputElement>) => {
+	const onInputChange = (e: ChangeEvent<HTMLInputElement>) => {
 		setNewValue(e.currentTarget.value)
 	}
 
@@ -40,7 +40,7 @@ export const EditableItem: FC<EditableItemPropsType> = ({ currentValue, changeCu
 				? <TextField
 					variant={'standard'}
 					value={newValue}
-					onChange={onNewValueChange}
+					onChange={onInputChange}
 					autoFocus
 					onBlur={onChangeCurrentValueBlur}
 					onKeyDown={onChangeCurrentValueKeyDown} />

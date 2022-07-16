@@ -1,4 +1,5 @@
-import { createSlice, PayloadAction } from '@reduxjs/toolkit'
+import { logOut } from 'redux/auth/asyncActions'
+import { createSlice } from '@reduxjs/toolkit'
 import { addTodolist, getTodolists, removeTodolist } from 'redux/todolists/asyncActions'
 import { addTask, getTasks, removeTask, updateTask } from './asyncActions'
 import { TasksSliceInitialStateType } from './types'
@@ -11,9 +12,7 @@ const tasksSlice = createSlice({
 	name: 'tasks',
 	initialState,
 	reducers: {
-		action(state, action: PayloadAction<any>) {
 
-		},
 	},
 	extraReducers(builder) {
 		builder
@@ -45,9 +44,12 @@ const tasksSlice = createSlice({
 					tasks[index] = { ...tasks[index], ...action.payload.domainPayload }
 				}
 			})
+			.addCase(logOut.fulfilled, (state) => {
+				state.tasks = {}
+			})
 	},
 })
 
-export const { action } = tasksSlice.actions
+export const { } = tasksSlice.actions
 
 export default tasksSlice.reducer

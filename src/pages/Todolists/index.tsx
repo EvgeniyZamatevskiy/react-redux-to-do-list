@@ -6,12 +6,16 @@ import { useAppDispatch } from 'redux/hooks'
 import { addTodolist, getTodolists } from 'redux/todolists/asyncActions'
 import { useSelector } from 'react-redux'
 import { selectTodolists } from 'redux/todolists/selectors'
+import { selectIsAuth } from 'redux/auth/selectors'
+import { Navigate } from 'react-router-dom'
+import { Path } from 'enums/Path'
 
 export const Todolists: FC = () => {
 
 	const dispatch = useAppDispatch()
 
 	const todolists = useSelector(selectTodolists)
+	const isAuth = useSelector(selectIsAuth)
 
 	const todolistsRender = todolists.map(todolist => {
 		return (
@@ -28,8 +32,14 @@ export const Todolists: FC = () => {
 	}
 
 	useEffect(() => {
-		dispatch(getTodolists())
+		if (isAuth) {
+			dispatch(getTodolists())
+		}
 	}, [])
+
+	if (!isAuth) {
+		return <Navigate to={Path.LOGIN} />
+	}
 
 	return (
 		<>
