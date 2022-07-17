@@ -1,6 +1,7 @@
 import React, { ChangeEvent, FC, KeyboardEvent, memo, ReactElement, useState } from 'react'
 import TextField from '@mui/material/TextField'
 import s from './EditableItem.module.css'
+import { EMPTY_STRING } from 'constants/base'
 
 type EditableItemPropsType = {
 	currentValue: string
@@ -10,11 +11,11 @@ type EditableItemPropsType = {
 
 export const EditableItem: FC<EditableItemPropsType> = memo(({ currentValue, changeCurrentValue, isDisabled }): ReactElement => {
 
-	const [editMode, setEditMode] = useState(false)
-	const [newValue, setNewValue] = useState('')
+	const [editMode, setEditMode] = useState<boolean>(false)
+	const [newValue, setNewValue] = useState<string>(EMPTY_STRING)
 
-	const onInputChange = (e: ChangeEvent<HTMLInputElement>): void => {
-		setNewValue(e.currentTarget.value)
+	const onInputChange = (event: ChangeEvent<HTMLInputElement>): void => {
+		setNewValue(event.currentTarget.value)
 	}
 
 	const onActivateEditModeClick = (): void => {
@@ -27,8 +28,8 @@ export const EditableItem: FC<EditableItemPropsType> = memo(({ currentValue, cha
 		changeCurrentValue(newValue)
 	}
 
-	const onChangeCurrentValueKeyDown = (e: KeyboardEvent<HTMLDivElement>): void => {
-		if (e.key === 'Enter') {
+	const onChangeCurrentValueKeyDown = (event: KeyboardEvent<HTMLDivElement>): void => {
+		if (event.key === 'Enter') {
 			setEditMode(false)
 			changeCurrentValue(newValue)
 		}

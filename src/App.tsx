@@ -1,4 +1,4 @@
-import React, { FC, lazy, Suspense, useEffect } from 'react'
+import React, { FC, lazy, ReactElement, Suspense, useEffect } from 'react'
 import { Container, CircularProgress } from '@mui/material'
 import { Navigate, Route, Routes } from 'react-router-dom'
 import { ToDoLists } from 'pages'
@@ -7,22 +7,22 @@ import { Path } from 'enums/Path'
 import { useAppDispatch } from 'redux/hooks'
 import { getAuthorizedUserData } from 'redux/auth/asyncActions'
 import { useSelector } from 'react-redux'
-import { selectIsInitialized } from 'redux/app/selectors'
+import { selectIsInitializedApp } from 'redux/app/selectors'
 
-const NotFound = lazy(() => import(/* webpackChunkName: "NotFound" */'pages/NotFound'))
-const Login = lazy(() => import(/* webpackChunkName: "Login" */'pages/Login'))
+const NotFound = lazy(() => import(/* webpackChunkName: 'NotFound' */'pages/notFound'))
+const Login = lazy(() => import(/* webpackChunkName: 'Login' */'pages/login'))
 
-export const App: FC = () => {
+export const App: FC = (): ReactElement => {
 
   const dispatch = useAppDispatch()
 
-  const isInitialized = useSelector(selectIsInitialized)
+  const isInitializedApp = useSelector(selectIsInitializedApp)
 
   useEffect(() => {
     dispatch(getAuthorizedUserData())
   }, [])
 
-  if (!isInitialized) {
+  if (!isInitializedApp) {
     return <div className='preloader'><CircularProgress /></div>
   }
 

@@ -55,8 +55,10 @@ export const addToDoList = createAsyncThunk
 export const removeToDoList = createAsyncThunk
 	<string, string, { rejectValue: { errors: string[] } }>
 	('toDoLists/removeToDoList', async (toDoListId, { dispatch, rejectWithValue }) => {
+
+		dispatch(setIsDisabled({ toDoListId, isDisabled: true }))
+
 		try {
-			dispatch(setIsDisabled({ toDoListId, isDisabled: true }))
 
 			const response = await TODOLISTS.removeToDoList(toDoListId)
 			const { resultCode, messages } = response.data

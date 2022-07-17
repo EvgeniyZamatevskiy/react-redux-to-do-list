@@ -1,30 +1,30 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import { getAuthorizedUserData } from 'redux/auth/asyncActions'
-import { Nullable } from 'types'
 import { AppSliceInitialStateType } from './types'
-import { errorRejected, isLoadingFulfilled, isLoadingPending, isLoadingRejected } from './utils'
+import { isErrorRejected, isLoadingFulfilled, isLoadingPending, isLoadingRejected } from './helpers'
+import { EMPTY_STRING } from 'constants/base'
 
 const initialState: AppSliceInitialStateType = {
 	isLoading: false,
-	error: null,
-	isInitialized: false
+	errorMessage: EMPTY_STRING,
+	isInitializedApp: false
 }
 
 const appSlice = createSlice({
 	name: 'app',
 	initialState,
 	reducers: {
-		setError(state, action: PayloadAction<Nullable<string>>) {
-			state.error = action.payload
+		setErrorMessage(state, action: PayloadAction<string>) {
+			state.errorMessage = action.payload
 		}
 	},
 	extraReducers(builder) {
 		builder
 			.addCase(getAuthorizedUserData.fulfilled, (state) => {
-				state.isInitialized = true
+				state.isInitializedApp = true
 			})
 			.addCase(getAuthorizedUserData.rejected, (state) => {
-				state.isInitialized = true
+				state.isInitializedApp = true
 			})
 			.addMatcher(isLoadingPending, (state) => {
 				state.isLoading = true
@@ -35,12 +35,12 @@ const appSlice = createSlice({
 			.addMatcher(isLoadingRejected, (state) => {
 				state.isLoading = false
 			})
-			.addMatcher(errorRejected, (state, action: PayloadAction<{ errors: string[] }>) => {
-				state.error = action.payload.errors[0]
+			.addMatcher(isErrorRejected, (state, action: PayloadAction<{ errors: string[] }>) => {
+				state.errorMessage = action.payload.errors[0]
 			})
 	},
 })
 
-export const { setError } = appSlice.actions
+export const { setErrorMessage } = appSlice.actions
 
 export default appSlice.reducer

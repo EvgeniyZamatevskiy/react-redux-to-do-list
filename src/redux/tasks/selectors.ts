@@ -1,4 +1,4 @@
+import { TaskType } from 'api/tasks/types'
 import { RootStateType } from 'redux/store'
-import { TasksType } from './types'
 
-export const selectTasks = (state: RootStateType): TasksType => state.tasks.tasks
+export const selectTasks = (toDoListId: string) => (state: RootStateType): TaskType[] => state.tasks.tasks[toDoListId]

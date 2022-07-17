@@ -17,17 +17,17 @@ export const ToDoLists: FC = (): ReactElement => {
 	const toDoLists = useSelector(selectToDoLists)
 	const isAuth = useSelector(selectIsAuth)
 
-	const toDoListsRender = toDoLists.map(toDoList => {
+	const toDoListsRender = toDoLists.map(({ id, filter, isDisabled, title }) => {
 		return (
-			<Grid item key={toDoList.id}>
+			<Grid item key={id}>
 				<div className={style.container}>
-					<ToDoList toDoList={toDoList} />
+					<ToDoList toDoListId={id} filter={filter} isDisabled={isDisabled} title={title} />
 				</div>
 			</Grid>
 		)
 	})
 
-	const handleAddToDoListClick = useCallback((title: string): void => {
+	const handleAddToDoListClickAndKeyDown = useCallback((title: string): void => {
 		dispatch(addToDoList(title))
 	}, [])
 
@@ -44,7 +44,7 @@ export const ToDoLists: FC = (): ReactElement => {
 	return (
 		<>
 			<Grid container className={style.content}>
-				<AddItemForm addItem={handleAddToDoListClick} />
+				<AddItemForm addItem={handleAddToDoListClickAndKeyDown} />
 			</Grid>
 			<Grid container spacing={3} sx={{ flexWrap: 'nowrap', overflowX: 'scroll', padding: '10px' }}>
 				{toDoListsRender}

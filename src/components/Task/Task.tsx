@@ -1,20 +1,22 @@
-import React, { ChangeEvent, FC, ReactElement, useCallback } from 'react'
+import React, { ChangeEvent, FC, memo, ReactElement, useCallback } from 'react'
 import Delete from '@mui/icons-material/Delete'
 import { Checkbox, IconButton } from '@mui/material'
-import { TaskStatus, TaskType } from 'api/tasks/types'
+import { TaskStatus } from 'api/tasks/types'
 import { useAppDispatch } from 'redux/hooks'
 import { removeTask, updateTask } from 'redux/tasks/asyncActions'
 import { EditableItem } from 'components/common'
 import style from './Task.module.css'
+import { EMPTY_STRING } from 'constants/base'
 
 type TaskPropsType = {
-	task: TaskType
+	toDoListId: string
+	taskId: string
+	status: TaskStatus
+	title: string
 	isDisabled: boolean
 }
 
-export const Task: FC<TaskPropsType> = ({ task, isDisabled }): ReactElement => {
-
-	const { id: taskId, status, title, todoListId: toDoListId } = task
+export const Task: FC<TaskPropsType> = memo(({ toDoListId, taskId, status, title, isDisabled }): ReactElement => {
 
 	const dispatch = useAppDispatch()
 
@@ -22,25 +24,25 @@ export const Task: FC<TaskPropsType> = ({ task, isDisabled }): ReactElement => {
 		dispatch(removeTask({ toDoListId, taskId }))
 	}
 
-	const handleChangeTaskTitle = useCallback((newTitle: string): void => {
+	const handleChangeTaskTitleClickAndBlur = useCallback((newTitle: string): void => {
 		dispatch(updateTask({ toDoListId, taskId, domainPayload: { title: newTitle } }))
 	}, [toDoListId, taskId])
 
-	const onChangeTaskStatusChange = (e: ChangeEvent<HTMLInputElement>): void => {
-		const newStatus = e.currentTarget.checked ? TaskStatus.Completed : TaskStatus.Active
-		dispatch(updateTask({ toDoListId, taskId, domainPayload: { status: newStatus } }))
+	const onUpdateTaskStatusChange = (event: ChangeEvent<HTMLInputElement>): void => {
+		const updatedStatus = event.currentTarget.checked ? TaskStatus.Completed : TaskStatus.Active
+		dispatch(updateTask({ toDoListId, taskId, domainPayload: { status: updatedStatus } }))
 	}
 
 	return (
 		<div className={style.task}>
-			<div className={status === TaskStatus.Completed ? style.taskCompleted : ''}>
+			<div className={status === TaskStatus.Completed ? style.taskCompleted : EMPTY_STRING}>
 				<Checkbox
 					color='primary'
 					checked={status === TaskStatus.Completed}
 					disabled={isDisabled}
-					onChange={onChangeTaskStatusChange}
+					onChange={onUpdateTaskStatusChange}
 				/>
-				<EditableItem currentValue={title} changeCurrentValue={handleChangeTaskTitle} isDisabled={isDisabled} />
+				<EditableItem currentValue={title} changeCurrentValue={handleChangeTaskTitleClickAndBlur} isDisabled={isDisabled} />
 			</div>
 			<IconButton
 				size={'small'}
@@ -52,4 +54,4 @@ export const Task: FC<TaskPropsType> = ({ task, isDisabled }): ReactElement => {
 			</IconButton>
 		</div>
 	)
-}
+})

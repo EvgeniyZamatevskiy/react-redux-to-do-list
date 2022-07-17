@@ -8,6 +8,7 @@ import { selectIsAuth } from 'redux/auth/selectors'
 import { Navigate } from 'react-router-dom'
 import { Path } from 'enums/Path'
 import style from './Login.module.css'
+import { EMPTY_STRING } from 'constants/base'
 
 type FormikErrorType = {
 	email?: string
@@ -23,7 +24,7 @@ const Login = (): ReactElement => {
 
 	const formik = useFormik({
 
-		initialValues: { email: '', password: '', rememberMe: false },
+		initialValues: { email: EMPTY_STRING, password: EMPTY_STRING, rememberMe: false },
 		validate: values => {
 			const errors: FormikErrorType = {}
 			if (!values.email) {

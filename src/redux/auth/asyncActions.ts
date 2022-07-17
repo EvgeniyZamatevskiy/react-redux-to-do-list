@@ -22,9 +22,9 @@ export const getAuthorizedUserData = createAsyncThunk
 
 export const login = createAsyncThunk
 	<void, LoginParamsType, { rejectValue: { errors: string[] } }>
-	('auth/login', async (params, { dispatch, rejectWithValue }) => {
+	('auth/login', async (loginParams, { dispatch, rejectWithValue }) => {
 		try {
-			const response = await AUTH.login(params)
+			const response = await AUTH.login(loginParams)
 			const { resultCode, messages } = response.data
 
 			if (resultCode === ResponseCode.SUCCESS) {
@@ -44,10 +44,10 @@ export const logOut = createAsyncThunk
 			const response = await AUTH.logOut()
 			const { resultCode, messages } = response.data
 
-			if (resultCode === ResponseCode.SUCCESS) {
-			} else {
+			if (resultCode !== ResponseCode.SUCCESS) {
 				return rejectWithValue({ errors: messages })
 			}
+
 		} catch (error: any) {
 			return rejectWithValue({ errors: [error.message] })
 		}

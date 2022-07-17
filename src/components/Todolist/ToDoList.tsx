@@ -1,45 +1,48 @@
-import React, { FC, ReactElement, useCallback, useEffect } from 'react'
+import React, { FC, memo, ReactElement, useCallback, useEffect } from 'react'
 import Delete from '@mui/icons-material/Delete'
 import { Button, IconButton, Paper } from '@mui/material'
 import { useSelector } from 'react-redux'
 import { useAppDispatch } from 'redux/hooks'
 import { addTask, getTasks } from 'redux/tasks/asyncActions'
-import { FilterValuesType, ToDoListSupplementedType } from 'redux/toDoLists/types'
 import { selectTasks } from 'redux/tasks/selectors'
 import { TaskStatus } from 'api/tasks/types'
 import { changeToDoListTitle, removeToDoList } from 'redux/toDoLists/asyncActions'
 import { changeToDoListFilter } from 'redux/toDoLists/slice'
-import { Task } from 'components/Task'
 import { EditableItem, AddItemForm } from 'components/common'
+import { Task } from 'components/task/Task'
+import { FilterValue } from 'enums/FilterValue'
 import style from './ToDoList.module.css'
 
 type ToDoListPropsType = {
-	toDoList: ToDoListSupplementedType
+	toDoListId: string,
+	filter: FilterValue,
+	isDisabled: boolean,
+	title: string
 }
 
-const filterValues: FilterValuesType[] = ['all', 'active', 'completed']
+const filterValues: FilterValue[] = [FilterValue.ALL, FilterValue.ACTIVE, FilterValue.COMPLETED]
 
-export const ToDoList: FC<ToDoListPropsType> = ({ toDoList }): ReactElement => {
-
-	const { isDisabled, filter, id: toDoListId, title } = toDoList
+export const ToDoList: FC<ToDoListPropsType> = memo(({ toDoListId, filter, isDisabled, title }): ReactElement => {
 
 	const dispatch = useAppDispatch()
 
-	const tasks = useSelector(selectTasks)
+	const tasks = useSelector(selectTasks(toDoListId))
 
-	let filteredTask = tasks[toDoListId]
-	if (filter === 'active') {
-		filteredTask = filteredTask.filter(task => task.status === TaskStatus.Active)
+	let filteredTasks = tasks
+	if (filter === FilterValue.ACTIVE) {
+		filteredTasks = filteredTasks.filter(task => task.status === TaskStatus.Active)
 	}
-	if (filter === 'completed') {
-		filteredTask = filteredTask.filter(task => task.status === TaskStatus.Completed)
+	if (filter === FilterValue.COMPLETED) {
+		filteredTasks = filteredTasks.filter(task => task.status === TaskStatus.Completed)
 	}
 
-	const tasksRender = filteredTask.map(task => <Task key={task.id} task={task} isDisabled={isDisabled} />)
+	const filteredTasksRender = filteredTasks.map(({ todoListId, id, status, title }) => {
+		return <Task key={id} toDoListId={todoListId} taskId={id} status={status} title={title} isDisabled={isDisabled} />
+	})
 
 	const filterValuesRender = filterValues.map((value, index) => {
 
-		const onChangeToDoListFilterClick = (): void => {
+		const onChangeToDoListFilterValueClick = (): void => {
 			dispatch(changeToDoListFilter({ toDoListId, value }))
 		}
 
@@ -49,13 +52,13 @@ export const ToDoList: FC<ToDoListPropsType> = ({ toDoList }): ReactElement => {
 				variant={filter === value ? 'outlined' : 'text'}
 				color={'primary'}
 				disabled={isDisabled}
-				onClick={onChangeToDoListFilterClick}>
+				onClick={onChangeToDoListFilterValueClick}>
 				{value}
 			</Button>
 		)
 	})
 
-	const handleChangeToDoListTitle = useCallback((newTitle: string): void => {
+	const handleChangeToDoListTitleClickAndBlur = useCallback((newTitle: string): void => {
 		dispatch(changeToDoListTitle({ toDoListId, title: newTitle }))
 	}, [toDoListId])
 
@@ -63,12 +66,12 @@ export const ToDoList: FC<ToDoListPropsType> = ({ toDoList }): ReactElement => {
 		dispatch(removeToDoList(toDoListId))
 	}
 
-	const handleAddTaskClick = useCallback((title: string): void => {
+	const handleAddTaskClickAndKeyDown = useCallback((title: string): void => {
 		dispatch(addTask({ toDoListId, title }))
 	}, [toDoListId])
 
 	useEffect(() => {
-		dispatch(getTasks({ toDoListId }))
+		dispatch(getTasks(toDoListId))
 	}, [])
 
 	return (
@@ -82,17 +85,16 @@ export const ToDoList: FC<ToDoListPropsType> = ({ toDoList }): ReactElement => {
 				<Delete fontSize={'small'} />
 			</IconButton>
 			<h3>
-				<EditableItem currentValue={title} changeCurrentValue={handleChangeToDoListTitle} isDisabled={isDisabled} />
+				<EditableItem currentValue={title} changeCurrentValue={handleChangeToDoListTitleClickAndBlur} isDisabled={isDisabled} />
 			</h3>
-			<AddItemForm addItem={handleAddTaskClick} isDisabled={isDisabled} />
+			<AddItemForm addItem={handleAddTaskClickAndKeyDown} isDisabled={isDisabled} />
 			<div>
-				{tasksRender}
-				{!tasks[toDoListId].length
-					&& <div className={style.noTask}>No task</div>}
+				{filteredTasksRender}
+				{!tasks.length && <div className={style.noTask}>No task</div>}
 			</div>
 			<div className={style.filterValues}>
 				{filterValuesRender}
 			</div>
 		</Paper>
 	)
-}
+})

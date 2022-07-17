@@ -1,18 +1,19 @@
-import appSlice, { setError } from 'redux/app/slice'
+import { EMPTY_STRING } from 'constants/base'
+import appSlice, { setErrorMessage } from 'redux/app/slice'
 import { AppSliceInitialStateType } from './types'
 
 let startState: AppSliceInitialStateType
 
 beforeEach(() => {
 	startState = {
-		error: null,
+		errorMessage: EMPTY_STRING,
 		isLoading: false,
-		isInitialized: false
+		isInitializedApp: false
 	}
 })
 
 test('correct error message should be set', (() => {
-	const endState = appSlice(startState, setError('my error!'))
+	const endState = appSlice(startState, setErrorMessage('my error!'))
 
-	expect(endState.error).toBe('my error!')
+	expect(endState.errorMessage).toBe('my error!')
 }))

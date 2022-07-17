@@ -5,14 +5,13 @@ import { ResponseCode } from 'enums/ResponseCode'
 import { RootStateType } from 'redux/store'
 
 export const getTasks = createAsyncThunk
-	<{ tasks: TaskType[], toDoListId: string }, { toDoListId: string }, { rejectValue: { errors: string[] } }>
-	('tasks/getTasks', async (params, { rejectWithValue }) => {
+	<{ tasks: TaskType[], toDoListId: string }, string, { rejectValue: { errors: string[] } }>
+	('tasks/getTasks', async (toDoListId, { rejectWithValue }) => {
 		try {
-
-			const response = await TASKS.getTasks(params.toDoListId)
+			const response = await TASKS.getTasks(toDoListId)
 			const tasks = response.data.items
 
-			return { tasks, toDoListId: params.toDoListId }
+			return { tasks, toDoListId }
 		} catch (error: any) {
 			return rejectWithValue({ errors: [error.message] })
 		}
