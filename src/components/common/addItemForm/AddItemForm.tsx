@@ -14,15 +14,15 @@ const ERROR_MESSAGE = 'Title is required!'
 export const AddItemForm: FC<AddItemFormPropsType> = memo(({ addItem, isDisabled }): ReactElement => {
 
 	const [value, setValue] = useState<string>(EMPTY_STRING)
-	const [error, setError] = useState<string>(EMPTY_STRING)
+	const [errorMessage, setErrorMessage] = useState<string>(EMPTY_STRING)
 
-	const resetErrorMessage = (): void => setError(EMPTY_STRING)
+	const resetErrorMessage = (): void => setErrorMessage(EMPTY_STRING)
 
 	const resetValue = (): void => setValue(EMPTY_STRING)
 
 	const onInputChange = (event: ChangeEvent<HTMLInputElement>): void => {
 		setValue(event.currentTarget.value)
-		if (error) {
+		if (errorMessage !== EMPTY_STRING) {
 			resetErrorMessage()
 		}
 	}
@@ -34,7 +34,7 @@ export const AddItemForm: FC<AddItemFormPropsType> = memo(({ addItem, isDisabled
 			addItem(trimmedValue)
 			resetValue()
 		} else {
-			setError(ERROR_MESSAGE)
+			setErrorMessage(ERROR_MESSAGE)
 		}
 	}
 
@@ -52,8 +52,8 @@ export const AddItemForm: FC<AddItemFormPropsType> = memo(({ addItem, isDisabled
 				value={value}
 				onChange={onInputChange}
 				onKeyDown={onAddItemKeyDown}
-				error={!!error}
-				helperText={error}
+				error={!!errorMessage}
+				helperText={errorMessage}
 				disabled={isDisabled}
 			/>
 			<IconButton

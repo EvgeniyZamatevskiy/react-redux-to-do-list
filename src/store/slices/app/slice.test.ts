@@ -1,5 +1,5 @@
 import { EMPTY_STRING } from 'constants/base'
-import appSlice, { setErrorMessage } from 'store/app/slice'
+import appSlice, { setErrorMessage } from 'store/slices/app'
 import { AppSliceInitialStateType } from './types'
 
 let startState: AppSliceInitialStateType

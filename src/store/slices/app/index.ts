@@ -1,7 +1,7 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
-import { getAuthorizedUserData } from 'store/auth/asyncActions'
+import { getAuthorizedUserData } from 'store/asyncActions/auth'
 import { AppSliceInitialStateType } from './types'
-import { isErrorRejected, isLoadingFulfilled, isLoadingPending, isLoadingRejected } from './helpers'
+import { isErrorRejected, isLoadingFulfilled, isLoadingPending, isLoadingRejected } from '../../helpers/app'
 import { EMPTY_STRING } from 'constants/base'
 
 const FIRST_ITEM_ARRAY = 0

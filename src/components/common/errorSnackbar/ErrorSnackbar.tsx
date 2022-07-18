@@ -3,8 +3,8 @@ import Snackbar from '@mui/material/Snackbar'
 import MuiAlert, { AlertProps } from '@mui/material/Alert'
 import { useAppDispatch } from 'store/hooks'
 import { useSelector } from 'react-redux'
-import { selectErrorMessage } from 'store/app/selectors'
-import { setErrorMessage } from 'store/app/slice'
+import { selectErrorMessage } from 'store/selectors/app'
+import { setErrorMessage } from 'store/slices/app'
 import { EMPTY_STRING } from 'constants/base'
 
 const DELAY = 3000

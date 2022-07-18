@@ -2,7 +2,7 @@ import { createAsyncThunk } from '@reduxjs/toolkit'
 import { TODOLISTS } from 'api'
 import { ToDoListType } from 'api/toDoLists/types'
 import { ResponseCode } from 'enums/ResponseCode'
-import { setIsDisabled } from './slice'
+import { setIsDisabled } from '../../slices/toDoLists'
 
 export const getToDoLists = createAsyncThunk
 	<ToDoListType[], undefined, { rejectValue: { errors: string[] } }>
@@ -59,7 +59,6 @@ export const removeToDoList = createAsyncThunk
 		dispatch(setIsDisabled({ toDoListId, isDisabled: true }))
 
 		try {
-
 			const response = await TODOLISTS.removeToDoList(toDoListId)
 			const { resultCode, messages } = response.data
 

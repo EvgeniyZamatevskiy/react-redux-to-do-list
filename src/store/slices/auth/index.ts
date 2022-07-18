@@ -1,5 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit'
-import { getAuthorizedUserData, logOut } from './asyncActions'
+import { getAuthorizedUserData, logOut } from '../../asyncActions/auth'
 import { AuthSliceInitialStateType } from './types'
 
 const initialState: AuthSliceInitialStateType = {

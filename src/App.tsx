@@ -5,9 +5,9 @@ import { ToDoLists } from 'pages'
 import { ErrorSnackbar, Header } from 'components'
 import { Path } from 'enums/Path'
 import { useAppDispatch } from 'store/hooks'
-import { getAuthorizedUserData } from 'store/auth/asyncActions'
+import { getAuthorizedUserData } from 'store/asyncActions/auth'
 import { useSelector } from 'react-redux'
-import { selectIsInitializedApp } from 'store/app/selectors'
+import { selectIsInitializedApp } from 'store/selectors/app'
 
 const NotFound = lazy(() => import(/* webpackChunkName: 'NotFound' */'pages/notFound'))
 const Login = lazy(() => import(/* webpackChunkName: 'Login' */'pages/login'))

@@ -1,13 +1,13 @@
 import React, { FC, ReactElement, useCallback, useEffect } from 'react'
 import Grid from '@mui/material/Grid'
 import { useAppDispatch } from 'store/hooks'
-import { addToDoList, getToDoLists } from 'store/toDoLists/asyncActions'
 import { useSelector } from 'react-redux'
-import { selectToDoLists } from 'store/toDoLists/selectors'
-import { selectIsAuth } from 'store/auth/selectors'
 import { Navigate } from 'react-router-dom'
 import { Path } from 'enums/Path'
 import { ToDoList, AddItemForm } from 'components'
+import { addToDoList, getToDoLists } from 'store/asyncActions'
+import { selectIsAuth } from 'store/selectors/auth'
+import { selectToDoLists } from 'store/selectors/toDoLists'
 import style from './ToDoLists.module.css'
 
 export const ToDoLists: FC = (): ReactElement => {

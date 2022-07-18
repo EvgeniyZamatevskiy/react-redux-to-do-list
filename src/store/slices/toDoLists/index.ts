@@ -1,7 +1,7 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import { FilterValue } from 'enums/FilterValue'
-import { logOut } from 'store/auth/asyncActions'
-import { addToDoList, changeToDoListTitle, getToDoLists, removeToDoList } from './asyncActions'
+import { logOut } from 'store/asyncActions/auth'
+import { addToDoList, changeToDoListTitle, getToDoLists, removeToDoList } from '../../asyncActions/toDoLists'
 import { ToDoListsSliceInitialStateType } from './types'
 
 const initialState: ToDoListsSliceInitialStateType = {
@@ -13,12 +13,20 @@ const toDoListsSlice = createSlice({
 	initialState,
 	reducers: {
 		changeToDoListFilter(state, action: PayloadAction<{ toDoListId: string, value: FilterValue }>) {
+			// const index = state.toDoLists.findIndex(todDoList => todDoList.id === action.payload.toDoListId)
+			// if (index > -1) {
+			// 	state.toDoLists[index].filter = action.payload.value
+			// }
 			const toDoList = state.toDoLists.find(toDoList => toDoList.id === action.payload.toDoListId)
 			if (toDoList) {
 				toDoList.filter = action.payload.value
 			}
 		},
 		setIsDisabled(state, action: PayloadAction<{ toDoListId: string, isDisabled: boolean }>) {
+			// const index = state.toDoLists.findIndex(todDoList => todDoList.id === action.payload.toDoListId)
+			// if (index > -1) {
+			// 	state.toDoLists[index].isDisabled = action.payload.isDisabled
+			// }
 			const toDoList = state.toDoLists.find(toDoList => toDoList.id === action.payload.toDoListId)
 			if (toDoList) {
 				toDoList.isDisabled = action.payload.isDisabled
@@ -31,15 +39,23 @@ const toDoListsSlice = createSlice({
 				state.toDoLists = action.payload.map(toDoList => ({ ...toDoList, filter: FilterValue.ALL, isDisabled: false }))
 			})
 			.addCase(changeToDoListTitle.fulfilled, (state, action) => {
-				const toDoList = state.toDoLists.find(toDoList => toDoList.id === action.payload.toDoListId)
-				if (toDoList) {
-					toDoList.title = action.payload.title
+				const index = state.toDoLists.findIndex(toDoList => toDoList.id === action.payload.toDoListId)
+				if (index > -1) {
+					state.toDoLists[index].title = action.payload.title
 				}
+				// const toDoList = state.toDoLists.find(toDoList => toDoList.id === action.payload.toDoListId)
+				// if (toDoList) {
+				// 	toDoList.title = action.payload.title
+				// }
 			})
 			.addCase(addToDoList.fulfilled, (state, action) => {
 				state.toDoLists.unshift({ ...action.payload, filter: FilterValue.ALL, isDisabled: false })
 			})
 			.addCase(removeToDoList.fulfilled, (state, action) => {
+				// const index = state.toDoLists.findIndex(toDoList => toDoList.id === action.payload)
+				// if (index > -1) {
+				// 	state.toDoLists.splice(index, 1)
+				// }
 				state.toDoLists = state.toDoLists.filter(toDoList => toDoList.id !== action.payload)
 			})
 			.addCase(logOut.fulfilled, (state) => {
@@ -51,4 +67,3 @@ const toDoListsSlice = createSlice({
 export const { changeToDoListFilter, setIsDisabled } = toDoListsSlice.actions
 
 export default toDoListsSlice.reducer
-

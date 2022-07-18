@@ -1,7 +1,7 @@
-import { logOut } from 'store/auth/asyncActions'
+import { logOut } from 'store/asyncActions/auth'
 import { createSlice } from '@reduxjs/toolkit'
-import { addToDoList, getToDoLists, removeToDoList } from 'store/toDoLists/asyncActions'
-import { addTask, getTasks, removeTask, updateTask } from './asyncActions'
+import { addToDoList, getToDoLists, removeToDoList } from 'store/asyncActions/toDoLists'
+import { addTask, getTasks, removeTask, updateTask } from '../../asyncActions/tasks'
 import { TasksSliceInitialStateType } from './types'
 
 const initialState: TasksSliceInitialStateType = {
@@ -11,9 +11,7 @@ const initialState: TasksSliceInitialStateType = {
 const tasksSlice = createSlice({
 	name: 'tasks',
 	initialState,
-	reducers: {
-
-	},
+	reducers: {},
 	extraReducers(builder) {
 		builder
 			.addCase(getToDoLists.fulfilled, (state, action) => {
@@ -34,6 +32,11 @@ const tasksSlice = createSlice({
 				state.tasks[action.payload.todoListId].unshift(action.payload)
 			})
 			.addCase(removeTask.fulfilled, (state, action) => {
+				// const tasks = state.tasks[action.payload.toDoListId]
+				// const index = tasks.findIndex(task => task.id === action.payload.taskId)
+				// if (index > -1) {
+				// 	tasks.splice(index, 1)
+				// }
 				state.tasks[action.payload.toDoListId] = state.tasks[action.payload.toDoListId]
 					.filter(task => task.id !== action.payload.taskId)
 			})
@@ -49,7 +52,5 @@ const tasksSlice = createSlice({
 			})
 	},
 })
-
-export const { } = tasksSlice.actions
 
 export default tasksSlice.reducer
