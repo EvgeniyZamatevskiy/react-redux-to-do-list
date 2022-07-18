@@ -1,5 +1,5 @@
 import { ToDoListsSliceInitialStateType } from './types'
-import toDoListSlice, { changeToDoListFilter } from 'redux/toDoLists/slice'
+import toDoListSlice, { changeToDoListFilter } from 'store/toDoLists/slice'
 import { FilterValue } from 'enums/FilterValue'
 
 let startState: ToDoListsSliceInitialStateType

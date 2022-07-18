@@ -4,10 +4,10 @@ import { Navigate, Route, Routes } from 'react-router-dom'
 import { ToDoLists } from 'pages'
 import { ErrorSnackbar, Header } from 'components'
 import { Path } from 'enums/Path'
-import { useAppDispatch } from 'redux/hooks'
-import { getAuthorizedUserData } from 'redux/auth/asyncActions'
+import { useAppDispatch } from 'store/hooks'
+import { getAuthorizedUserData } from 'store/auth/asyncActions'
 import { useSelector } from 'react-redux'
-import { selectIsInitializedApp } from 'redux/app/selectors'
+import { selectIsInitializedApp } from 'store/app/selectors'
 
 const NotFound = lazy(() => import(/* webpackChunkName: 'NotFound' */'pages/notFound'))
 const Login = lazy(() => import(/* webpackChunkName: 'Login' */'pages/login'))

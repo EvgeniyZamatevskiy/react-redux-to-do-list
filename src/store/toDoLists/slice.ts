@@ -1,6 +1,6 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import { FilterValue } from 'enums/FilterValue'
-import { logOut } from 'redux/auth/asyncActions'
+import { logOut } from 'store/auth/asyncActions'
 import { addToDoList, changeToDoListTitle, getToDoLists, removeToDoList } from './asyncActions'
 import { ToDoListsSliceInitialStateType } from './types'
 

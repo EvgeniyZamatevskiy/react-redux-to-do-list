@@ -1,5 +1,5 @@
-import { createSlice, PayloadAction } from '@reduxjs/toolkit'
-import { getAuthorizedUserData, login, logOut } from './asyncActions'
+import { createSlice } from '@reduxjs/toolkit'
+import { getAuthorizedUserData, logOut } from './asyncActions'
 import { AuthSliceInitialStateType } from './types'
 
 const initialState: AuthSliceInitialStateType = {
@@ -10,12 +10,10 @@ const initialState: AuthSliceInitialStateType = {
 const authSlice = createSlice({
 	name: 'auth',
 	initialState,
-	reducers: {
-
-	},
+	reducers: {},
 	extraReducers(builder) {
 		builder
-			.addCase(logOut.fulfilled, (state, action) => {
+			.addCase(logOut.fulfilled, (state) => {
 				state.isAuth = false
 				state.authorizedUserData = null
 			})
@@ -25,7 +23,5 @@ const authSlice = createSlice({
 			})
 	},
 })
-
-export const { } = authSlice.actions
 
 export default authSlice.reducer

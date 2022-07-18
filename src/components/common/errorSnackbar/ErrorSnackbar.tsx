@@ -1,10 +1,10 @@
 import React, { FC, ReactElement } from 'react'
 import Snackbar from '@mui/material/Snackbar'
 import MuiAlert, { AlertProps } from '@mui/material/Alert'
-import { useAppDispatch } from 'redux/hooks'
+import { useAppDispatch } from 'store/hooks'
 import { useSelector } from 'react-redux'
-import { selectErrorMessage } from 'redux/app/selectors'
-import { setErrorMessage } from 'redux/app/slice'
+import { selectErrorMessage } from 'store/app/selectors'
+import { setErrorMessage } from 'store/app/slice'
 import { EMPTY_STRING } from 'constants/base'
 
 const DELAY = 3000

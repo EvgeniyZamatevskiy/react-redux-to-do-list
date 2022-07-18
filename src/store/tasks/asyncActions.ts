@@ -2,7 +2,7 @@ import { createAsyncThunk } from '@reduxjs/toolkit'
 import { TASKS } from 'api'
 import { DomainPayloadType, PayloadType, TaskType } from 'api/tasks/types'
 import { ResponseCode } from 'enums/ResponseCode'
-import { RootStateType } from 'redux/store'
+import { RootStateType } from 'store'
 
 export const getTasks = createAsyncThunk
 	<{ tasks: TaskType[], toDoListId: string }, string, { rejectValue: { errors: string[] } }>

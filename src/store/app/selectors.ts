@@ -1,4 +1,4 @@
-import { RootStateType } from 'redux/store'
+import { RootStateType } from 'store'
 
 export const selectIsLoading = (state: RootStateType): boolean => state.app.isLoading
 

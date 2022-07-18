@@ -1,10 +1,10 @@
 import React, { FC, ReactElement } from 'react'
 import { AppBar, Toolbar, Typography, Button, LinearProgress } from '@mui/material'
 import { useSelector } from 'react-redux'
-import { selectIsLoading } from 'redux/app/selectors'
-import { selectAuthorizedUserData, selectIsAuth } from 'redux/auth/selectors'
-import { useAppDispatch } from 'redux/hooks'
-import { logOut } from 'redux/auth/asyncActions'
+import { selectIsLoading } from 'store/app/selectors'
+import { selectAuthorizedUserData, selectIsAuth } from 'store/auth/selectors'
+import { useAppDispatch } from 'store/hooks'
+import { logOut } from 'store/auth/asyncActions'
 import style from './Header.module.css'
 
 export const Header: FC = (): ReactElement => {

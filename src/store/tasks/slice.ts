@@ -1,6 +1,6 @@
-import { logOut } from 'redux/auth/asyncActions'
+import { logOut } from 'store/auth/asyncActions'
 import { createSlice } from '@reduxjs/toolkit'
-import { addToDoList, getToDoLists, removeToDoList } from 'redux/toDoLists/asyncActions'
+import { addToDoList, getToDoLists, removeToDoList } from 'store/toDoLists/asyncActions'
 import { addTask, getTasks, removeTask, updateTask } from './asyncActions'
 import { TasksSliceInitialStateType } from './types'
 

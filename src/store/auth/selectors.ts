@@ -1,5 +1,5 @@
 import { AuthorizedUserDataType } from 'api/auth/types'
-import { RootStateType } from 'redux/store'
+import { RootStateType } from 'store'
 import { Nullable } from 'types'
 
 export const selectIsAuth = (state: RootStateType): boolean => state.auth.isAuth
