@@ -38,16 +38,6 @@ const toDoListsSlice = createSlice({
 			.addCase(getToDoLists.fulfilled, (state, action) => {
 				state.toDoLists = action.payload.map(toDoList => ({ ...toDoList, filter: FilterValue.ALL, isDisabled: false }))
 			})
-			.addCase(changeToDoListTitle.fulfilled, (state, action) => {
-				const index = state.toDoLists.findIndex(toDoList => toDoList.id === action.payload.toDoListId)
-				if (index > -1) {
-					state.toDoLists[index].title = action.payload.title
-				}
-				// const toDoList = state.toDoLists.find(toDoList => toDoList.id === action.payload.toDoListId)
-				// if (toDoList) {
-				// 	toDoList.title = action.payload.title
-				// }
-			})
 			.addCase(addToDoList.fulfilled, (state, action) => {
 				state.toDoLists.unshift({ ...action.payload, filter: FilterValue.ALL, isDisabled: false })
 			})
@@ -57,6 +47,16 @@ const toDoListsSlice = createSlice({
 				// 	state.toDoLists.splice(index, 1)
 				// }
 				state.toDoLists = state.toDoLists.filter(toDoList => toDoList.id !== action.payload)
+			})
+			.addCase(changeToDoListTitle.fulfilled, (state, action) => {
+				const index = state.toDoLists.findIndex(toDoList => toDoList.id === action.payload.toDoListId)
+				if (index > -1) {
+					state.toDoLists[index].title = action.payload.title
+				}
+				// const toDoList = state.toDoLists.find(toDoList => toDoList.id === action.payload.toDoListId)
+				// if (toDoList) {
+				// 	toDoList.title = action.payload.title
+				// }
 			})
 			.addCase(logOut.fulfilled, (state) => {
 				state.toDoLists = []
