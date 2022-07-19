@@ -1,16 +1,15 @@
 import React, { FC, memo, ReactElement, useCallback, useEffect } from 'react'
 import Delete from '@mui/icons-material/Delete'
-import { Button, IconButton, Paper } from '@mui/material'
+import { IconButton, Paper } from '@mui/material'
 import { useSelector } from 'react-redux'
 import { useAppDispatch } from 'store/hooks'
-import { addTask, getTasks } from 'store/asyncActions/tasks'
-import { selectTasks } from 'store/selectors/tasks'
+import { FilterValue } from 'enums'
 import { TaskStatus } from 'api/tasks/types'
-import { changeToDoListTitle, removeToDoList } from 'store/asyncActions/toDoLists'
-import { changeToDoListFilter } from 'store/slices/toDoLists'
 import { EditableItem, AddItemForm } from 'components/common'
-import { Task } from 'components/toDoList/task/Task'
-import { FilterValue } from 'enums/FilterValue'
+import { changeToDoListTitle, removeToDoList, addTask, getTasks } from 'store/asyncActions'
+import { selectTasks } from 'store/selectors'
+import { Task } from './task'
+import { Filter } from 'components/filter'
 import style from './ToDoList.module.css'
 
 type ToDoListPropsType = {
@@ -41,21 +40,7 @@ export const ToDoList: FC<ToDoListPropsType> = memo(({ toDoListId, filter, isDis
 	})
 
 	const filterValuesRender = filterValues.map((value, index) => {
-
-		const onChangeToDoListFilterValueClick = (): void => {
-			dispatch(changeToDoListFilter({ toDoListId, value }))
-		}
-
-		return (
-			<Button
-				key={index}
-				variant={filter === value ? 'outlined' : 'text'}
-				color={'primary'}
-				disabled={isDisabled}
-				onClick={onChangeToDoListFilterValueClick}>
-				{value}
-			</Button>
-		)
+		return <Filter key={index} currentValue={value} isDisabled={isDisabled} toDoListId={toDoListId} filterValue={filter} />
 	})
 
 	const handleChangeToDoListTitleClickAndBlur = useCallback((newTitle: string): void => {

@@ -3,10 +3,10 @@ import Delete from '@mui/icons-material/Delete'
 import { Checkbox, IconButton } from '@mui/material'
 import { TaskStatus } from 'api/tasks/types'
 import { useAppDispatch } from 'store/hooks'
-import { removeTask, updateTask } from 'store/asyncActions/tasks'
+import { removeTask, updateTask } from 'store/asyncActions'
+import { EMPTY_STRING } from 'constants/base'
 import { EditableItem } from 'components/common'
 import style from './Task.module.css'
-import { EMPTY_STRING } from 'constants/base'
 
 type TaskPropsType = {
 	toDoListId: string

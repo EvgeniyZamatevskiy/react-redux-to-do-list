@@ -1,5 +1,5 @@
 import React, { FC, ReactElement } from 'react'
-import Snackbar from '@mui/material/Snackbar'
+import { Snackbar } from '@mui/material'
 import MuiAlert, { AlertProps } from '@mui/material/Alert'
 import { useAppDispatch } from 'store/hooks'
 import { useSelector } from 'react-redux'

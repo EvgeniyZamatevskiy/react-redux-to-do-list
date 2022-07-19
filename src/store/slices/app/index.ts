@@ -1,10 +1,10 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import { getAuthorizedUserData } from 'store/asyncActions/auth'
 import { AppSliceInitialStateType } from './types'
-import { isErrorRejected, isLoadingFulfilled, isLoadingPending, isLoadingRejected } from '../../helpers/app'
 import { EMPTY_STRING } from 'constants/base'
+import { isLoadingPending, isErrorRejected, isLoadingFulfilled, isLoadingRejected } from 'store/helpers'
 
-const FIRST_ITEM_ARRAY = 0
+const FIRST_ELEMENT_ARRAY = 0
 
 const initialState: AppSliceInitialStateType = {
 	isLoading: false,
@@ -38,7 +38,7 @@ const appSlice = createSlice({
 				state.isLoading = false
 			})
 			.addMatcher(isErrorRejected, (state, action: PayloadAction<{ errors: string[] }>) => {
-				state.errorMessage = action.payload.errors[FIRST_ITEM_ARRAY]
+				state.errorMessage = action.payload.errors[FIRST_ELEMENT_ARRAY]
 			})
 	},
 })

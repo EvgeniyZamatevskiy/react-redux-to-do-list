@@ -1,16 +1,12 @@
-import React, { FC, lazy, ReactElement, Suspense, useEffect } from 'react'
+import React, { FC, ReactElement, Suspense, useEffect } from 'react'
 import { Container, CircularProgress } from '@mui/material'
-import { Navigate, Route, Routes } from 'react-router-dom'
-import { ToDoLists } from 'pages'
+import { Route, Routes } from 'react-router-dom'
 import { ErrorSnackbar, Header } from 'components'
-import { Path } from 'enums/Path'
 import { useAppDispatch } from 'store/hooks'
 import { getAuthorizedUserData } from 'store/asyncActions/auth'
 import { useSelector } from 'react-redux'
 import { selectIsInitializedApp } from 'store/selectors/app'
-
-const NotFound = lazy(() => import(/* webpackChunkName: 'NotFound' */'pages/notFound'))
-const Login = lazy(() => import(/* webpackChunkName: 'Login' */'pages/login'))
+import { ROUTES } from 'router'
 
 export const App: FC = (): ReactElement => {
 
@@ -33,10 +29,7 @@ export const App: FC = (): ReactElement => {
       <Container fixed maxWidth={'xl'}>
         <Suspense fallback={<div className='preloader'><CircularProgress /></div>}>
           <Routes>
-            <Route path={Path.HOME} element={<ToDoLists />} />
-            <Route path={Path.LOGIN} element={<Login />} />
-            <Route path={Path.ERROR_404} element={<NotFound />} />
-            <Route path={Path.NOT_FOUND} element={<Navigate to={Path.ERROR_404} />} />
+            {ROUTES.map(({ path, element }) => <Route key={path} path={path} element={element} />)}
           </Routes>
         </Suspense>
       </Container>

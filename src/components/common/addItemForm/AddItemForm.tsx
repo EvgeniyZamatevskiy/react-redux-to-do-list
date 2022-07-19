@@ -1,8 +1,8 @@
 import React, { ChangeEvent, FC, KeyboardEvent, memo, ReactElement, useState } from 'react'
 import AddBox from '@mui/icons-material/AddBox'
-import TextField from '@mui/material/TextField'
-import IconButton from '@mui/material/IconButton'
+import { TextField, IconButton } from '@mui/material'
 import { EMPTY_STRING } from 'constants/base'
+import { Key } from 'enums'
 
 type AddItemFormPropsType = {
 	addItem: (value: string) => void
@@ -39,7 +39,7 @@ export const AddItemForm: FC<AddItemFormPropsType> = memo(({ addItem, isDisabled
 	}
 
 	const onAddItemKeyDown = (event: KeyboardEvent<HTMLDivElement>): void => {
-		if (event.key === 'Enter') {
+		if (event.key === Key.ENTER) {
 			onAddItemClick()
 		}
 	}

@@ -1,7 +1,8 @@
 import React, { ChangeEvent, FC, KeyboardEvent, memo, ReactElement, useState } from 'react'
-import TextField from '@mui/material/TextField'
-import s from './EditableItem.module.css'
 import { EMPTY_STRING } from 'constants/base'
+import { Key } from 'enums'
+import { TextField } from '@mui/material'
+import s from './EditableItem.module.css'
 
 type EditableItemPropsType = {
 	currentValue: string
@@ -29,7 +30,7 @@ export const EditableItem: FC<EditableItemPropsType> = memo(({ currentValue, cha
 	}
 
 	const onChangeCurrentValueKeyDown = (event: KeyboardEvent<HTMLDivElement>): void => {
-		if (event.key === 'Enter') {
+		if (event.key === Key.ENTER) {
 			setEditMode(false)
 			changeCurrentValue(newValue)
 		}

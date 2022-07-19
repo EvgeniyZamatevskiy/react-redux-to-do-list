@@ -1,4 +1,4 @@
-import React, { ReactElement } from 'react'
+import React, { FC, ReactElement } from 'react'
 import { Grid, Checkbox, FormControl, FormControlLabel, FormGroup, FormLabel, TextField, Button } from '@mui/material'
 import { useFormik } from 'formik'
 import { useAppDispatch } from 'store/hooks'
@@ -16,7 +16,7 @@ type FormikErrorType = {
 	rememberMe?: boolean
 }
 
-const Login = (): ReactElement => {
+export const Login: FC = (): ReactElement => {
 
 	const dispatch = useAppDispatch()
 
@@ -95,5 +95,3 @@ const Login = (): ReactElement => {
 		</Grid>
 	)
 }
-
-export default Login

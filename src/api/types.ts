@@ -1,4 +1,4 @@
-import { ResponseCode } from 'enums/ResponseCode'
+import { ResponseCode } from 'enums'
 
 export type CommonResponseType<T = {}> = {
 	data: T,
