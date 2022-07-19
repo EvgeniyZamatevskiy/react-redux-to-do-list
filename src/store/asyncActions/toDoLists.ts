@@ -2,7 +2,7 @@ import { createAsyncThunk } from '@reduxjs/toolkit'
 import { TODOLISTS } from 'api'
 import { ToDoListType } from 'api/toDoLists/types'
 import { ResponseCode } from 'enums/ResponseCode'
-import { setIsDisabled } from '../../slices/toDoLists'
+import { setIsDisabled } from '../slices/toDoLists'
 
 export const getToDoLists = createAsyncThunk
 	<ToDoListType[], undefined, { rejectValue: { errors: string[] } }>

@@ -3,10 +3,10 @@ import { Container, CircularProgress } from '@mui/material'
 import { Route, Routes } from 'react-router-dom'
 import { ErrorSnackbar, Header } from 'components'
 import { useAppDispatch } from 'store/hooks'
-import { getAuthorizedUserData } from 'store/asyncActions/auth'
 import { useSelector } from 'react-redux'
 import { selectIsInitializedApp } from 'store/selectors/app'
 import { ROUTES } from 'router'
+import { getAuthorizedUserData } from 'store/asyncActions'
 
 export const App: FC = (): ReactElement => {
 
