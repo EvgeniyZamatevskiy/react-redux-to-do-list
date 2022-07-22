@@ -19,17 +19,17 @@ export const EditableItem: FC<EditableItemPropsType> = memo(({ currentValue, cha
 		setNewValue(event.currentTarget.value)
 	}
 
-	const onActivateEditModeClick = (): void => {
+	const onSetCurrentValueClick = (): void => {
 		setEditMode(true)
 		setNewValue(currentValue)
 	}
 
-	const onChangeCurrentValueBlur = (): void => {
+	const onSetNewValueBlur = (): void => {
 		setEditMode(false)
 		changeCurrentValue(newValue)
 	}
 
-	const onChangeCurrentValueKeyDown = (event: KeyboardEvent<HTMLDivElement>): void => {
+	const onSetNewValueKeyDown = (event: KeyboardEvent<HTMLDivElement>): void => {
 		if (event.key === Key.ENTER) {
 			setEditMode(false)
 			changeCurrentValue(newValue)
@@ -44,9 +44,9 @@ export const EditableItem: FC<EditableItemPropsType> = memo(({ currentValue, cha
 					value={newValue}
 					onChange={onInputChange}
 					autoFocus
-					onBlur={onChangeCurrentValueBlur}
-					onKeyDown={onChangeCurrentValueKeyDown} />
-				: <span className={s.span} onClick={onActivateEditModeClick}>{currentValue}</span>}
+					onBlur={onSetNewValueBlur}
+					onKeyDown={onSetNewValueKeyDown} />
+				: <span className={s.span} onClick={onSetCurrentValueClick}>{currentValue}</span>}
 		</>
 	)
 })

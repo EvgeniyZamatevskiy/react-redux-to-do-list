@@ -27,14 +27,14 @@ export const ToDoLists: FC = (): ReactElement => {
 		)
 	})
 
-	const handleAddToDoListClickAndKeyDown = useCallback((title: string): void => {
-		dispatch(addToDoList(title))
-	}, [])
-
 	useEffect(() => {
 		if (isAuth) {
 			dispatch(getToDoLists())
 		}
+	}, [])
+
+	const handleAddToDoListClickAndKeyDown = useCallback((title: string): void => {
+		dispatch(addToDoList(title))
 	}, [])
 
 	if (!isAuth) {

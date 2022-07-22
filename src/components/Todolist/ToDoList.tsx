@@ -38,10 +38,13 @@ export const ToDoList: FC<ToDoListPropsType> = memo(({ toDoListId, filter, isDis
 	const filteredTasksRender = filteredTasks.map(({ todoListId, id, status, title }) => {
 		return <Task key={id} toDoListId={todoListId} taskId={id} status={status} title={title} isDisabled={isDisabled} />
 	})
-
 	const filterValuesRender = filterValues.map((value, index) => {
 		return <Filter key={index} currentValue={value} isDisabled={isDisabled} toDoListId={toDoListId} filterValue={filter} />
 	})
+
+	useEffect(() => {
+		dispatch(getTasks(toDoListId))
+	}, [])
 
 	const handleChangeToDoListTitleClickAndBlur = useCallback((newTitle: string): void => {
 		dispatch(changeToDoListTitle({ toDoListId, title: newTitle }))
@@ -54,10 +57,6 @@ export const ToDoList: FC<ToDoListPropsType> = memo(({ toDoListId, filter, isDis
 	const handleAddTaskClickAndKeyDown = useCallback((title: string): void => {
 		dispatch(addTask({ toDoListId, title }))
 	}, [toDoListId])
-
-	useEffect(() => {
-		dispatch(getTasks(toDoListId))
-	}, [])
 
 	return (
 		<Paper sx={{ position: 'relative', padding: '10px' }}>

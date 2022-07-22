@@ -32,11 +32,6 @@ const tasksSlice = createSlice({
 				state.tasks[action.payload.todoListId].unshift(action.payload)
 			})
 			.addCase(removeTask.fulfilled, (state, action) => {
-				// const tasks = state.tasks[action.payload.toDoListId]
-				// const index = tasks.findIndex(task => task.id === action.payload.taskId)
-				// if (index > -1) {
-				// 	tasks.splice(index, 1)
-				// }
 				state.tasks[action.payload.toDoListId] = state.tasks[action.payload.toDoListId]
 					.filter(task => task.id !== action.payload.taskId)
 			})
