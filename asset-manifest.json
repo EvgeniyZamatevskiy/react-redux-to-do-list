@@ -1,7 +1,7 @@
 {
   "files": {
     "main.css": "/react-to-do-list/static/css/main.c99fb7d6.css",
-    "main.js": "/react-to-do-list/static/js/main.d111ef7c.js",
+    "main.js": "/react-to-do-list/static/js/main.705075b2.js",
     "Login.css": "/react-to-do-list/static/css/Login.11555758.chunk.css",
     "Login.js": "/react-to-do-list/static/js/Login.1566202b.chunk.js",
     "NotFound.css": "/react-to-do-list/static/css/NotFound.61b3185c.chunk.css",
@@ -10,7 +10,7 @@
     "static/js/224.27dc2640.chunk.js": "/react-to-do-list/static/js/224.27dc2640.chunk.js",
     "index.html": "/react-to-do-list/index.html",
     "main.c99fb7d6.css.map": "/react-to-do-list/static/css/main.c99fb7d6.css.map",
-    "main.d111ef7c.js.map": "/react-to-do-list/static/js/main.d111ef7c.js.map",
+    "main.705075b2.js.map": "/react-to-do-list/static/js/main.705075b2.js.map",
     "Login.11555758.chunk.css.map": "/react-to-do-list/static/css/Login.11555758.chunk.css.map",
     "Login.1566202b.chunk.js.map": "/react-to-do-list/static/js/Login.1566202b.chunk.js.map",
     "NotFound.61b3185c.chunk.css.map": "/react-to-do-list/static/css/NotFound.61b3185c.chunk.css.map",
@@ -20,6 +20,6 @@
   },
   "entrypoints": [
     "static/css/main.c99fb7d6.css",
-    "static/js/main.d111ef7c.js"
+    "static/js/main.705075b2.js"
   ]
 }
