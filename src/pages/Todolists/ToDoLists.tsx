@@ -1,6 +1,6 @@
 import React, { FC, ReactElement, useCallback, useEffect } from 'react'
 import Grid from '@mui/material/Grid'
-import { useAppDispatch } from 'store/hooks'
+import { useAppDispatch } from 'hooks'
 import { useSelector } from 'react-redux'
 import { Navigate } from 'react-router-dom'
 import { ToDoList, AddItemForm } from 'components'

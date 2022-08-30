@@ -1,7 +1,10 @@
 import { createAsyncThunk } from '@reduxjs/toolkit'
 import { AUTH } from 'api'
 import { AuthorizedUserDataType, LoginParamsType } from 'api/auth/types'
+import { AxiosError } from 'axios'
+import { FIRST_ELEMENT_ARRAY } from 'constants/base'
 import { ResponseCode } from 'enums/ResponseCode'
+import { handleServerNetworkError } from 'utils'
 
 export const getAuthorizedUserData = createAsyncThunk
 	<
@@ -17,10 +20,10 @@ export const getAuthorizedUserData = createAsyncThunk
 			if (resultCode === ResponseCode.SUCCESS) {
 				return authorizedUserData
 			} else {
-				return rejectWithValue({ error: messages[0] })
+				return rejectWithValue({ error: messages[FIRST_ELEMENT_ARRAY] })
 			}
-		} catch (error: any) {
-			return rejectWithValue({ error: error.message })
+		} catch (error) {
+			return handleServerNetworkError(error as AxiosError | Error, rejectWithValue)
 		}
 	})
 
@@ -38,25 +41,29 @@ export const login = createAsyncThunk
 			if (resultCode === ResponseCode.SUCCESS) {
 				dispatch(getAuthorizedUserData())
 			} else {
-				return rejectWithValue({ error: messages[0] })
+				return rejectWithValue({ error: messages[FIRST_ELEMENT_ARRAY] })
 			}
-		} catch (error: any) {
-			return rejectWithValue({ error: error.message })
+		} catch (error) {
+			return handleServerNetworkError(error as AxiosError | Error, rejectWithValue)
 		}
 	})
 
 export const logOut = createAsyncThunk
-	<void, undefined, { rejectValue: { errors: string[] } }>
+	<
+		void,
+		undefined,
+		{ rejectValue: { error: string } }
+	>
 	('auth/logOut', async (_, { rejectWithValue }) => {
 		try {
 			const response = await AUTH.logOut()
 			const { resultCode, messages } = response.data
 
 			if (resultCode !== ResponseCode.SUCCESS) {
-				return rejectWithValue({ errors: messages })
+				return rejectWithValue({ error: messages[FIRST_ELEMENT_ARRAY] })
 			}
 
-		} catch (error: any) {
-			return rejectWithValue({ errors: [error.message] })
+		} catch (error) {
+			return handleServerNetworkError(error as AxiosError | Error, rejectWithValue)
 		}
 	})

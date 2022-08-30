@@ -1,24 +1,34 @@
 import { createAsyncThunk } from '@reduxjs/toolkit'
 import { TASKS } from 'api'
 import { DomainPayloadType, PayloadType, TaskType } from 'api/tasks/types'
+import { AxiosError } from 'axios'
+import { FIRST_ELEMENT_ARRAY } from 'constants/base'
 import { ResponseCode } from 'enums/ResponseCode'
 import { RootStateType } from 'store'
+import { handleServerNetworkError } from 'utils'
 
 export const getTasks = createAsyncThunk
-	<{ tasks: TaskType[], toDoListId: string }, string, { rejectValue: { errors: string[] } }>
+	<
+		{ tasks: TaskType[], toDoListId: string },
+		string,
+		{ rejectValue: { error: string } }>
 	('tasks/getTasks', async (toDoListId, { rejectWithValue }) => {
 		try {
 			const response = await TASKS.getTasks(toDoListId)
 			const tasks = response.data.items
 
 			return { tasks, toDoListId }
-		} catch (error: any) {
-			return rejectWithValue({ errors: [error.message] })
+		} catch (error) {
+			return handleServerNetworkError(error as AxiosError | Error, rejectWithValue)
 		}
 	})
 
 export const addTask = createAsyncThunk
-	<TaskType, { toDoListId: string, title: string }, { rejectValue: { errors: string[] } }>
+	<
+		TaskType,
+		{ toDoListId: string, title: string },
+		{ rejectValue: { error: string } }
+	>
 	('tasks/addTask', async (params, { rejectWithValue }) => {
 		try {
 			const response = await TASKS.addTask(params.toDoListId, params.title)
@@ -28,15 +38,19 @@ export const addTask = createAsyncThunk
 			if (resultCode === ResponseCode.SUCCESS) {
 				return task
 			} else {
-				return rejectWithValue({ errors: messages })
+				return rejectWithValue({ error: messages[FIRST_ELEMENT_ARRAY] })
 			}
-		} catch (error: any) {
-			return rejectWithValue({ errors: [error.message] })
+		} catch (error) {
+			return handleServerNetworkError(error as AxiosError | Error, rejectWithValue)
 		}
 	})
 
 export const removeTask = createAsyncThunk
-	<{ toDoListId: string, taskId: string }, { toDoListId: string, taskId: string }, { rejectValue: { errors: string[] } }>
+	<
+		{ toDoListId: string, taskId: string },
+		{ toDoListId: string, taskId: string },
+		{ rejectValue: { error: string } }
+	>
 	('tasks/removeTask', async (params, { rejectWithValue }) => {
 		try {
 			const response = await TASKS.removeTask(params.toDoListId, params.taskId)
@@ -45,23 +59,25 @@ export const removeTask = createAsyncThunk
 			if (resultCode === ResponseCode.SUCCESS) {
 				return { toDoListId: params.toDoListId, taskId: params.taskId }
 			} else {
-				return rejectWithValue({ errors: messages })
+				return rejectWithValue({ error: messages[FIRST_ELEMENT_ARRAY] })
 			}
-		} catch (error: any) {
-			return rejectWithValue({ errors: [error.message] })
+		} catch (error) {
+			return handleServerNetworkError(error as AxiosError | Error, rejectWithValue)
 		}
 	})
 
 export const updateTask = createAsyncThunk
-	<{ toDoListId: string, taskId: string, domainPayload: DomainPayloadType },
+	<
 		{ toDoListId: string, taskId: string, domainPayload: DomainPayloadType },
-		{ rejectValue: { errors: string[] }, state: RootStateType }
+		{ toDoListId: string, taskId: string, domainPayload: DomainPayloadType },
+		{ rejectValue: { error: string }, state: RootStateType }
 	>
 	('tasks/updateTask', async (params, { rejectWithValue, getState }) => {
+
 		const task = getState().tasks.tasks[params.toDoListId].find(task => task.id === params.taskId)
 
 		if (!task) {
-			return rejectWithValue({ errors: ['Task not found in the state!'] })
+			return rejectWithValue({ error: 'Task not found in the state!' })
 		}
 
 		const payload: PayloadType = {
@@ -80,9 +96,9 @@ export const updateTask = createAsyncThunk
 			if (resultCode === ResponseCode.SUCCESS) {
 				return params
 			} else {
-				return rejectWithValue({ errors: messages })
+				return rejectWithValue({ error: messages[FIRST_ELEMENT_ARRAY] })
 			}
-		} catch (error: any) {
-			return rejectWithValue({ errors: [error.message] })
+		} catch (error) {
+			return handleServerNetworkError(error as AxiosError | Error, rejectWithValue)
 		}
 	})

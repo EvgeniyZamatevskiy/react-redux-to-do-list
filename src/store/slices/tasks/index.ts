@@ -1,8 +1,8 @@
 import { logOut } from 'store/asyncActions/auth'
 import { createSlice } from '@reduxjs/toolkit'
 import { addToDoList, getToDoLists, removeToDoList } from 'store/asyncActions/toDoLists'
-import { addTask, getTasks, removeTask, updateTask } from '../../asyncActions/tasks'
 import { TasksSliceInitialStateType } from './types'
+import { getTasks, addTask, removeTask, updateTask } from 'store/asyncActions'
 
 const initialState: TasksSliceInitialStateType = {
 	tasks: {}
@@ -38,6 +38,7 @@ const tasksSlice = createSlice({
 			.addCase(updateTask.fulfilled, (state, action) => {
 				const tasks = state.tasks[action.payload.toDoListId]
 				const index = tasks.findIndex(task => task.id === action.payload.taskId)
+
 				if (index > -1) {
 					tasks[index] = { ...tasks[index], ...action.payload.domainPayload }
 				}

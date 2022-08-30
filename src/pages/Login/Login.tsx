@@ -1,21 +1,15 @@
 import React, { FC, ReactElement } from 'react'
 import { Grid, Checkbox, FormControl, FormControlLabel, FormGroup, FormLabel, TextField, Button } from '@mui/material'
 import { useFormik } from 'formik'
-import { useAppDispatch } from 'store/hooks'
+import { useAppDispatch } from 'hooks'
 import { login } from 'store/asyncActions/auth'
 import { useSelector } from 'react-redux'
 import { selectIsAuth } from 'store/selectors/auth'
 import { Navigate } from 'react-router-dom'
 import { Path } from 'enums/Path'
-import style from './Login.module.css'
 import { EMPTY_STRING } from 'constants/base'
-import { selectErrorMessage } from 'store/selectors'
-
-type FormikErrorType = {
-	email?: string
-	password?: string
-	rememberMe?: boolean
-}
+import style from './Login.module.css'
+import { FormikErrorType } from './types'
 
 export const Login: FC = (): ReactElement => {
 
@@ -24,19 +18,22 @@ export const Login: FC = (): ReactElement => {
 	const isAuth = useSelector(selectIsAuth)
 
 	const formik = useFormik({
-
 		initialValues: { email: EMPTY_STRING, password: EMPTY_STRING, rememberMe: false },
 		validate: values => {
 			const errors: FormikErrorType = {}
+
 			if (!values.email) {
 				errors.email = 'Email is required!'
 			}
+
 			if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(values.email)) {
 				errors.email = 'Invalid email address'
 			}
+
 			if (!values.password) {
 				errors.password = 'Password is required!'
 			}
+
 			if (values.password.length < 3) {
 				errors.password = 'Password must be more than 3 characters!'
 			}

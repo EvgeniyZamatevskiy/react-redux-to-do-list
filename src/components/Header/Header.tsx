@@ -1,7 +1,7 @@
 import React, { FC, ReactElement } from 'react'
 import { AppBar, Toolbar, Typography, Button, LinearProgress } from '@mui/material'
 import { useSelector } from 'react-redux'
-import { useAppDispatch } from 'store/hooks'
+import { useAppDispatch } from 'hooks'
 import { logOut } from 'store/asyncActions'
 import { selectIsLoading, selectIsAuth, selectAuthorizedUserData } from 'store/selectors'
 import { Link, useLocation } from 'react-router-dom'

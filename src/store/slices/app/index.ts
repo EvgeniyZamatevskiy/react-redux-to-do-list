@@ -4,8 +4,6 @@ import { AppSliceInitialStateType } from './types'
 import { EMPTY_STRING } from 'constants/base'
 import { isLoadingPending, isErrorRejected, isLoadingFulfilled, isLoadingRejected } from 'store/helpers'
 
-const FIRST_ELEMENT_ARRAY = 0
-
 const initialState: AppSliceInitialStateType = {
 	isLoading: false,
 	errorMessage: EMPTY_STRING,

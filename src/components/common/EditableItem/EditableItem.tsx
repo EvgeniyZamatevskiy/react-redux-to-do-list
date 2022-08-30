@@ -2,7 +2,7 @@ import React, { ChangeEvent, FC, KeyboardEvent, memo, ReactElement, useState } f
 import { EMPTY_STRING } from 'constants/base'
 import { Key } from 'enums'
 import { TextField } from '@mui/material'
-import s from './EditableItem.module.css'
+import style from './EditableItem.module.css'
 
 type EditableItemPropsType = {
 	currentValue: string
@@ -12,8 +12,8 @@ type EditableItemPropsType = {
 
 export const EditableItem: FC<EditableItemPropsType> = memo(({ currentValue, changeCurrentValue, isDisabled }): ReactElement => {
 
-	const [editMode, setEditMode] = useState<boolean>(false)
-	const [newValue, setNewValue] = useState<string>(EMPTY_STRING)
+	const [editMode, setEditMode] = useState(false)
+	const [newValue, setNewValue] = useState(EMPTY_STRING)
 
 	const onInputChange = (event: ChangeEvent<HTMLInputElement>): void => {
 		setNewValue(event.currentTarget.value)
@@ -46,7 +46,7 @@ export const EditableItem: FC<EditableItemPropsType> = memo(({ currentValue, cha
 					autoFocus
 					onBlur={onSetNewValueBlur}
 					onKeyDown={onSetNewValueKeyDown} />
-				: <span className={s.span} onClick={onSetCurrentValueClick}>{currentValue}</span>}
+				: <span className={style.span} onClick={onSetCurrentValueClick}>{currentValue}</span>}
 		</>
 	)
 })

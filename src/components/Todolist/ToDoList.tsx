@@ -2,7 +2,7 @@ import React, { FC, memo, ReactElement, useCallback, useEffect } from 'react'
 import Delete from '@mui/icons-material/Delete'
 import { IconButton, Paper } from '@mui/material'
 import { useSelector } from 'react-redux'
-import { useAppDispatch } from 'store/hooks'
+import { useAppDispatch } from 'hooks'
 import { FilterValue } from 'enums'
 import { TaskStatus } from 'api/tasks/types'
 import { EditableItem, AddItemForm } from 'components/common'
@@ -11,13 +11,7 @@ import { selectTasks } from 'store/selectors'
 import { Task } from './task'
 import { Filter } from 'components/filter'
 import style from './ToDoList.module.css'
-
-type ToDoListPropsType = {
-	toDoListId: string,
-	filter: FilterValue,
-	isDisabled: boolean,
-	title: string
-}
+import { ToDoListPropsType } from './types'
 
 const filterValues: FilterValue[] = [FilterValue.ALL, FilterValue.ACTIVE, FilterValue.COMPLETED]
 

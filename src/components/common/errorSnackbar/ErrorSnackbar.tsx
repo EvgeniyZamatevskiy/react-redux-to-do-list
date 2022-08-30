@@ -1,7 +1,7 @@
 import React, { FC, ReactElement } from 'react'
 import { Snackbar } from '@mui/material'
 import MuiAlert, { AlertProps } from '@mui/material/Alert'
-import { useAppDispatch } from 'store/hooks'
+import { useAppDispatch } from 'hooks'
 import { useSelector } from 'react-redux'
 import { selectErrorMessage } from 'store/selectors/app'
 import { setErrorMessage } from 'store/slices/app'

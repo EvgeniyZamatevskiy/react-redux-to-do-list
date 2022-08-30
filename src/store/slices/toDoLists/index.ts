@@ -14,6 +14,7 @@ const toDoListsSlice = createSlice({
 	reducers: {
 		changeToDoListFilter(state, action: PayloadAction<{ toDoListId: string, value: FilterValue }>) {
 			const toDoList = state.toDoLists.find(toDoList => toDoList.id === action.payload.toDoListId)
+
 			if (toDoList) {
 				toDoList.filter = action.payload.value
 			}

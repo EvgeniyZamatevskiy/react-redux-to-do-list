@@ -3,18 +3,14 @@ import AddBox from '@mui/icons-material/AddBox'
 import { TextField, IconButton } from '@mui/material'
 import { EMPTY_STRING } from 'constants/base'
 import { Key } from 'enums'
-
-type AddItemFormPropsType = {
-	addItem: (value: string) => void
-	isDisabled?: boolean
-}
+import { AddItemFormPropsType } from './types'
 
 const ERROR_MESSAGE = 'Title is required!'
 
 export const AddItemForm: FC<AddItemFormPropsType> = memo(({ addItem, isDisabled }): ReactElement => {
 
-	const [value, setValue] = useState<string>(EMPTY_STRING)
-	const [errorMessage, setErrorMessage] = useState<string>(EMPTY_STRING)
+	const [value, setValue] = useState(EMPTY_STRING)
+	const [errorMessage, setErrorMessage] = useState(EMPTY_STRING)
 
 	const resetErrorMessage = (): void => setErrorMessage(EMPTY_STRING)
 
@@ -22,6 +18,7 @@ export const AddItemForm: FC<AddItemFormPropsType> = memo(({ addItem, isDisabled
 
 	const onInputChange = (event: ChangeEvent<HTMLInputElement>): void => {
 		setValue(event.currentTarget.value)
+
 		if (errorMessage !== EMPTY_STRING) {
 			resetErrorMessage()
 		}

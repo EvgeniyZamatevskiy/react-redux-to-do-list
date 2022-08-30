@@ -2,19 +2,12 @@ import React, { ChangeEvent, FC, memo, ReactElement, useCallback } from 'react'
 import Delete from '@mui/icons-material/Delete'
 import { Checkbox, IconButton } from '@mui/material'
 import { TaskStatus } from 'api/tasks/types'
-import { useAppDispatch } from 'store/hooks'
+import { useAppDispatch } from 'hooks'
 import { removeTask, updateTask } from 'store/asyncActions'
 import { EMPTY_STRING } from 'constants/base'
 import { EditableItem } from 'components/common'
 import style from './Task.module.css'
-
-type TaskPropsType = {
-	toDoListId: string
-	taskId: string
-	status: TaskStatus
-	title: string
-	isDisabled: boolean
-}
+import { TaskPropsType } from './types'
 
 export const Task: FC<TaskPropsType> = memo(({ toDoListId, taskId, status, title, isDisabled }): ReactElement => {
 
