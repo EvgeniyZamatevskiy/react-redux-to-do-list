@@ -37,8 +37,8 @@ const appSlice = createSlice({
 			.addMatcher(isLoadingRejected, (state) => {
 				state.isLoading = false
 			})
-			.addMatcher(isErrorRejected, (state, action: PayloadAction<{ errors: string[] }>) => {
-				state.errorMessage = action.payload.errors[FIRST_ELEMENT_ARRAY]
+			.addMatcher(isErrorRejected, (state, action: PayloadAction<{ error: string }>) => {
+				state.errorMessage = action.payload.error
 			})
 	},
 })

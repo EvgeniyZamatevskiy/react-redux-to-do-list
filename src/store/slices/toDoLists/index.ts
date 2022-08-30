@@ -1,7 +1,7 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import { FilterValue } from 'enums/FilterValue'
+import { getToDoLists, addToDoList, removeToDoList, changeToDoListTitle } from 'store/asyncActions'
 import { logOut } from 'store/asyncActions/auth'
-import { addToDoList, changeToDoListTitle, getToDoLists, removeToDoList } from '../../asyncActions/toDoLists'
 import { ToDoListsSliceInitialStateType } from './types'
 
 const initialState: ToDoListsSliceInitialStateType = {
@@ -20,6 +20,7 @@ const toDoListsSlice = createSlice({
 		},
 		setIsDisabled(state, action: PayloadAction<{ toDoListId: string, isDisabled: boolean }>) {
 			const toDoList = state.toDoLists.find(toDoList => toDoList.id === action.payload.toDoListId)
+
 			if (toDoList) {
 				toDoList.isDisabled = action.payload.isDisabled
 			}
@@ -38,6 +39,7 @@ const toDoListsSlice = createSlice({
 			})
 			.addCase(changeToDoListTitle.fulfilled, (state, action) => {
 				const index = state.toDoLists.findIndex(toDoList => toDoList.id === action.payload.toDoListId)
+
 				if (index > -1) {
 					state.toDoLists[index].title = action.payload.title
 				}

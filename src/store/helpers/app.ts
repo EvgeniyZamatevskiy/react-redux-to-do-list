@@ -6,6 +6,4 @@ export const isLoadingRejected = (action: AnyAction) => action.type.endsWith('re
 
 export const isLoadingPending = (action: AnyAction) => action.type.endsWith('pending')
 
-export const isErrorRejected = (action: AnyAction) => {
-	return action.type.endsWith('rejected') && action.type !== 'auth/getAuthorizedUserData/rejected'
-}
+export const isErrorRejected = (action: AnyAction) => action.type.endsWith('rejected')

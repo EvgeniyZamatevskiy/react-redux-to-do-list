@@ -4,7 +4,11 @@ import { AuthorizedUserDataType, LoginParamsType } from 'api/auth/types'
 import { ResponseCode } from 'enums/ResponseCode'
 
 export const getAuthorizedUserData = createAsyncThunk
-	<AuthorizedUserDataType, undefined, { rejectValue: { errors: string[] } }>
+	<
+		AuthorizedUserDataType,
+		undefined,
+		{ rejectValue: { error: string } }
+	>
 	('auth/getAuthorizedUserData', async (_, { rejectWithValue }) => {
 		try {
 			const response = await AUTH.me()
@@ -13,15 +17,19 @@ export const getAuthorizedUserData = createAsyncThunk
 			if (resultCode === ResponseCode.SUCCESS) {
 				return authorizedUserData
 			} else {
-				return rejectWithValue({ errors: messages })
+				return rejectWithValue({ error: messages[0] })
 			}
 		} catch (error: any) {
-			return rejectWithValue({ errors: [error.message] })
+			return rejectWithValue({ error: error.message })
 		}
 	})
 
 export const login = createAsyncThunk
-	<void, LoginParamsType, { rejectValue: { errors: string[] } }>
+	<
+		void,
+		LoginParamsType,
+		{ rejectValue: { error: string } }
+	>
 	('auth/login', async (loginParams, { dispatch, rejectWithValue }) => {
 		try {
 			const response = await AUTH.login(loginParams)
@@ -30,10 +38,10 @@ export const login = createAsyncThunk
 			if (resultCode === ResponseCode.SUCCESS) {
 				dispatch(getAuthorizedUserData())
 			} else {
-				return rejectWithValue({ errors: messages })
+				return rejectWithValue({ error: messages[0] })
 			}
 		} catch (error: any) {
-			return rejectWithValue({ errors: [error.message] })
+			return rejectWithValue({ error: error.message })
 		}
 	})
 
