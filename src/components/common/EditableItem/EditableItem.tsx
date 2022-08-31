@@ -2,50 +2,56 @@ import React, { ChangeEvent, FC, KeyboardEvent, memo, ReactElement, useState } f
 import { EMPTY_STRING } from 'constants/base'
 import { Key } from 'enums'
 import { TextField } from '@mui/material'
+import { EditableItemPropsType } from './types'
 import style from './EditableItem.module.css'
 
-type EditableItemPropsType = {
-	currentValue: string
-	changeCurrentValue: (newValue: string) => void
-	isDisabled?: boolean
-}
+export const EditableItem: FC<EditableItemPropsType> = memo(({ currentValue, updateValue, isDisabled }): ReactElement => {
 
-export const EditableItem: FC<EditableItemPropsType> = memo(({ currentValue, changeCurrentValue, isDisabled }): ReactElement => {
-
-	const [editMode, setEditMode] = useState(false)
-	const [newValue, setNewValue] = useState(EMPTY_STRING)
+	const [isEditMode, setIsEditMode] = useState(false)
+	const [updatedValue, setUpdatedValue] = useState(EMPTY_STRING)
 
 	const onInputChange = (event: ChangeEvent<HTMLInputElement>): void => {
-		setNewValue(event.currentTarget.value)
+		setUpdatedValue(event.currentTarget.value)
 	}
 
 	const onSetCurrentValueClick = (): void => {
-		setEditMode(true)
-		setNewValue(currentValue)
+		setIsEditMode(true)
+		setUpdatedValue(currentValue)
 	}
 
-	const onSetNewValueBlur = (): void => {
-		setEditMode(false)
-		changeCurrentValue(newValue)
+	const handleUpdateValueBlurOrKeyDown = (): void => {
+		const updatedValueTrimmed = updatedValue.trim()
+		const currentValueTrimmed = currentValue.trim()
+
+		if (updatedValueTrimmed !== currentValueTrimmed) {
+			updateValue(updatedValueTrimmed)
+		}
+
+		setIsEditMode(false)
 	}
 
-	const onSetNewValueKeyDown = (event: KeyboardEvent<HTMLDivElement>): void => {
+	const onSetNewValueOrDeactivateIsEditModeKeyDown = (event: KeyboardEvent<HTMLDivElement>): void => {
 		if (event.key === Key.ENTER) {
-			setEditMode(false)
-			changeCurrentValue(newValue)
+			handleUpdateValueBlurOrKeyDown()
+			return
+		}
+
+		if (event.key === Key.ESCAPE) {
+			setIsEditMode(false)
+			return
 		}
 	}
 
 	return (
 		<>
-			{editMode && !isDisabled
+			{isEditMode && !isDisabled
 				? <TextField
 					variant={'standard'}
-					value={newValue}
+					value={updatedValue}
 					onChange={onInputChange}
 					autoFocus
-					onBlur={onSetNewValueBlur}
-					onKeyDown={onSetNewValueKeyDown} />
+					onBlur={handleUpdateValueBlurOrKeyDown}
+					onKeyDown={onSetNewValueOrDeactivateIsEditModeKeyDown} />
 				: <span className={style.span} onClick={onSetCurrentValueClick}>{currentValue}</span>}
 		</>
 	)

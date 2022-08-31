@@ -6,8 +6,8 @@ import { useAppDispatch } from 'hooks'
 import { removeTask, updateTask } from 'store/asyncActions'
 import { EMPTY_STRING } from 'constants/base'
 import { EditableItem } from 'components/common'
-import style from './Task.module.css'
 import { TaskPropsType } from './types'
+import style from './Task.module.css'
 
 export const Task: FC<TaskPropsType> = memo(({ toDoListId, taskId, status, title, isDisabled }): ReactElement => {
 
@@ -17,8 +17,8 @@ export const Task: FC<TaskPropsType> = memo(({ toDoListId, taskId, status, title
 		dispatch(removeTask({ toDoListId, taskId }))
 	}
 
-	const handleChangeTaskTitleClickAndBlur = useCallback((newTitle: string): void => {
-		dispatch(updateTask({ toDoListId, taskId, domainPayload: { title: newTitle } }))
+	const handleChangeTaskTitleClickAndBlur = useCallback((updatedTitle: string): void => {
+		dispatch(updateTask({ toDoListId, taskId, domainPayload: { title: updatedTitle } }))
 	}, [toDoListId, taskId])
 
 	const onUpdateTaskStatusChange = (event: ChangeEvent<HTMLInputElement>): void => {
@@ -35,7 +35,7 @@ export const Task: FC<TaskPropsType> = memo(({ toDoListId, taskId, status, title
 					disabled={isDisabled}
 					onChange={onUpdateTaskStatusChange}
 				/>
-				<EditableItem currentValue={title} changeCurrentValue={handleChangeTaskTitleClickAndBlur} isDisabled={isDisabled} />
+				<EditableItem currentValue={title} updateValue={handleChangeTaskTitleClickAndBlur} isDisabled={isDisabled} />
 			</div>
 			<IconButton
 				size={'small'}

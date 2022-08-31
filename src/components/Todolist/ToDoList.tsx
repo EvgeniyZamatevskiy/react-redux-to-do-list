@@ -10,8 +10,8 @@ import { changeToDoListTitle, removeToDoList, addTask, getTasks } from 'store/as
 import { selectTasks } from 'store/selectors'
 import { Task } from './task'
 import { Filter } from 'components/filter'
-import style from './ToDoList.module.css'
 import { ToDoListPropsType } from './types'
+import style from './ToDoList.module.css'
 
 const filterValues: FilterValue[] = [FilterValue.ALL, FilterValue.ACTIVE, FilterValue.COMPLETED]
 
@@ -40,8 +40,8 @@ export const ToDoList: FC<ToDoListPropsType> = memo(({ toDoListId, filter, isDis
 		dispatch(getTasks(toDoListId))
 	}, [])
 
-	const handleChangeToDoListTitleClickAndBlur = useCallback((newTitle: string): void => {
-		dispatch(changeToDoListTitle({ toDoListId, title: newTitle }))
+	const handleChangeToDoListTitleClickAndBlur = useCallback((updatedTitle: string): void => {
+		dispatch(changeToDoListTitle({ toDoListId, title: updatedTitle }))
 	}, [toDoListId])
 
 	const onRemoveToDoListClick = (): void => {
@@ -63,7 +63,7 @@ export const ToDoList: FC<ToDoListPropsType> = memo(({ toDoListId, filter, isDis
 				<Delete fontSize={'small'} />
 			</IconButton>
 			<h3>
-				<EditableItem currentValue={title} changeCurrentValue={handleChangeToDoListTitleClickAndBlur} isDisabled={isDisabled} />
+				<EditableItem currentValue={title} updateValue={handleChangeToDoListTitleClickAndBlur} isDisabled={isDisabled} />
 			</h3>
 			<AddItemForm addItem={handleAddTaskClickAndKeyDown} isDisabled={isDisabled} />
 			<div>
