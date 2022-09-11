@@ -1,5 +1,5 @@
 export { Header } from './header'
 export { Filter } from './filter'
-export * from './toDoList'
-export * from './toDoList'
+export * from './todolist'
+export * from './todolist'
 export * from './common'
