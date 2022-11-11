@@ -1,11 +1,11 @@
-import { ToDoListType } from 'api/toDoLists/types'
-import { FilterValue } from 'enums/FilterValue'
+import { ToDoListType } from "api/toDoList/types"
+import { FilterValue } from "enums"
 
 export interface ToDoListsSliceInitialStateType {
-	toDoLists: ToDoListSupplementedType[]
+  toDoLists: ToDoListSupplementedType[]
 }
 
 export type ToDoListSupplementedType = ToDoListType & {
-	filter: FilterValue
-	isDisabled: boolean
+  filter: FilterValue
+  isDisabled: boolean
 }

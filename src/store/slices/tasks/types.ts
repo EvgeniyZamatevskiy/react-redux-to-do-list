@@ -1,9 +1,9 @@
-import { TaskType } from 'api/tasks/types'
+import { TaskType } from "api/tasks/types"
 
 export interface TasksSliceInitialStateType {
-	tasks: TasksType
+  tasks: TasksType
 }
 
 export type TasksType = {
-	[key: string]: TaskType[]
+  [key: string]: TaskType[]
 }

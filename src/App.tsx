@@ -1,12 +1,11 @@
-import React, { FC, ReactElement, Suspense, useEffect } from 'react'
-import { Container, CircularProgress } from '@mui/material'
-import { Route, Routes } from 'react-router-dom'
-import { ErrorSnackbar, Header } from 'components'
-import { useAppDispatch } from 'hooks'
-import { useSelector } from 'react-redux'
-import { selectIsInitializedApp } from 'store/selectors/app'
-import { ROUTES } from 'router'
-import { getAuthorizedUserData } from 'store/asyncActions'
+import React, { FC, ReactElement, useEffect } from "react"
+import Container from "@mui/material/Container"
+import CircularProgress from "@mui/material/CircularProgress"
+import { ErrorSnackbar, Header, AppRouter } from "components"
+import { useAppDispatch } from "hooks"
+import { useSelector } from "react-redux"
+import { selectIsInitializedApp } from "store/selectors/app"
+import { getAuthorizedUserData } from "store/asyncActions"
 
 export const App: FC = (): ReactElement => {
 
@@ -19,20 +18,16 @@ export const App: FC = (): ReactElement => {
   }, [])
 
   if (!isInitializedApp) {
-    return <div className='preloader'><CircularProgress /></div>
+    return <div className="preloader"><CircularProgress/></div>
   }
 
   return (
-    <div className='app'>
-      <ErrorSnackbar />
-      <Header />
-      <Container fixed maxWidth={'xl'}>
-        <Suspense fallback={<div className='preloader'><CircularProgress /></div>}>
-          <Routes>
-            {ROUTES.map(({ path, element }) => <Route key={path} path={path} element={element} />)}
-          </Routes>
-        </Suspense>
+    <div className="app">
+      <Header/>
+      <Container fixed maxWidth={"xl"}>
+        <AppRouter/>
       </Container>
-    </div >
+      <ErrorSnackbar/>
+    </div>
   )
 }

@@ -1,4 +1,4 @@
 export enum ResponseCode {
-	SUCCESS = 0,
-	ERROR = 1
+  SUCCESS = 0,
+  ERROR = 1
 }
