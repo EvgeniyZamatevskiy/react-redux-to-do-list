@@ -7,10 +7,10 @@ import LinearProgress from "@mui/material/LinearProgress"
 import { useSelector } from "react-redux"
 import { useAppDispatch } from "hooks"
 import { logOut } from "store/asyncActions"
-import { selectIsLoading, selectIsAuth, selectAuthorizedUserData } from "store/selectors"
+import { selectLoadingStatus, selectIsAuth, selectAuthorizedUserData } from "store/selectors"
 import { Link, useLocation } from "react-router-dom"
 import { Path } from "enums"
-import style from "./Header.module.css"
+import classes from "./Header.module.css"
 
 export const Header: FC = (): ReactElement => {
 
@@ -18,7 +18,7 @@ export const Header: FC = (): ReactElement => {
 
   const dispatch = useAppDispatch()
 
-  const isLoading = useSelector(selectIsLoading)
+  const loadingStatus = useSelector(selectLoadingStatus)
   const isAuth = useSelector(selectIsAuth)
   const authorizedUserData = useSelector(selectAuthorizedUserData)
 
@@ -30,16 +30,16 @@ export const Header: FC = (): ReactElement => {
     <AppBar position="fixed">
       <Toolbar>
         <Typography variant="h6" component="div" sx={{flexGrow: 1}}>
-          <Link to={Path.HOME} className={style.title}>To Do List</Link>
+          <Link to={Path.HOME} className={classes.title}>To Do List</Link>
         </Typography>
         {isAuth && pathname === Path.HOME &&
           <>
-            <div className={style.login}>{authorizedUserData?.login}</div>
+            <div className={classes.login}>{authorizedUserData?.login}</div>
             <Button color="inherit" onClick={onLogOutClick}>Log out</Button>
           </>
         }
       </Toolbar>
-      {isLoading && <LinearProgress/>}
+      {loadingStatus === "loading" && <LinearProgress/>}
     </AppBar>
   )
 }

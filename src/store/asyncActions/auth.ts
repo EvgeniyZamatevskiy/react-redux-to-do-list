@@ -1,6 +1,6 @@
 import { createAsyncThunk } from "@reduxjs/toolkit"
 import { AUTH } from "api"
-import { AuthorizedUserDataType, LoginParamsType } from "api/auth/types"
+import { AuthorizedUserDataType, LoginDataType } from "api/auth/types"
 import { FIRST_ELEMENT_ARRAY } from "constants/base"
 import { ResponseCode } from "enums"
 
@@ -20,7 +20,7 @@ export const getAuthorizedUserData = createAsyncThunk<AuthorizedUserDataType, un
   }
 })
 
-export const login = createAsyncThunk<void, LoginParamsType, { rejectValue: { error: string } }>
+export const login = createAsyncThunk<void, LoginDataType, { rejectValue: { error: string } }>
 ("auth/login", async (loginParams, {dispatch, rejectWithValue}) => {
   try {
     const response = await AUTH.login(loginParams)

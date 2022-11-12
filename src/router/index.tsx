@@ -1,13 +1,15 @@
 import { Path } from "enums"
 import { ToDoLists } from "pages"
+import { Login } from "pages/login"
+import { NotFound } from "pages/notFound"
 import { lazy } from "react"
 import { Navigate } from "react-router-dom"
 
-const Login = lazy(() => import(/* webpackChunkName: 'login' */"pages/login")
-  .then(module => ({default: module.Login})))
-
-const NotFound = lazy(() => import(/* webpackChunkName: 'NotFound' */"pages/notFound")
-  .then(module => ({default: module.NotFound})))
+// const Login = lazy(() => import(/* webpackChunkName: 'login' */"pages/login")
+//   .then(module => ({default: module.Login})))
+//
+// const NotFound = lazy(() => import(/* webpackChunkName: 'NotFound' */"pages/notFound")
+//   .then(module => ({default: module.NotFound})))
 
 export const ROUTES = [
   {path: Path.HOME, element: <ToDoLists/>},

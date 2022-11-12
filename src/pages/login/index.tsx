@@ -8,9 +8,9 @@ import { selectIsAuth } from "store/selectors/auth"
 import { Navigate } from "react-router-dom"
 import { Path } from "enums/Path"
 import { EMPTY_STRING } from "constants/base"
-import style from "./Login.module.css"
 import { FormikErrorType } from "./types"
-import { LoginParamsType } from "api/auth/types";
+import { LoginDataType } from "api/auth/types"
+import style from "./Login.module.css"
 
 export const Login: FC = (): ReactElement => {
 
@@ -20,7 +20,7 @@ export const Login: FC = (): ReactElement => {
 
   const formik = useFormik({
     initialValues: {email: EMPTY_STRING, password: EMPTY_STRING, rememberMe: false},
-    validate: (values: LoginParamsType) => {
+    validate: (values: LoginDataType) => {
       const errors: FormikErrorType = {}
 
       if (!values.email) {
@@ -41,7 +41,7 @@ export const Login: FC = (): ReactElement => {
 
       return errors
     },
-    onSubmit: (values: LoginParamsType) => {
+    onSubmit: (values: LoginDataType) => {
       dispatch(login(values))
       // formik.resetForm()
     },

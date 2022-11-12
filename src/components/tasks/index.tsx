@@ -4,7 +4,7 @@ import { AddItemForm, TasksFilter, TasksList } from "components"
 import { useSelector } from "react-redux"
 import { selectTasks } from "store/selectors"
 import { FilterValue } from "enums"
-import { TaskStatus } from "api/tasks/types"
+import { TaskStatus } from "enums"
 import { addTask } from "store/asyncActions"
 import { useAppDispatch } from "hooks"
 import classes from "./Tasks.module.css"
@@ -21,10 +21,10 @@ export const Tasks: FC<TasksPropsType> = ({filter, toDoListId, isDisabled}) => {
 
   let filteredTasks = tasks
   if (filter === FilterValue.ACTIVE) {
-    filteredTasks = filteredTasks.filter(task => task.status === TaskStatus.Active)
+    filteredTasks = filteredTasks.filter(task => task.status === TaskStatus.NEW)
   }
   if (filter === FilterValue.COMPLETED) {
-    filteredTasks = filteredTasks.filter(task => task.status === TaskStatus.Completed)
+    filteredTasks = filteredTasks.filter(task => task.status === TaskStatus.COMPLETED)
   }
 
   return (

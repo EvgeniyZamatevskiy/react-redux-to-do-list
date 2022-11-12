@@ -4,20 +4,20 @@ import CircularProgress from "@mui/material/CircularProgress"
 import { ErrorSnackbar, Header, AppRouter } from "components"
 import { useAppDispatch } from "hooks"
 import { useSelector } from "react-redux"
-import { selectIsInitializedApp } from "store/selectors/app"
+import { selectIsInitialized } from "store/selectors/app"
 import { getAuthorizedUserData } from "store/asyncActions"
 
 export const App: FC = (): ReactElement => {
 
   const dispatch = useAppDispatch()
 
-  const isInitializedApp = useSelector(selectIsInitializedApp)
+  const isInitialized = useSelector(selectIsInitialized)
 
   useEffect(() => {
     dispatch(getAuthorizedUserData())
   }, [])
 
-  if (!isInitializedApp) {
+  if (!isInitialized) {
     return <div className="preloader"><CircularProgress/></div>
   }
 

@@ -10,7 +10,7 @@ export const store = configureStore({
     toDoLists: toDoListsSlice,
     tasks: tasksSlice,
     auth: authSlice,
-  }
+  },
 })
 
 export type RootStateType = ReturnType<typeof store.getState>

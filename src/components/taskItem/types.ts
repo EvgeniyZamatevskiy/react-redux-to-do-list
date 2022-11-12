@@ -1,9 +1,9 @@
-import { TaskStatus } from 'api/tasks/types'
+import { TaskStatus } from "enums"
 
 export type TaskPropsType = {
-	toDoListId: string
-	taskId: string
-	status: TaskStatus
-	title: string
-	isDisabled: boolean
+  toDoListId: string
+  taskId: string
+  status: TaskStatus
+  title: string
+  isDisabled: boolean
 }

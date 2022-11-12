@@ -1,5 +1,7 @@
 export interface AppSliceInitialStateType {
-  isLoading: boolean,
+  loadingStatus: LoadingStatusType
   errorMessage: string
-  isInitializedApp: boolean
+  isInitialized: boolean
 }
+
+export type LoadingStatusType = "idle" | "loading" | "succeeded" | "failed"

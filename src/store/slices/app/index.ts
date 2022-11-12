@@ -1,13 +1,13 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit"
 import { getAuthorizedUserData } from "store/asyncActions"
-import { AppSliceInitialStateType } from "./types"
+import { AppSliceInitialStateType, LoadingStatusType } from "./types"
 import { EMPTY_STRING } from "constants/base"
-import { isLoadingPending, isErrorRejected, isLoadingFulfilled, isLoadingRejected } from "store/helpers"
+import { isErrorRejected } from "store/helpers"
 
 const initialState: AppSliceInitialStateType = {
-  isLoading: false,
+  loadingStatus: "idle",
   errorMessage: EMPTY_STRING,
-  isInitializedApp: false
+  isInitialized: false
 }
 
 const appSlice = createSlice({
@@ -16,31 +16,41 @@ const appSlice = createSlice({
   reducers: {
     setErrorMessage(state, action: PayloadAction<string>) {
       state.errorMessage = action.payload
+    },
+    setLoadingStatus(state, action: PayloadAction<LoadingStatusType>) {
+      state.loadingStatus = action.payload
+    },
+    setIsInitialized: (state, action: PayloadAction<boolean>) => {
+      state.isInitialized = action.payload
     }
   },
   extraReducers(builder) {
     builder
       .addCase(getAuthorizedUserData.fulfilled, (state) => {
-        state.isInitializedApp = true
+        state.isInitialized = true
       })
       .addCase(getAuthorizedUserData.rejected, (state) => {
-        state.isInitializedApp = true
+        state.isInitialized = true
       })
-      .addMatcher(isLoadingPending, (state) => {
-        state.isLoading = true
-      })
-      .addMatcher(isLoadingFulfilled, (state) => {
-        state.isLoading = false
-      })
-      .addMatcher(isLoadingRejected, (state) => {
-        state.isLoading = false
-      })
+      // .addMatcher(isLoadingPending, (state) => {
+      //   state.loadingStatus = "loading"
+      // })
+      // .addMatcher(isLoadingFulfilled, (state) => {
+      //   state.loadingStatus = "succeeded"
+      // })
+      // .addMatcher(isLoadingRejected, (state) => {
+      //   state.loadingStatus = "failed"
+      // })
       .addMatcher(isErrorRejected, (state, action: PayloadAction<{ error: string }>) => {
         state.errorMessage = action.payload.error
       })
   },
 })
 
-export const {setErrorMessage} = appSlice.actions
+export const {
+  setErrorMessage,
+  setLoadingStatus,
+  setIsInitialized
+} = appSlice.actions
 
 export default appSlice.reducer

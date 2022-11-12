@@ -1,11 +1,10 @@
 import { instance } from "api/config"
 import { CommonResponseType } from "api/types"
-import { AuthorizedUserDataType, LoginParamsType } from "./types"
-import { AxiosResponse } from "axios"
+import { AuthorizedUserDataType, LoginDataType } from "./types"
 
 export const AUTH = {
-  login(loginParams: LoginParamsType) {
-    return instance.post<LoginParamsType, AxiosResponse<CommonResponseType<{ userId: number }>>>("auth/login", loginParams)
+  login(loginData: LoginDataType) {
+    return instance.post<CommonResponseType<{ userId: number }>>("auth/login", loginData)
   },
   logOut() {
     return instance.delete<CommonResponseType>("auth/login")

@@ -2,12 +2,12 @@ import React, { ChangeEvent, FC, memo, useCallback } from "react"
 import Delete from "@mui/icons-material/Delete"
 import Checkbox from "@mui/material/Checkbox"
 import IconButton from "@mui/material/IconButton"
-import { TaskStatus } from "api/tasks/types"
 import { useAppDispatch } from "hooks"
 import { removeTask, updateTask } from "store/asyncActions"
 import { EMPTY_STRING } from "constants/base"
 import { EditableItem } from "components"
 import { TaskPropsType } from "./types"
+import { TaskStatus } from "enums"
 import classes from "./TaskItem.module.css"
 
 export const TaskItem: FC<TaskPropsType> = memo(({toDoListId, taskId, status, title, isDisabled}) => {
@@ -23,16 +23,16 @@ export const TaskItem: FC<TaskPropsType> = memo(({toDoListId, taskId, status, ti
   }, [toDoListId, taskId])
 
   const onUpdateTaskStatusChange = (event: ChangeEvent<HTMLInputElement>): void => {
-    const updatedStatus = event.currentTarget.checked ? TaskStatus.Completed : TaskStatus.Active
+    const updatedStatus = event.currentTarget.checked ? TaskStatus.COMPLETED : TaskStatus.NEW
     dispatch(updateTask({toDoListId, taskId, domainPayload: {status: updatedStatus}}))
   }
 
   return (
     <div className={classes.task}>
-      <div className={status === TaskStatus.Completed ? classes.taskCompleted : EMPTY_STRING}>
+      <div className={status === TaskStatus.COMPLETED ? classes.taskCompleted : EMPTY_STRING}>
         <Checkbox
           color="primary"
-          checked={status === TaskStatus.Completed}
+          checked={status === TaskStatus.COMPLETED}
           disabled={isDisabled}
           onChange={onUpdateTaskStatusChange}
         />

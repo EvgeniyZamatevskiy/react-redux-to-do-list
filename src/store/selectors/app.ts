@@ -1,7 +1,8 @@
 import { RootStateType } from "store"
+import { LoadingStatusType } from "store/slices/app/types"
 
-export const selectIsLoading = (state: RootStateType): boolean => state.app.isLoading
+export const selectLoadingStatus = (state: RootStateType): LoadingStatusType => state.app.loadingStatus
 
 export const selectErrorMessage = (state: RootStateType): string => state.app.errorMessage
 
-export const selectIsInitializedApp = (state: RootStateType): boolean => state.app.isInitializedApp
+export const selectIsInitialized = (state: RootStateType): boolean => state.app.isInitialized
