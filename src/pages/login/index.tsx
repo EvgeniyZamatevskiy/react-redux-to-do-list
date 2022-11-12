@@ -10,6 +10,7 @@ import { Path } from "enums/Path"
 import { EMPTY_STRING } from "constants/base"
 import style from "./Login.module.css"
 import { FormikErrorType } from "./types"
+import { LoginParamsType } from "api/auth/types";
 
 export const Login: FC = (): ReactElement => {
 
@@ -19,7 +20,7 @@ export const Login: FC = (): ReactElement => {
 
   const formik = useFormik({
     initialValues: {email: EMPTY_STRING, password: EMPTY_STRING, rememberMe: false},
-    validate: values => {
+    validate: (values: LoginParamsType) => {
       const errors: FormikErrorType = {}
 
       if (!values.email) {
@@ -40,8 +41,9 @@ export const Login: FC = (): ReactElement => {
 
       return errors
     },
-    onSubmit: values => {
+    onSubmit: (values: LoginParamsType) => {
       dispatch(login(values))
+      // formik.resetForm()
     },
   })
 
@@ -66,6 +68,10 @@ export const Login: FC = (): ReactElement => {
               <TextField
                 label="Email"
                 margin="normal"
+                // name="email"
+                // onChange={formik.handleChange}
+                // onBlur={formik.handleBlur}
+                // value={formik.values.email}
                 {...formik.getFieldProps("email")}
               />
               {formik.touched.email && formik.errors.email &&
@@ -80,12 +86,16 @@ export const Login: FC = (): ReactElement => {
                 <div className={style.errorMessage}>{formik.errors.password}</div>}
               <FormControlLabel
                 label={"Remember me"}
-                control={<Checkbox
-                  {...formik.getFieldProps("rememberMe")}
-                />}/>
-              <Button type={"submit"} variant={"contained"} color={"primary"}>
-                Login
-              </Button>
+                control={
+                  <Checkbox
+                    // name={'rememberMe'}
+                    // checked={formik.values.rememberMe}
+                    // onChange={formik.handleChange}
+                    {...formik.getFieldProps("rememberMe")}
+                    // checked={formik.values.rememberMe} Для очистки rememberMe
+                  />
+                }/>
+              <Button type={"submit"} variant={"contained"} color={"primary"}>Login</Button>
             </FormGroup>
           </form>
         </FormControl>

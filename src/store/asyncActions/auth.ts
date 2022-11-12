@@ -1,10 +1,8 @@
 import { createAsyncThunk } from "@reduxjs/toolkit"
 import { AUTH } from "api"
 import { AuthorizedUserDataType, LoginParamsType } from "api/auth/types"
-import { AxiosError } from "axios"
 import { FIRST_ELEMENT_ARRAY } from "constants/base"
 import { ResponseCode } from "enums"
-import { handleServerNetworkError } from "utils"
 
 export const getAuthorizedUserData = createAsyncThunk<AuthorizedUserDataType, undefined, { rejectValue: { error: string } }>
 ("auth/getAuthorizedUserData", async (_, {rejectWithValue}) => {
@@ -17,8 +15,8 @@ export const getAuthorizedUserData = createAsyncThunk<AuthorizedUserDataType, un
     } else {
       return rejectWithValue({error: messages[FIRST_ELEMENT_ARRAY]})
     }
-  } catch (error) {
-    return handleServerNetworkError(error as AxiosError | Error, rejectWithValue)
+  } catch (error: any) {
+    return rejectWithValue({error: error.message})
   }
 })
 
@@ -33,8 +31,8 @@ export const login = createAsyncThunk<void, LoginParamsType, { rejectValue: { er
     } else {
       return rejectWithValue({error: messages[FIRST_ELEMENT_ARRAY]})
     }
-  } catch (error) {
-    return handleServerNetworkError(error as AxiosError | Error, rejectWithValue)
+  } catch (error: any) {
+    return rejectWithValue({error: error.message})
   }
 })
 
@@ -48,7 +46,7 @@ export const logOut = createAsyncThunk<void, undefined, { rejectValue: { error: 
       return rejectWithValue({error: messages[FIRST_ELEMENT_ARRAY]})
     }
 
-  } catch (error) {
-    return handleServerNetworkError(error as AxiosError | Error, rejectWithValue)
+  } catch (error: any) {
+    return rejectWithValue({error: error.message})
   }
 })

@@ -1,11 +1,9 @@
 import { createAsyncThunk } from "@reduxjs/toolkit"
 import { TASKS } from "api"
 import { DomainPayloadType, PayloadType, TaskType } from "api/tasks/types"
-import { AxiosError } from "axios"
 import { FIRST_ELEMENT_ARRAY } from "constants/base"
 import { ResponseCode } from "enums"
 import { RootStateType } from "store"
-import { handleServerNetworkError } from "utils"
 
 export const getTasks = createAsyncThunk<{ tasks: TaskType[], toDoListId: string }, string, { rejectValue: { error: string } }>
 ("tasks/getTasks", async (toDoListId, {rejectWithValue}) => {
@@ -14,8 +12,8 @@ export const getTasks = createAsyncThunk<{ tasks: TaskType[], toDoListId: string
     const tasks = response.data.items
 
     return {tasks, toDoListId}
-  } catch (error) {
-    return handleServerNetworkError(error as AxiosError | Error, rejectWithValue)
+  } catch (error: any) {
+    return rejectWithValue({error: error.message})
   }
 })
 
@@ -31,8 +29,8 @@ export const addTask = createAsyncThunk<TaskType, { toDoListId: string, title: s
     } else {
       return rejectWithValue({error: messages[FIRST_ELEMENT_ARRAY]})
     }
-  } catch (error) {
-    return handleServerNetworkError(error as AxiosError | Error, rejectWithValue)
+  } catch (error: any) {
+    return rejectWithValue({error: error.message})
   }
 })
 
@@ -47,8 +45,8 @@ export const removeTask = createAsyncThunk<{ toDoListId: string, taskId: string 
     } else {
       return rejectWithValue({error: messages[FIRST_ELEMENT_ARRAY]})
     }
-  } catch (error) {
-    return handleServerNetworkError(error as AxiosError | Error, rejectWithValue)
+  } catch (error: any) {
+    return rejectWithValue({error: error.message})
   }
 })
 
@@ -81,7 +79,7 @@ export const updateTask = createAsyncThunk<{ toDoListId: string, taskId: string,
     } else {
       return rejectWithValue({error: messages[FIRST_ELEMENT_ARRAY]})
     }
-  } catch (error) {
-    return handleServerNetworkError(error as AxiosError | Error, rejectWithValue)
+  } catch (error: any) {
+    return rejectWithValue({error: error.message})
   }
 })
