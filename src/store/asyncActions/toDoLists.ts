@@ -1,7 +1,7 @@
 import { createAsyncThunk } from "@reduxjs/toolkit"
 import { TODOLISTS } from "api"
 import { ToDoListType } from "api/toDoList/types"
-import { AxiosError } from "axios"
+import axios, { AxiosError } from "axios"
 import { FIRST_ELEMENT_ARRAY } from "constants/base"
 import { ResponseCode } from "enums"
 import { setIsDisabled } from "store/slices"
@@ -67,8 +67,17 @@ export const removeToDoList = createAsyncThunk<string, string, { rejectValue: { 
       dispatch(setIsDisabled({toDoListId, isDisabled: false}))
       return rejectWithValue({error: messages[FIRST_ELEMENT_ARRAY]})
     }
-  } catch (error) {
+  } catch (e) {
     dispatch(setIsDisabled({toDoListId, isDisabled: false}))
-    return handleServerNetworkError(error as AxiosError | Error, rejectWithValue)
+    const err = e as Error | AxiosError
+    if (axios.isAxiosError(err)) {
+      const error = err.response?.data
+        ? (err.response.data as ({ err: string })).err
+        : err.message
+      return rejectWithValue({error})
+    } else {
+      return rejectWithValue({error: "hard"})
+    }
+
   }
 })
