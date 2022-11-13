@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit"
-import { getAuthorizedUser } from "store/asyncActions"
+import { getAuthorizedUser, getToDoLists, removeToDoList } from "store/asyncActions"
 import { AppSliceInitialStateType } from "./types"
 import { EMPTY_STRING } from "constants/base"
 import { isActionTypeFulfilled, isActionTypePending, isActionTypeRejected } from "store/predicates"
@@ -7,7 +7,8 @@ import { isActionTypeFulfilled, isActionTypePending, isActionTypeRejected } from
 const initialState: AppSliceInitialStateType = {
   loadingStatus: "idle",
   errorMessage: EMPTY_STRING,
-  isInitialized: false
+  isInitialized: false,
+  isDisabled: false
 }
 
 const appSlice = createSlice({

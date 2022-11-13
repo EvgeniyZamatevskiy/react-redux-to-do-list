@@ -1,9 +1,7 @@
-import { FilterValue } from "enums"
 import { TaskType } from "api/tasks/types"
+import { DisabledStatusType } from "store/slices/toDoLists/types"
 
 export type TasksListPropsType = {
   tasks: TaskType[]
-  filter: FilterValue
-  toDoListId: string
-  isDisabled: boolean
+  disabledStatus: DisabledStatusType
 }

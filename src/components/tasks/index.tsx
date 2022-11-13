@@ -9,7 +9,7 @@ import { addTask } from "store/asyncActions"
 import { useAppDispatch } from "hooks"
 import classes from "./Tasks.module.css"
 
-export const Tasks: FC<TasksPropsType> = ({filter, toDoListId, isDisabled}) => {
+export const Tasks: FC<TasksPropsType> = ({filter, toDoListId, disabledStatus}) => {
 
   const dispatch = useAppDispatch()
 
@@ -29,14 +29,9 @@ export const Tasks: FC<TasksPropsType> = ({filter, toDoListId, isDisabled}) => {
 
   return (
     <div className={classes.filterValues}>
-      <AddItemForm addItem={handleAddTaskClickOrKeyDown} isDisabled={isDisabled}/>
-      <TasksList
-        tasks={filteredTasks}
-        filter={filter}
-        toDoListId={toDoListId}
-        isDisabled={isDisabled}
-      />
-      <TasksFilter filter={filter} toDoListId={toDoListId} isDisabled={isDisabled}/>
+      <AddItemForm addItem={handleAddTaskClickOrKeyDown} disabledStatus={disabledStatus}/>
+      <TasksList tasks={filteredTasks} disabledStatus={disabledStatus}/>
+      <TasksFilter filter={filter} toDoListId={toDoListId} disabledStatus={disabledStatus}/>
     </div>
   )
 }

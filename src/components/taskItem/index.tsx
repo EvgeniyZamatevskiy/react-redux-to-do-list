@@ -10,7 +10,7 @@ import { TaskPropsType } from "./types"
 import { TaskStatus } from "enums"
 import classes from "./TaskItem.module.css"
 
-export const TaskItem: FC<TaskPropsType> = memo(({toDoListId, taskId, status, title, isDisabled}) => {
+export const TaskItem: FC<TaskPropsType> = memo(({toDoListId, taskId, status, title, disabledStatus}) => {
 
   const dispatch = useAppDispatch()
 
@@ -33,15 +33,19 @@ export const TaskItem: FC<TaskPropsType> = memo(({toDoListId, taskId, status, ti
         <Checkbox
           color="primary"
           checked={status === TaskStatus.COMPLETED}
-          disabled={isDisabled}
+          disabled={disabledStatus === "loading"}
           onChange={onUpdateTaskStatusChange}
         />
-        <EditableItem currentTitle={title} updateValue={handleChangeTaskTitleClickOrBlur} isDisabled={isDisabled}/>
+        <EditableItem
+          currentTitle={title}
+          updateValue={handleChangeTaskTitleClickOrBlur}
+          disabledStatus={disabledStatus}
+        />
       </div>
       <IconButton
         size={"small"}
         sx={{position: "absolute", top: "2px", right: "2px"}}
-        disabled={isDisabled}
+        disabled={disabledStatus === "loading"}
         onClick={onRemoveTaskClick}
       >
         <Delete fontSize={"small"}/>

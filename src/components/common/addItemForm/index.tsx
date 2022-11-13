@@ -8,7 +8,7 @@ import { AddItemFormPropsType } from "./types"
 
 const ERROR_MESSAGE = "Title is required!"
 
-export const AddItemForm: FC<AddItemFormPropsType> = memo(({addItem, isDisabled}) => {
+export const AddItemForm: FC<AddItemFormPropsType> = memo(({addItem, disabledStatus}) => {
 
   const [title, setTitle] = useState(EMPTY_STRING)
   const [errorMessage, setErrorMessage] = useState(EMPTY_STRING)
@@ -48,11 +48,11 @@ export const AddItemForm: FC<AddItemFormPropsType> = memo(({addItem, isDisabled}
         onKeyDown={onAddItemKeyDown}
         error={!!errorMessage}
         helperText={errorMessage}
-        disabled={isDisabled}
+        disabled={disabledStatus === "loading"}
       />
       <IconButton
         color="primary"
-        disabled={isDisabled}
+        disabled={disabledStatus === "loading"}
         onClick={onAddItemClick}
         sx={{ml: "15px"}}
       >

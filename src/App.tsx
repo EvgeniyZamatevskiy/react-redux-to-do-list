@@ -7,7 +7,7 @@ import { useSelector } from "react-redux"
 import { selectIsInitialized } from "store/selectors/app"
 import { getAuthorizedUser } from "store/asyncActions"
 
-export const App: FC = (): ReactElement => {
+export const App: FC = () => {
 
   const dispatch = useAppDispatch()
 

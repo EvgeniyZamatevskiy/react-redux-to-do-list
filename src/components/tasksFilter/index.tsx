@@ -7,7 +7,7 @@ import { changeToDoListFilter } from "store/slices"
 
 const filterValues = [FilterValue.ALL, FilterValue.ACTIVE, FilterValue.COMPLETED]
 
-export const TasksFilter: FC<TasksFilterPropsType> = ({toDoListId, filter, isDisabled}) => {
+export const TasksFilter: FC<TasksFilterPropsType> = ({toDoListId, filter, disabledStatus}) => {
 
   const dispatch = useAppDispatch()
 
@@ -22,7 +22,7 @@ export const TasksFilter: FC<TasksFilterPropsType> = ({toDoListId, filter, isDis
         key={filterValue}
         variant={filter === filterValue ? "outlined" : "text"}
         color={"primary"}
-        disabled={isDisabled}
+        disabled={disabledStatus === "loading"}
         onClick={onChangeToDoListFilterValueClick}>
         {filterValue}
       </Button>

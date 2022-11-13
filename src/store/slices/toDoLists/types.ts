@@ -7,5 +7,7 @@ export interface ToDoListsSliceInitialStateType {
 
 export type ToDoListSupplementedType = ToDoListType & {
   filter: FilterValue
-  isDisabled: boolean
+  disabledStatus: DisabledStatusType
 }
+
+export type DisabledStatusType = "idle" | "loading" | "succeeded" | "failed"

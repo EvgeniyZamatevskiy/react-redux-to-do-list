@@ -10,11 +10,11 @@ export const ToDoListsList: FC<ToDoListListPropsType> = () => {
 
   const toDoLists = useSelector(selectToDoLists)
 
-  const toDoListsRender = toDoLists.map(({id, filter, isDisabled, title}) => {
+  const toDoListsRender = toDoLists.map(({id, filter, disabledStatus, title}) => {
     return (
       <Grid item key={id}>
         <div className={classes.container}>
-          <ToDoListItem toDoListId={id} filter={filter} isDisabled={isDisabled} title={title}/>
+          <ToDoListItem toDoListId={id} filter={filter} disabledStatus={disabledStatus} title={title}/>
         </div>
       </Grid>
     )

@@ -12,7 +12,7 @@ import { FormikErrorType } from "./types"
 import { LoginDataType } from "api/auth/types"
 import style from "./Login.module.css"
 
-export const Login: FC = (): ReactElement => {
+export const Login: FC = () => {
 
   const dispatch = useAppDispatch()
 

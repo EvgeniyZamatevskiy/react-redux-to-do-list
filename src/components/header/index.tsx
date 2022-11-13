@@ -1,4 +1,4 @@
-import React, { FC, ReactElement } from "react"
+import React, { FC } from "react"
 import AppBar from "@mui/material/AppBar"
 import Toolbar from "@mui/material/Toolbar"
 import Typography from "@mui/material/Typography"
@@ -7,12 +7,12 @@ import LinearProgress from "@mui/material/LinearProgress"
 import { useSelector } from "react-redux"
 import { useAppDispatch } from "hooks"
 import { logOut } from "store/asyncActions"
-import { selectLoadingStatus, selectIsAuth, selectAuthorizedUserData } from "store/selectors"
+import { selectLoadingStatus, selectIsAuth, selectAuthorizedUserData, selectIsDisabled } from "store/selectors"
 import { Link, useLocation } from "react-router-dom"
 import { Path } from "enums"
 import classes from "./Header.module.css"
 
-export const Header: FC = (): ReactElement => {
+export const Header: FC = () => {
 
   const {pathname} = useLocation()
 
@@ -20,6 +20,7 @@ export const Header: FC = (): ReactElement => {
 
   const loadingStatus = useSelector(selectLoadingStatus)
   const isAuth = useSelector(selectIsAuth)
+  const isDisabled = useSelector(selectIsDisabled)
   const authorizedUserData = useSelector(selectAuthorizedUserData)
 
   const onLogOutClick = (): void => {
@@ -35,7 +36,7 @@ export const Header: FC = (): ReactElement => {
         {isAuth && pathname === Path.HOME &&
           <>
             <div className={classes.login}>{authorizedUserData?.login}</div>
-            <Button color="inherit" onClick={onLogOutClick}>Log out</Button>
+            <Button color="inherit" disabled={isDisabled} onClick={onLogOutClick}>Log out</Button>
           </>
         }
       </Toolbar>
