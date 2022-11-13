@@ -18,7 +18,7 @@ export const App: FC = (): ReactElement => {
   }, [])
 
   if (!isInitialized) {
-    return <div className="preloader"><CircularProgress/></div>
+    return <div className="loader"><CircularProgress/></div>
   }
 
   return (

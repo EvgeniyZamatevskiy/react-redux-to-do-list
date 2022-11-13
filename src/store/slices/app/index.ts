@@ -2,7 +2,7 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit"
 import { getAuthorizedUser } from "store/asyncActions"
 import { AppSliceInitialStateType, LoadingStatusType } from "./types"
 import { EMPTY_STRING } from "constants/base"
-import { isActionTypeRejected } from "store/helpers"
+import { isActionTypeRejected } from "store/predicates"
 
 const initialState: AppSliceInitialStateType = {
   loadingStatus: "idle",
