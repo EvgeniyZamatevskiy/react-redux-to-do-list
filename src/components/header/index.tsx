@@ -7,7 +7,7 @@ import LinearProgress from "@mui/material/LinearProgress"
 import { useSelector } from "react-redux"
 import { useAppDispatch } from "hooks"
 import { logOut } from "store/asyncActions"
-import { selectLoadingStatus, selectIsAuth, selectAuthorizedUserData, selectIsDisabled } from "store/selectors"
+import { selectLoadingStatus, selectIsAuth, selectAuthorizedUserData } from "store/selectors"
 import { Link, useLocation } from "react-router-dom"
 import { Path } from "enums"
 import classes from "./Header.module.css"
@@ -20,7 +20,6 @@ export const Header: FC = () => {
 
   const loadingStatus = useSelector(selectLoadingStatus)
   const isAuth = useSelector(selectIsAuth)
-  const isDisabled = useSelector(selectIsDisabled)
   const authorizedUserData = useSelector(selectAuthorizedUserData)
 
   const onLogOutClick = (): void => {
@@ -36,7 +35,7 @@ export const Header: FC = () => {
         {isAuth && pathname === Path.HOME &&
           <>
             <div className={classes.login}>{authorizedUserData?.login}</div>
-            <Button color="inherit" disabled={isDisabled} onClick={onLogOutClick}>Log out</Button>
+            <Button color="inherit" onClick={onLogOutClick}>Log out</Button>
           </>
         }
       </Toolbar>

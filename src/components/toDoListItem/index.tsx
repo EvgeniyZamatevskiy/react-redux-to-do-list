@@ -7,7 +7,7 @@ import { changeToDoListTitle, getTasks, removeToDoList } from "store/asyncAction
 import { EditableItem, Tasks } from "components"
 import { ToDoListItemPropsType } from "./types"
 
-export const ToDoListItem: FC<ToDoListItemPropsType> = memo(({toDoListId, filter, disabledStatus, title}) => {
+export const ToDoListItem: FC<ToDoListItemPropsType> = memo(({toDoListId, filter, isDisabledToDoList, title}) => {
 
   const dispatch = useAppDispatch()
 
@@ -28,7 +28,7 @@ export const ToDoListItem: FC<ToDoListItemPropsType> = memo(({toDoListId, filter
       <IconButton
         size={"small"}
         sx={{position: "absolute", right: "5px", top: "5px"}}
-        disabled={disabledStatus === "loading"}
+        disabled={isDisabledToDoList}
         onClick={onRemoveToDoListClick}
       >
         <Delete fontSize={"small"}/>
@@ -37,10 +37,10 @@ export const ToDoListItem: FC<ToDoListItemPropsType> = memo(({toDoListId, filter
         <EditableItem
           currentTitle={title}
           updateValue={handleChangeToDoListTitleClickOrBlur}
-          disabledStatus={disabledStatus}
+          isDisabled={isDisabledToDoList}
         />
       </h3>
-      <Tasks filter={filter} toDoListId={toDoListId} disabledStatus={disabledStatus}/>
+      <Tasks filter={filter} toDoListId={toDoListId} isDisabledToDoList={isDisabledToDoList}/>
     </Paper>
   )
 })

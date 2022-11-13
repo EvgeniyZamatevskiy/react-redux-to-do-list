@@ -9,7 +9,7 @@ export const EditableItem: FC<EditableItemPropsType> = memo(
   ({
      currentTitle,
      updateValue,
-     disabledStatus
+     isDisabled,
    }) => {
 
     const [isEditMode, setIsEditMode] = useState(false)
@@ -56,14 +56,15 @@ export const EditableItem: FC<EditableItemPropsType> = memo(
 
     return (
       <>
-        {isEditMode && disabledStatus !== "loading"
+        {isEditMode && !isDisabled
           ? <TextField
             inputRef={inputRef}
             variant={"standard"}
             value={updatedTitle}
             onChange={onInputChange}
             onBlur={handleUpdateTitleBlurOrKeyDown}
-            onKeyDown={onUpdateTitleKeyDown}/>
+            onKeyDown={onUpdateTitleKeyDown}
+          />
           : <span className={classes.span} onClick={onSetCurrentTitleClick}>{currentTitle}</span>}
       </>
     )

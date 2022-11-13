@@ -1,7 +1,7 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit"
 import { FilterValue } from "enums"
 import { getToDoLists, addToDoList, removeToDoList, changeToDoListTitle, logOut } from "store/asyncActions"
-import { DisabledStatusType, ToDoListsSliceInitialStateType } from "./types"
+import { ToDoListsSliceInitialStateType } from "./types"
 
 const initialState: ToDoListsSliceInitialStateType = {
   toDoLists: []
@@ -18,13 +18,13 @@ const toDoListsSlice = createSlice({
         toDoList.filter = action.payload.value
       }
     },
-    setDisabledStatus(state, action: PayloadAction<{ toDoListId: string, disabledStatus: DisabledStatusType }>) {
-      const toDoList = state.toDoLists.find(toDoList => toDoList.id === action.payload.toDoListId)
-
-      if (toDoList) {
-        toDoList.disabledStatus = action.payload.disabledStatus
-      }
-    }
+    // setDisabledStatus(state, action: PayloadAction<{ toDoListId: string, isDisabled: boolean }>) {
+    //   const toDoList = state.toDoLists.find(toDoList => toDoList.id === action.payload.toDoListId)
+    //
+    //   if (toDoList) {
+    //     toDoList.isDisabled = action.payload.isDisabled
+    //   }
+    // }
   },
   extraReducers(builder) {
     builder
@@ -32,18 +32,18 @@ const toDoListsSlice = createSlice({
         state.toDoLists = action.payload.map(toDoList => ({
           ...toDoList,
           filter: FilterValue.ALL,
-          disabledStatus: "idle"
+          isDisabledToDoList: false
         }))
       })
       .addCase(addToDoList.fulfilled, (state, action) => {
-        state.toDoLists.unshift({...action.payload, filter: FilterValue.ALL, disabledStatus: "idle"})
+        state.toDoLists.unshift({...action.payload, filter: FilterValue.ALL, isDisabledToDoList: false})
       })
       .addCase(removeToDoList.pending, (state, action) => {
         const toDoListId = action.meta.arg
         const toDoList = state.toDoLists.find(({id}) => id === toDoListId)
 
         if (toDoList) {
-          toDoList.disabledStatus = "loading"
+          toDoList.isDisabledToDoList = true
         }
       })
       .addCase(removeToDoList.rejected, (state, action) => {
@@ -51,7 +51,7 @@ const toDoListsSlice = createSlice({
         const toDoList = state.toDoLists.find(({id}) => id === toDoListId)
 
         if (toDoList) {
-          toDoList.disabledStatus = "failed"
+          toDoList.isDisabledToDoList = false
         }
       })
       .addCase(removeToDoList.fulfilled, (state, action) => {
@@ -62,7 +62,7 @@ const toDoListsSlice = createSlice({
         const toDoList = state.toDoLists.find(({id}) => id === toDoListId)
 
         if (toDoList) {
-          toDoList.disabledStatus = "loading"
+          toDoList.isDisabledToDoList = true
         }
       })
       .addCase(changeToDoListTitle.rejected, (state, action) => {
@@ -70,7 +70,7 @@ const toDoListsSlice = createSlice({
         const toDoList = state.toDoLists.find(({id}) => id === toDoListId)
 
         if (toDoList) {
-          toDoList.disabledStatus = "failed"
+          toDoList.isDisabledToDoList = false
         }
       })
       .addCase(changeToDoListTitle.fulfilled, (state, action) => {
@@ -78,7 +78,7 @@ const toDoListsSlice = createSlice({
 
         if (index > -1) {
           state.toDoLists[index].title = action.payload.title
-          state.toDoLists[index].disabledStatus = "succeeded"
+          state.toDoLists[index].isDisabledToDoList = false
         }
       })
       .addCase(logOut.fulfilled, (state) => {
@@ -87,6 +87,6 @@ const toDoListsSlice = createSlice({
   },
 })
 
-export const {changeToDoListFilter, setDisabledStatus} = toDoListsSlice.actions
+export const {changeToDoListFilter} = toDoListsSlice.actions
 
 export default toDoListsSlice.reducer

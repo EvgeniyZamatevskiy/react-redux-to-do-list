@@ -6,5 +6,3 @@ export const selectLoadingStatus = (state: RootStateType): LoadingStatusType => 
 export const selectErrorMessage = (state: RootStateType): string => state.app.errorMessage
 
 export const selectIsInitialized = (state: RootStateType): boolean => state.app.isInitialized
-
-export const selectIsDisabled = (state: RootStateType): boolean => state.app.isDisabled

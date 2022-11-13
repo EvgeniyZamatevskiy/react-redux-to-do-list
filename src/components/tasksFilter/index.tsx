@@ -1,13 +1,13 @@
 import React, { FC } from "react"
 import { TasksFilterPropsType } from "./types"
 import { FilterValue } from "enums"
-import { Button } from "@mui/material"
+import Button from "@mui/material/Button"
 import { useAppDispatch } from "hooks"
 import { changeToDoListFilter } from "store/slices"
 
 const filterValues = [FilterValue.ALL, FilterValue.ACTIVE, FilterValue.COMPLETED]
 
-export const TasksFilter: FC<TasksFilterPropsType> = ({toDoListId, filter, disabledStatus}) => {
+export const TasksFilter: FC<TasksFilterPropsType> = ({toDoListId, filter, isDisabledToDoList}) => {
 
   const dispatch = useAppDispatch()
 
@@ -22,8 +22,9 @@ export const TasksFilter: FC<TasksFilterPropsType> = ({toDoListId, filter, disab
         key={filterValue}
         variant={filter === filterValue ? "outlined" : "text"}
         color={"primary"}
-        disabled={disabledStatus === "loading"}
-        onClick={onChangeToDoListFilterValueClick}>
+        onClick={onChangeToDoListFilterValueClick}
+        disabled={isDisabledToDoList}
+      >
         {filterValue}
       </Button>
     )

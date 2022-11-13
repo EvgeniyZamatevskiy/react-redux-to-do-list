@@ -1,4 +1,4 @@
-import React, { FC, ReactElement, useEffect } from "react"
+import React, { FC, useEffect } from "react"
 import Container from "@mui/material/Container"
 import CircularProgress from "@mui/material/CircularProgress"
 import { ErrorSnackbar, Header, AppRouter } from "components"

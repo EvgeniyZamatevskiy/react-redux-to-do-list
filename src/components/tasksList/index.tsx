@@ -3,9 +3,9 @@ import { TaskItem } from "components"
 import { TasksListPropsType } from "./types"
 import classes from "./TasksList.module.css"
 
-export const TasksList: FC<TasksListPropsType> = ({tasks, disabledStatus}) => {
+export const TasksList: FC<TasksListPropsType> = ({tasks, isDisabledToDoList}) => {
 
-  const tasksRender = tasks.map(({todoListId, id, status, title}) => {
+  const tasksRender = tasks.map(({todoListId, id, status, title, isDisabledTask}) => {
     return (
       <TaskItem
         key={id}
@@ -13,7 +13,8 @@ export const TasksList: FC<TasksListPropsType> = ({tasks, disabledStatus}) => {
         taskId={id}
         status={status}
         title={title}
-        disabledStatus={disabledStatus}
+        isDisabledTask={isDisabledTask}
+        isDisabledToDoList={isDisabledToDoList}
       />
     )
   })

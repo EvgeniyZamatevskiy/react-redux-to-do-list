@@ -1,7 +1,6 @@
-import { TaskType } from "api/tasks/types"
-import { DisabledStatusType } from "store/slices/toDoLists/types"
+import { TaskSupplementedType } from "store/slices/tasks/types"
 
 export type TasksListPropsType = {
-  tasks: TaskType[]
-  disabledStatus: DisabledStatusType
+  tasks: TaskSupplementedType[]
+  isDisabledToDoList: boolean
 }
