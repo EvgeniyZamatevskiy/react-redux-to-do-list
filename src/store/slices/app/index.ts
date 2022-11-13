@@ -29,8 +29,8 @@ const appSlice = createSlice({
       .addCase(getAuthorizedUser.rejected, (state) => {
         state.isInitialized = true
       })
-      .addMatcher(isActionTypeRejected, (state, action: PayloadAction<{ error: string }>) => {
-        state.errorMessage = action.payload.error
+      .addMatcher(isActionTypeRejected, (state, action: PayloadAction<string>) => {
+        state.errorMessage = action.payload
       })
   },
 })
