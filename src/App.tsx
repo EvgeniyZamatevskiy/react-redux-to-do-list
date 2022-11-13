@@ -5,7 +5,7 @@ import { ErrorSnackbar, Header, AppRouter } from "components"
 import { useAppDispatch } from "hooks"
 import { useSelector } from "react-redux"
 import { selectIsInitialized } from "store/selectors/app"
-import { getAuthorizedUserData } from "store/asyncActions"
+import { getAuthorizedUser } from "store/asyncActions"
 
 export const App: FC = (): ReactElement => {
 
@@ -14,7 +14,7 @@ export const App: FC = (): ReactElement => {
   const isInitialized = useSelector(selectIsInitialized)
 
   useEffect(() => {
-    dispatch(getAuthorizedUserData())
+    dispatch(getAuthorizedUser())
   }, [])
 
   if (!isInitialized) {

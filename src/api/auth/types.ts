@@ -5,7 +5,7 @@ export type LoginDataType = {
   captcha?: string
 }
 
-export type AuthorizedUserDataType = {
+export type AuthorizedUserType = {
   id: number
   email: string
   login: string

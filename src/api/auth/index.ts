@@ -1,6 +1,6 @@
 import { instance } from "api/config"
 import { CommonResponseType } from "api/types"
-import { AuthorizedUserDataType, LoginDataType } from "./types"
+import { AuthorizedUserType, LoginDataType } from "./types"
 
 export const AUTH = {
   login(loginData: LoginDataType) {
@@ -10,6 +10,6 @@ export const AUTH = {
     return instance.delete<CommonResponseType>("auth/login")
   },
   me() {
-    return instance.get<CommonResponseType<AuthorizedUserDataType>>("auth/me")
+    return instance.get<CommonResponseType<AuthorizedUserType>>("auth/me")
   }
 }

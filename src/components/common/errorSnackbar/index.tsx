@@ -20,16 +20,12 @@ export const ErrorSnackbar: FC = (): ReactElement => {
 
   const errorMessage = useSelector(selectErrorMessage)
 
-  const resetErrorMessage = (): void => {
-    dispatch(setErrorMessage(EMPTY_STRING))
-  }
-
   const onAlertClose = (event?: React.SyntheticEvent | Event, reason?: string): void => {
     if (reason === "clickaway") {
       return
     }
 
-    resetErrorMessage()
+    dispatch(setErrorMessage(EMPTY_STRING))
   }
 
   return (

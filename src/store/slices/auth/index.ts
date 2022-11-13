@@ -1,10 +1,10 @@
 import { createSlice } from "@reduxjs/toolkit"
-import { getAuthorizedUserData, logOut } from "store/asyncActions"
+import { getAuthorizedUser, logOut } from "store/asyncActions"
 import { AuthSliceInitialStateType } from "./types"
 
 const initialState: AuthSliceInitialStateType = {
   isAuth: false,
-  authorizedUserData: null
+  authorizedUser: null
 }
 
 const authSlice = createSlice({
@@ -15,10 +15,10 @@ const authSlice = createSlice({
     builder
       .addCase(logOut.fulfilled, (state) => {
         state.isAuth = false
-        state.authorizedUserData = null
+        state.authorizedUser = null
       })
-      .addCase(getAuthorizedUserData.fulfilled, (state, action) => {
-        state.authorizedUserData = action.payload
+      .addCase(getAuthorizedUser.fulfilled, (state, action) => {
+        state.authorizedUser = action.payload
         state.isAuth = true
       })
   },
