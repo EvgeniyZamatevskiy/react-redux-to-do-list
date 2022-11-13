@@ -3,7 +3,6 @@ import { TODOLISTS } from "api"
 import { ToDoListType } from "api/toDoList/types"
 import { FIRST_ELEMENT_ARRAY } from "constants/base"
 import { ResponseCode } from "enums"
-import { setIsDisabled } from "store/slices"
 
 export const getToDoLists = createAsyncThunk<ToDoListType[], undefined, { rejectValue: string }>
 ("toDoLists/getToDoLists", async (_, {rejectWithValue}) => {
@@ -50,10 +49,7 @@ export const addToDoList = createAsyncThunk<ToDoListType, string, { rejectValue:
 })
 
 export const removeToDoList = createAsyncThunk<string, string, { rejectValue: string }>
-("toDoLists/removeToDoList", async (toDoListId, {dispatch, rejectWithValue}) => {
-
-  dispatch(setIsDisabled({toDoListId, isDisabled: true}))
-
+("toDoLists/removeToDoList", async (toDoListId, {rejectWithValue}) => {
   try {
     const response = await TODOLISTS.removeToDoList(toDoListId)
     const {resultCode, messages} = response.data
@@ -61,7 +57,6 @@ export const removeToDoList = createAsyncThunk<string, string, { rejectValue: st
     if (resultCode === ResponseCode.SUCCESS) {
       return toDoListId
     } else {
-      dispatch(setIsDisabled({toDoListId, isDisabled: false}))
       return rejectWithValue(messages[FIRST_ELEMENT_ARRAY])
     }
   } catch (error: any) {
