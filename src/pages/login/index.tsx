@@ -17,7 +17,7 @@ import { Path } from "enums/Path"
 import { EMPTY_STRING } from "constants/base"
 import { FormikErrorType } from "./types"
 import { LoginDataType } from "api/auth/types"
-import style from "./Login.module.css"
+import classes from "./Login.module.css"
 
 export const Login: FC = () => {
 
@@ -82,7 +82,7 @@ export const Login: FC = () => {
                 {...formik.getFieldProps("email")}
               />
               {formik.touched.email && formik.errors.email &&
-                <div className={style.errorMessage}>{formik.errors.email}</div>}
+                <div className={classes.errorMessage}>{formik.errors.email}</div>}
               <TextField
                 type="password"
                 label="Password"
@@ -90,7 +90,7 @@ export const Login: FC = () => {
                 {...formik.getFieldProps("password")}
               />
               {formik.touched.password && formik.errors.password &&
-                <div className={style.errorMessage}>{formik.errors.password}</div>}
+                <div className={classes.errorMessage}>{formik.errors.password}</div>}
               <FormControlLabel
                 label={"Remember me"}
                 control={

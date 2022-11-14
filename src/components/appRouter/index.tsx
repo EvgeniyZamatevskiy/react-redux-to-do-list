@@ -6,7 +6,7 @@ import classes from "./AppRouter.module.css"
 
 export const AppRouter: FC = () => {
   return (
-    <Suspense fallback={<div className={classes.containerLoader}><CircularProgress/></div>}>
+    <Suspense fallback={<div className={classes.loader}><CircularProgress/></div>}>
       <Routes>
         {ROUTES.map(({path, element}) => <Route key={path} path={path} element={element}/>)}
       </Routes>
