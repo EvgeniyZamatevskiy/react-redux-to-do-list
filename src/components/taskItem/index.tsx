@@ -42,12 +42,12 @@ export const TaskItem: FC<TaskPropsType> = memo(
             color="primary"
             checked={status === TaskStatus.COMPLETED}
             onChange={onUpdateTaskStatusChange}
-            disabled={isDisabledToDoList}
+            disabled={isDisabledToDoList || isDisabledTask}
           />
           <EditableItem
             currentTitle={title}
             updateValue={handleChangeTaskTitleClickOrBlur}
-            isDisabled={isDisabledToDoList}
+            isDisabled={isDisabledToDoList || isDisabledTask}
           />
         </div>
         <IconButton

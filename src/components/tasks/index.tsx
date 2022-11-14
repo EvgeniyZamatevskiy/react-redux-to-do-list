@@ -3,7 +3,6 @@ import { TasksPropsType } from "./types"
 import { AddItemForm, TasksFilter, TasksList } from "components"
 import { useSelector } from "react-redux"
 import { selectTasks } from "store/selectors"
-import { FilterValue } from "enums"
 import { TaskStatus } from "enums"
 import { addTask } from "store/asyncActions"
 import { useAppDispatch } from "hooks"
@@ -16,14 +15,14 @@ export const Tasks: FC<TasksPropsType> = ({filter, toDoListId, isDisabledToDoLis
   const tasks = useSelector(selectTasks(toDoListId))
 
   const handleAddTaskClickOrKeyDown = useCallback((title: string): void => {
-    dispatch(addTask({toDoListId, title}))
+    dispatch(addTask({toDoListId, taskTitle: title}))
   }, [toDoListId])
 
   let filteredTasks = tasks
-  if (filter === FilterValue.ACTIVE) {
+  if (filter === "active") {
     filteredTasks = filteredTasks.filter(task => task.status === TaskStatus.NEW)
   }
-  if (filter === FilterValue.COMPLETED) {
+  if (filter === "completed") {
     filteredTasks = filteredTasks.filter(task => task.status === TaskStatus.COMPLETED)
   }
 

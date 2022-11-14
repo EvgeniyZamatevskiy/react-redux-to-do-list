@@ -1,7 +1,7 @@
-import { FilterValue } from "enums"
+import { FilterValueType } from "store/slices/toDoLists/types"
 
 export type TasksFilterPropsType = {
   toDoListId: string
-  filter: FilterValue
+  filter: FilterValueType
   isDisabledToDoList: boolean
 }

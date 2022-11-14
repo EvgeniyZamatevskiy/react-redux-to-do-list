@@ -12,7 +12,7 @@ export const ToDoListItem: FC<ToDoListItemPropsType> = memo(({toDoListId, filter
   const dispatch = useAppDispatch()
 
   const handleChangeToDoListTitleClickOrBlur = useCallback((updatedTitle: string): void => {
-    dispatch(changeToDoListTitle({toDoListId, title: updatedTitle}))
+    dispatch(changeToDoListTitle({toDoListId, toDoListTitle: updatedTitle}))
   }, [toDoListId])
 
   const onRemoveToDoListClick = (): void => {

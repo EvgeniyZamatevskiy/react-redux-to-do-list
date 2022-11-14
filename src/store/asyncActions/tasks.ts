@@ -8,8 +8,7 @@ import { RootStateType } from "store"
 export const getTasks = createAsyncThunk<{ tasks: TaskType[], toDoListId: string }, string, { rejectValue: string }>
 ("tasks/getTasks", async (toDoListId, {rejectWithValue}) => {
   try {
-    const response = await TASKS.getTasks(toDoListId)
-    const tasks = response.data.items
+    const {data: {items: tasks}} = await TASKS.getTasks(toDoListId)
 
     return {tasks, toDoListId}
   } catch (error: any) {
@@ -17,10 +16,10 @@ export const getTasks = createAsyncThunk<{ tasks: TaskType[], toDoListId: string
   }
 })
 
-export const addTask = createAsyncThunk<TaskType, { toDoListId: string, title: string }, { rejectValue: string }>
+export const addTask = createAsyncThunk<TaskType, { toDoListId: string, taskTitle: string }, { rejectValue: string }>
 ("tasks/addTask", async (params, {rejectWithValue}) => {
   try {
-    const response = await TASKS.addTask(params.toDoListId, params.title)
+    const response = await TASKS.addTask(params.toDoListId, params.taskTitle)
     const {resultCode, messages} = response.data
     const task = response.data.data.item
 
@@ -41,7 +40,7 @@ export const removeTask = createAsyncThunk<{ toDoListId: string, taskId: string 
     const {resultCode, messages} = response.data
 
     if (resultCode === ResponseCode.SUCCESS) {
-      return {toDoListId: params.toDoListId, taskId: params.taskId}
+      return {...params}
     } else {
       return rejectWithValue(messages[FIRST_ELEMENT_ARRAY])
     }
@@ -60,16 +59,8 @@ export const updateTask = createAsyncThunk<{ toDoListId: string, taskId: string,
     return rejectWithValue("Task not found in the state!")
   }
 
-  const payload: PayloadType = {
-    // deadline: task.deadline,
-    // description: task.description,
-    // priority: task.priority,
-    // startDate: task.startDate,
-    // title: task.title,
-    // status: task.status,
-    ...task,
-    ...params.domainPayload
-  }
+  const payload: PayloadType = {...task, ...params.domainPayload}
+
   try {
     const response = await TASKS.updateTask(params.toDoListId, params.taskId, payload)
     const {resultCode, messages} = response.data
