@@ -3,20 +3,14 @@ import { TaskItem } from "components"
 import { TasksListPropsType } from "./types"
 import { useSelector } from "react-redux"
 import { selectTasks } from "store/selectors"
-import { TaskStatus } from "enums"
+import { useTasks } from "hooks"
 import classes from "./index.module.css"
 
 export const TasksList: FC<TasksListPropsType> = ({isDisabledToDoList, filter, toDoListId}) => {
 
   const tasks = useSelector(selectTasks(toDoListId))
 
-  let filteredTasks = tasks
-  if (filter === "active") {
-    filteredTasks = filteredTasks.filter(task => task.status === TaskStatus.NEW)
-  }
-  if (filter === "completed") {
-    filteredTasks = filteredTasks.filter(task => task.status === TaskStatus.COMPLETED)
-  }
+  const filteredTasks = useTasks(tasks, filter)
 
   const tasksRender = filteredTasks.map(({todoListId, id, status, title, isDisabledTask}) => {
     return (

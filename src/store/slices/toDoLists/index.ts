@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit"
-import { getToDoLists, addToDoList, removeToDoList, changeToDoListTitle, logOut } from "store/asyncActions"
+import { getToDoLists, addToDoList, removeToDoList, updateToDoListTitle, logOut } from "store/asyncActions"
 import { FilterValueType, ToDoListsSliceInitialStateType } from "./types"
 
 const initialState: ToDoListsSliceInitialStateType = {
@@ -60,7 +60,7 @@ const toDoListsSlice = createSlice({
           state.toDoLists.splice(index, 1)
         }
       })
-      .addCase(changeToDoListTitle.fulfilled, (state, action) => {
+      .addCase(updateToDoListTitle.fulfilled, (state, action) => {
         const index = state.toDoLists.findIndex(toDoList => toDoList.id === action.payload.toDoListId)
 
         if (index > -1) {

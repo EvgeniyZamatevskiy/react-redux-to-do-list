@@ -15,8 +15,8 @@ export const ToDoLists: FC = () => {
 
   const isAuth = useSelector(selectIsAuth)
 
-  const handleAddToDoListClickOrKeyDown = (title: string) => {
-    dispatch(addToDoList(title))
+  const handleAddToDoListClickOrKeyDown = (titleTrimmed: string) => {
+    dispatch(addToDoList(titleTrimmed))
   }
 
   useEffect(() => {

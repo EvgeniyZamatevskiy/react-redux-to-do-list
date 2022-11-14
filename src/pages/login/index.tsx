@@ -14,7 +14,6 @@ import { useSelector } from "react-redux"
 import { selectIsAuth } from "store/selectors/auth"
 import { Navigate } from "react-router-dom"
 import { Path } from "enums/Path"
-import { EMPTY_STRING } from "constants/base"
 import { FormikErrorType } from "./types"
 import { LoginDataType } from "api/auth/types"
 import classes from "./index.module.css"
@@ -50,7 +49,6 @@ export const Login: FC = () => {
     },
     onSubmit: (values: LoginDataType) => {
       dispatch(login(values))
-      // formik.resetForm()
     },
   })
 
@@ -73,10 +71,6 @@ export const Login: FC = () => {
               <TextField
                 label="Email"
                 margin="normal"
-                // name="email"
-                // onChange={formik.handleChange}
-                // onBlur={formik.handleBlur}
-                // value={formik.values.email}
                 {...formik.getFieldProps("email")}
               />
               {formik.touched.email && formik.errors.email &&
@@ -91,15 +85,7 @@ export const Login: FC = () => {
                 <div className={classes.errorMessage}>{formik.errors.password}</div>}
               <FormControlLabel
                 label={"Remember me"}
-                control={
-                  <Checkbox
-                    // name={'rememberMe'}
-                    // checked={formik.values.rememberMe}
-                    // onChange={formik.handleChange}
-                    {...formik.getFieldProps("rememberMe")}
-                    // checked={formik.values.rememberMe} Для очистки rememberMe
-                  />
-                }/>
+                control={<Checkbox {...formik.getFieldProps("rememberMe")}/>}/>
               <Button type={"submit"} variant={"contained"} color={"primary"}>Login</Button>
             </FormGroup>
           </form>

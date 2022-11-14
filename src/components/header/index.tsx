@@ -20,7 +20,7 @@ export const Header: FC = () => {
 
   const loadingStatus = useSelector(selectLoadingStatus)
   const isAuth = useSelector(selectIsAuth)
-  const authorizedUserData = useSelector(selectAuthorizedUserData)
+  const authorizedUser = useSelector(selectAuthorizedUserData)
 
   const onLogOutClick = (): void => {
     dispatch(logOut())
@@ -34,7 +34,7 @@ export const Header: FC = () => {
         </Typography>
         {isAuth && pathname === Path.HOME &&
           <>
-            <div className={classes.login}>{authorizedUserData?.login}</div>
+            <div className={classes.login}>{authorizedUser?.login}</div>
             <Button color="inherit" onClick={onLogOutClick}>Log out</Button>
           </>
         }

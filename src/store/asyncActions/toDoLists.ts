@@ -15,8 +15,8 @@ export const getToDoLists = createAsyncThunk<ToDoListType[], undefined, { reject
   }
 })
 
-export const changeToDoListTitle = createAsyncThunk<{ toDoListId: string, toDoListTitle: string }, { toDoListId: string, toDoListTitle: string }, { rejectValue: string }>
-("toDoLists/changeToDoListTitle", async (params, {rejectWithValue}) => {
+export const updateToDoListTitle = createAsyncThunk<{ toDoListId: string, toDoListTitle: string }, { toDoListId: string, toDoListTitle: string }, { rejectValue: string }>
+("toDoLists/updateToDoListTitle", async (params, {rejectWithValue}) => {
   try {
     const response = await TO_DO_LISTS.updateToDoListTitle(params.toDoListId, params.toDoListTitle)
     const {resultCode, messages} = response.data

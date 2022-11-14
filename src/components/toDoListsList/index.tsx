@@ -3,7 +3,6 @@ import Grid from "@mui/material/Grid"
 import { ToDoListItem } from "components"
 import { useSelector } from "react-redux"
 import { selectToDoLists } from "store/selectors"
-import classes from "./index.module.css"
 
 export const ToDoListsList: FC = () => {
 
@@ -11,11 +10,7 @@ export const ToDoListsList: FC = () => {
 
   const toDoListsRender = toDoLists.map(({id, filter, isDisabledToDoList, title}) => {
     return (
-      <Grid item key={id}>
-        <div className={classes.container}>
-          <ToDoListItem toDoListId={id} filter={filter} isDisabledToDoList={isDisabledToDoList} title={title}/>
-        </div>
-      </Grid>
+      <ToDoListItem key={id} toDoListId={id} filter={filter} isDisabledToDoList={isDisabledToDoList} title={title}/>
     )
   })
 
