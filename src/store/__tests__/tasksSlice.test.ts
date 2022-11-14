@@ -49,7 +49,7 @@ beforeEach(() => {
   }
 })
 
-test("empty arrays should be added when we set toDoList", () => {
+test("empty arrays should be added when we set toDoLists", () => {
 
   const startState = {
     tasks: {}

@@ -1,13 +1,13 @@
 import { createAsyncThunk } from "@reduxjs/toolkit"
-import { TODOLISTS } from "api"
-import { ToDoListType } from "api/toDoList/types"
+import { TO_DO_LISTS } from "api"
+import { ToDoListType } from "api/toDoLists/types"
 import { FIRST_ELEMENT_ARRAY } from "constants/base"
 import { ResponseCode } from "enums"
 
 export const getToDoLists = createAsyncThunk<ToDoListType[], undefined, { rejectValue: string }>
 ("toDoLists/getToDoLists", async (_, {rejectWithValue}) => {
   try {
-    const {data: toDoLists} = await TODOLISTS.getToDoLists()
+    const {data: toDoLists} = await TO_DO_LISTS.getToDoLists()
 
     return toDoLists
   } catch (error: any) {
@@ -18,7 +18,7 @@ export const getToDoLists = createAsyncThunk<ToDoListType[], undefined, { reject
 export const changeToDoListTitle = createAsyncThunk<{ toDoListId: string, toDoListTitle: string }, { toDoListId: string, toDoListTitle: string }, { rejectValue: string }>
 ("toDoLists/changeToDoListTitle", async (params, {rejectWithValue}) => {
   try {
-    const response = await TODOLISTS.updateToDoListTitle(params.toDoListId, params.toDoListTitle)
+    const response = await TO_DO_LISTS.updateToDoListTitle(params.toDoListId, params.toDoListTitle)
     const {resultCode, messages} = response.data
 
     if (resultCode === ResponseCode.SUCCESS) {
@@ -34,7 +34,7 @@ export const changeToDoListTitle = createAsyncThunk<{ toDoListId: string, toDoLi
 export const addToDoList = createAsyncThunk<ToDoListType, string, { rejectValue: string }>
 ("toDoLists/addToDoList", async (toDoListTitle, {rejectWithValue}) => {
   try {
-    const response = await TODOLISTS.addToDoList(toDoListTitle)
+    const response = await TO_DO_LISTS.addToDoList(toDoListTitle)
     const {resultCode, messages} = response.data
     const toDoList = response.data.data.item
 
@@ -51,7 +51,7 @@ export const addToDoList = createAsyncThunk<ToDoListType, string, { rejectValue:
 export const removeToDoList = createAsyncThunk<string, string, { rejectValue: string }>
 ("toDoLists/removeToDoList", async (toDoListId, {rejectWithValue}) => {
   try {
-    const response = await TODOLISTS.removeToDoList(toDoListId)
+    const response = await TO_DO_LISTS.removeToDoList(toDoListId)
     const {resultCode, messages} = response.data
 
     if (resultCode === ResponseCode.SUCCESS) {

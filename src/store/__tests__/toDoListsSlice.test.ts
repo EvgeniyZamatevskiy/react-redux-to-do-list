@@ -1,4 +1,4 @@
-import { ToDoListType } from "api/toDoList/types"
+import { ToDoListType } from "api/toDoLists/types"
 import { addToDoList, changeToDoListTitle, getToDoLists, logOut, removeToDoList } from "store/asyncActions"
 import toDoListsSlice, { changeToDoListFilter, setIsDisabled } from "store/slices/toDoLists"
 import { ToDoListsSliceInitialStateType } from "store/slices/toDoLists/types"

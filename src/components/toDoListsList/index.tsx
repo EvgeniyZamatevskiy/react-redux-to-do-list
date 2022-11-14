@@ -1,12 +1,11 @@
 import React, { FC } from "react"
-import { ToDoListListPropsType } from "./types"
 import Grid from "@mui/material/Grid"
 import { ToDoListItem } from "components"
 import { useSelector } from "react-redux"
 import { selectToDoLists } from "store/selectors"
-import classes from "./ToDoListLists.module.css"
+import classes from "./index.module.css"
 
-export const ToDoListsList: FC<ToDoListListPropsType> = () => {
+export const ToDoListsList: FC = () => {
 
   const toDoLists = useSelector(selectToDoLists)
 

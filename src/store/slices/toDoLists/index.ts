@@ -11,10 +11,10 @@ const toDoListsSlice = createSlice({
   initialState,
   reducers: {
     changeToDoListFilter(state, action: PayloadAction<{ toDoListId: string, value: FilterValueType }>) {
-      // const toDoList = state.toDoLists.find(toDoList => toDoList.id === action.payload.toDoListId)
+      // const toDoLists = state.toDoLists.find(toDoLists => toDoLists.id === action.payload.toDoListId)
       //
-      // if (toDoList) {
-      //   toDoList.filter = action.payload.value
+      // if (toDoLists) {
+      //   toDoLists.filter = action.payload.value
       // }
 
       const index = state.toDoLists.findIndex(({id}) => id === action.payload.toDoListId)
@@ -53,7 +53,7 @@ const toDoListsSlice = createSlice({
         }
       })
       .addCase(removeToDoList.fulfilled, (state, action) => {
-        // state.toDoLists = state.toDoLists.filter(toDoList => toDoList.id !== action.payload)
+        // state.toDoLists = state.toDoLists.filter(toDoLists => toDoLists.id !== action.payload)
 
         const index = state.toDoLists.findIndex(({id}) => id === action.payload)
         if (index > -1) {

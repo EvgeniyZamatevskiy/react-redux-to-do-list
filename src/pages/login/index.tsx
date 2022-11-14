@@ -17,7 +17,7 @@ import { Path } from "enums/Path"
 import { EMPTY_STRING } from "constants/base"
 import { FormikErrorType } from "./types"
 import { LoginDataType } from "api/auth/types"
-import classes from "./Login.module.css"
+import classes from "./index.module.css"
 
 export const Login: FC = () => {
 
@@ -26,7 +26,7 @@ export const Login: FC = () => {
   const isAuth = useSelector(selectIsAuth)
 
   const formik = useFormik({
-    initialValues: {email: EMPTY_STRING, password: EMPTY_STRING, rememberMe: false},
+    initialValues: {email: "free@samuraijs.com", password: "free", rememberMe: false},
     validate: (values: LoginDataType) => {
       const errors: FormikErrorType = {}
 
@@ -34,12 +34,12 @@ export const Login: FC = () => {
         errors.email = "Email is required!"
       }
 
-      if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(values.email)) {
-        errors.email = "Invalid email address"
-      }
-
       if (!values.password) {
         errors.password = "Password is required!"
+      }
+
+      if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(values.email)) {
+        errors.email = "Invalid email address"
       }
 
       if (values.password.length < 3) {
@@ -67,8 +67,6 @@ export const Login: FC = () => {
               <a href={"https://social-network.samuraijs.com/"} target={"_blank"}> here</a>
             </p>
             <p>or use common test account credentials:</p>
-            <p>Email: free@samuraijs.com</p>
-            <p>Password: free</p>
           </FormLabel>
           <form onSubmit={formik.handleSubmit}>
             <FormGroup>

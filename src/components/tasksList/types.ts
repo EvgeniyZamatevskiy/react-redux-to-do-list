@@ -1,6 +1,7 @@
-import { TaskSupplementedType } from "store/slices/tasks/types"
+import { FilterValueType } from "store/slices/toDoLists/types"
 
 export type TasksListPropsType = {
-  tasks: TaskSupplementedType[]
   isDisabledToDoList: boolean
+  filter: FilterValueType
+  toDoListId: string
 }

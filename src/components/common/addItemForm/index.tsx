@@ -1,14 +1,12 @@
-import React, { ChangeEvent, FC, KeyboardEvent, memo, useState } from "react"
+import React, { ChangeEvent, FC, KeyboardEvent, useState } from "react"
 import AddBox from "@mui/icons-material/AddBox"
 import TextField from "@mui/material/TextField"
 import IconButton from "@mui/material/IconButton"
-import { EMPTY_STRING } from "constants/base"
+import { EMPTY_STRING, ERROR_MESSAGE } from "constants/base"
 import { Key } from "enums"
 import { AddItemFormPropsType } from "./types"
 
-const ERROR_MESSAGE = "Title is required!"
-
-export const AddItemForm: FC<AddItemFormPropsType> = memo(({addItem, isDisabledToDoList}) => {
+export const AddItemForm: FC<AddItemFormPropsType> = ({addItem, isDisabled}) => {
 
   const [title, setTitle] = useState(EMPTY_STRING)
   const [errorMessage, setErrorMessage] = useState(EMPTY_STRING)
@@ -48,11 +46,11 @@ export const AddItemForm: FC<AddItemFormPropsType> = memo(({addItem, isDisabledT
         onKeyDown={onAddItemKeyDown}
         error={!!errorMessage}
         helperText={errorMessage}
-        disabled={isDisabledToDoList}
+        disabled={isDisabled}
       />
       <IconButton
         color="primary"
-        disabled={isDisabledToDoList}
+        disabled={isDisabled}
         onClick={onAddItemClick}
         sx={{ml: "15px"}}
       >
@@ -60,4 +58,4 @@ export const AddItemForm: FC<AddItemFormPropsType> = memo(({addItem, isDisabledT
       </IconButton>
     </div>
   )
-})
+}

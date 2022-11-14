@@ -1,4 +1,4 @@
-import React, { FC, useCallback, useEffect } from "react"
+import React, { FC, useEffect } from "react"
 import Grid from "@mui/material/Grid"
 import { useAppDispatch } from "hooks"
 import { useSelector } from "react-redux"
@@ -7,7 +7,7 @@ import { AddItemForm, ToDoListsList } from "components"
 import { addToDoList, getToDoLists } from "store/asyncActions"
 import { selectIsAuth } from "store/selectors"
 import { Path } from "enums"
-import classes from "./ToDoLists.module.css"
+import classes from "./index.module.css"
 
 export const ToDoLists: FC = () => {
 
@@ -15,9 +15,9 @@ export const ToDoLists: FC = () => {
 
   const isAuth = useSelector(selectIsAuth)
 
-  const handleAddToDoListClickOrKeyDown = useCallback((title: string): void => {
+  const handleAddToDoListClickOrKeyDown = (title: string) => {
     dispatch(addToDoList(title))
-  }, [])
+  }
 
   useEffect(() => {
     if (isAuth) {

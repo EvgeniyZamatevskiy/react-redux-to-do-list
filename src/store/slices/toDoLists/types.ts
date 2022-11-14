@@ -1,4 +1,4 @@
-import { ToDoListType } from "api/toDoList/types"
+import { ToDoListType } from "api/toDoLists/types"
 
 export interface ToDoListsSliceInitialStateType {
   toDoLists: ToDoListSupplementedType[]

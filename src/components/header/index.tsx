@@ -10,7 +10,7 @@ import { logOut } from "store/asyncActions"
 import { selectLoadingStatus, selectIsAuth, selectAuthorizedUserData } from "store/selectors"
 import { Link, useLocation } from "react-router-dom"
 import { Path } from "enums"
-import classes from "./Header.module.css"
+import classes from "./index.module.css"
 
 export const Header: FC = () => {
 

@@ -1,11 +1,24 @@
 import React, { FC } from "react"
 import { TaskItem } from "components"
 import { TasksListPropsType } from "./types"
-import classes from "./TasksList.module.css"
+import { useSelector } from "react-redux"
+import { selectTasks } from "store/selectors"
+import { TaskStatus } from "enums"
+import classes from "./index.module.css"
 
-export const TasksList: FC<TasksListPropsType> = ({tasks, isDisabledToDoList}) => {
+export const TasksList: FC<TasksListPropsType> = ({isDisabledToDoList, filter, toDoListId}) => {
 
-  const tasksRender = tasks.map(({todoListId, id, status, title, isDisabledTask}) => {
+  const tasks = useSelector(selectTasks(toDoListId))
+
+  let filteredTasks = tasks
+  if (filter === "active") {
+    filteredTasks = filteredTasks.filter(task => task.status === TaskStatus.NEW)
+  }
+  if (filter === "completed") {
+    filteredTasks = filteredTasks.filter(task => task.status === TaskStatus.COMPLETED)
+  }
+
+  const tasksRender = filteredTasks.map(({todoListId, id, status, title, isDisabledTask}) => {
     return (
       <TaskItem
         key={id}
