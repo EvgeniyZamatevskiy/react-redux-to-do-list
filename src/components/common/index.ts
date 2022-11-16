@@ -1,3 +1,5 @@
 export { AddItemForm } from "./addItemForm"
 export { EditableItem } from "./editableItem"
 export { ErrorSnackbar } from "./errorSnackbar"
+export { MyModal } from "./myModal"
+export { Confirm } from "./confirm"
