@@ -1,9 +1,11 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit"
 import { getToDoLists, addToDoList, removeToDoList, updateToDoListTitle, logOut } from "store/asyncActions"
 import { FilterValueType, ToDoListsSliceInitialStateType } from "./types"
+import { EMPTY_STRING } from "constants/base"
 
 const initialState: ToDoListsSliceInitialStateType = {
-  toDoLists: []
+  toDoLists: [],
+  titleSearchValue: EMPTY_STRING
 }
 
 const toDoListsSlice = createSlice({
@@ -22,6 +24,9 @@ const toDoListsSlice = createSlice({
       if (index > -1) {
         state.toDoLists[index].filter = action.payload.value
       }
+    },
+    setTitleSearchValue(state, action: PayloadAction<string>) {
+      state.titleSearchValue = action.payload
     },
   },
   extraReducers(builder) {
@@ -73,6 +78,6 @@ const toDoListsSlice = createSlice({
   },
 })
 
-export const {changeToDoListFilter} = toDoListsSlice.actions
+export const {changeToDoListFilter, setTitleSearchValue} = toDoListsSlice.actions
 
 export default toDoListsSlice.reducer

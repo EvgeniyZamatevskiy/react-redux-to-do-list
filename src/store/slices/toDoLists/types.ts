@@ -2,6 +2,7 @@ import { ToDoListType } from "api/toDoLists/types"
 
 export interface ToDoListsSliceInitialStateType {
   toDoLists: ToDoListSupplementedType[]
+  titleSearchValue: string
 }
 
 export type ToDoListSupplementedType = ToDoListType & {

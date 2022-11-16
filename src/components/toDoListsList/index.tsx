@@ -3,12 +3,15 @@ import Grid from "@mui/material/Grid"
 import { ToDoListItem } from "components"
 import { useSelector } from "react-redux"
 import { selectToDoLists } from "store/selectors"
+import { useToDoLists } from "hooks"
 
 export const ToDoListsList: FC = () => {
 
   const toDoLists = useSelector(selectToDoLists)
 
-  const toDoListsRender = toDoLists.map(({id, filter, isDisabledToDoList, title}) => {
+  const filteredToDoLists = useToDoLists(toDoLists)
+
+  const toDoListsRender = filteredToDoLists.map(({id, filter, isDisabledToDoList, title}) => {
     return (
       <ToDoListItem key={id} toDoListId={id} filter={filter} isDisabledToDoList={isDisabledToDoList} title={title}/>
     )

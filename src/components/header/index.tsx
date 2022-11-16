@@ -7,9 +7,10 @@ import LinearProgress from "@mui/material/LinearProgress"
 import { useSelector } from "react-redux"
 import { useAppDispatch } from "hooks"
 import { logOut } from "store/asyncActions"
-import { selectLoadingStatus, selectIsAuth, selectAuthorizedUserData } from "store/selectors"
+import { selectAuthorizedUserData, selectIsAuth, selectLoadingStatus } from "store/selectors"
 import { Link, useLocation } from "react-router-dom"
 import { Path } from "enums"
+import { SearchField } from "components/searchField"
 import classes from "./index.module.css"
 
 export const Header: FC = () => {
@@ -34,10 +35,10 @@ export const Header: FC = () => {
         </Typography>
         {isAuth && pathname === Path.HOME &&
           <>
+            <SearchField/>
             <div className={classes.login}>{authorizedUser?.login}</div>
             <Button color="inherit" onClick={onLogOutClick}>Log out</Button>
-          </>
-        }
+          </>}
       </Toolbar>
       {loadingStatus === "loading" && <LinearProgress/>}
     </AppBar>
