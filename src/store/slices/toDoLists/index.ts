@@ -1,10 +1,11 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit"
 import { getToDoLists, addToDoList, removeToDoList, updateToDoListTitle, logOut } from "store/asyncActions"
-import { FilterValueType, ToDoListsSliceInitialStateType } from "./types"
+import { FilterValueType, ToDoListsSliceInitialStateType, ToDoListSupplementedType } from "./types"
 import { EMPTY_STRING } from "constants/base"
 
 const initialState: ToDoListsSliceInitialStateType = {
   toDoLists: [],
+  currentToDoList: {} as ToDoListSupplementedType,
   titleSearchValue: EMPTY_STRING
 }
 
@@ -28,6 +29,31 @@ const toDoListsSlice = createSlice({
     setTitleSearchValue(state, action: PayloadAction<string>) {
       state.titleSearchValue = action.payload
     },
+    setCurrentToDoList(state, action: PayloadAction<ToDoListSupplementedType>) {
+      state.currentToDoList = action.payload
+    },
+    setSortedToDoLists(state, action: PayloadAction<{ toDoListId: string, toDoListOrder: number }>) {
+      // state.toDoLists = state.toDoLists.map(t => {
+      //   if (t.id === action.payload.toDoListId) {
+      //     return {...t, order: state.currentToDoList.order}
+      //   }
+      //
+      //   if (t.id === state.currentToDoList.id) {
+      //     return {...t, order: action.payload.toDoListOrder}
+      //   }
+      //
+      //   return t
+      // })
+      const toDoList = state.toDoLists.find(({id}) => id === action.payload.toDoListId)
+      if (toDoList) {
+        toDoList.order = state.currentToDoList.order
+      }
+
+      const currentToDoList = state.toDoLists.find(({id}) => id === state.currentToDoList.id)
+      if (currentToDoList) {
+        currentToDoList.order = action.payload.toDoListOrder
+      }
+    }
   },
   extraReducers(builder) {
     builder
@@ -78,6 +104,11 @@ const toDoListsSlice = createSlice({
   },
 })
 
-export const {changeToDoListFilter, setTitleSearchValue} = toDoListsSlice.actions
+export const {
+  changeToDoListFilter,
+  setTitleSearchValue,
+  setSortedToDoLists,
+  setCurrentToDoList
+} = toDoListsSlice.actions
 
 export default toDoListsSlice.reducer

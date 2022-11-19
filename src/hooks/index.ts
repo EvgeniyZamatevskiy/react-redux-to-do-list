@@ -1,5 +1,5 @@
 export { useAppDispatch } from "./useAppDispatch"
 export { useAppSelector } from "./useAppSelector"
 export { useTasks } from "./useTasks"
-export { useToDoLists } from "./useToDoLists"
+export { useSearchedToDoLists } from "./useToDoLists"
 export { useDebounce } from "./useDebounce"

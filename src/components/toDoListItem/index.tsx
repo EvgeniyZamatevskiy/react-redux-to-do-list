@@ -1,26 +1,27 @@
-import React, { FC, useState } from "react"
+import React, { FC, useState, DragEvent } from "react"
 import Delete from "@mui/icons-material/Delete"
 import IconButton from "@mui/material/IconButton"
 import Paper from "@mui/material/Paper"
+import Grid from "@mui/material/Grid"
 import { useAppDispatch } from "hooks"
 import { updateToDoListTitle, removeToDoList } from "store/asyncActions"
 import { Confirm, EditableItem, MyModal, Tasks } from "components"
 import { ToDoListItemPropsType } from "./types"
-import Grid from "@mui/material/Grid/Grid"
+import { setCurrentToDoList, setSortedToDoLists } from "store/slices"
 import classes from "./index.module.css"
 
-export const ToDoListItem: FC<ToDoListItemPropsType> = ({toDoListId, filter, isDisabledToDoList, title}) => {
+export const ToDoListItem: FC<ToDoListItemPropsType> = ({toDoList}) => {
 
   const dispatch = useAppDispatch()
 
   const [isActivatedModal, setIsActivatedModal] = useState(false)
 
   const handleUpdateToDoListTitleClickOrBlur = (updatedTitle: string): void => {
-    dispatch(updateToDoListTitle({toDoListId, toDoListTitle: updatedTitle}))
+    dispatch(updateToDoListTitle({toDoListId: toDoList.id, toDoListTitle: updatedTitle}))
   }
 
   const onRemoveToDoListClick = (): void => {
-    dispatch(removeToDoList(toDoListId))
+    dispatch(removeToDoList(toDoList.id))
   }
 
   const onDeactivateModalClick = (): void => {
@@ -29,6 +30,20 @@ export const ToDoListItem: FC<ToDoListItemPropsType> = ({toDoListId, filter, isD
 
   const onActivateModalClick = (): void => {
     setIsActivatedModal(true)
+  }
+
+  const onToDoListDragStart = (): void => {
+    dispatch(setCurrentToDoList(toDoList))
+  }
+
+  const onToDoListDragOver = (event: DragEvent<HTMLDivElement>): void => {
+    event.preventDefault()
+  }
+
+  const onToDoListDrop = (event: DragEvent<HTMLDivElement>): void => {
+    event.preventDefault()
+
+    dispatch(setSortedToDoLists({toDoListId: toDoList.id, toDoListOrder: toDoList.order}))
   }
 
   return (
@@ -43,24 +58,31 @@ export const ToDoListItem: FC<ToDoListItemPropsType> = ({toDoListId, filter, isD
           secondValue={"Yes"}
         />
       </MyModal>
-      <div className={classes.container}>
+      <div
+        className={classes.container}
+        style={{cursor: "grab"}}
+        draggable
+        onDragStart={onToDoListDragStart}
+        onDragOver={onToDoListDragOver}
+        onDrop={onToDoListDrop}
+      >
         <Paper sx={{position: "relative", padding: "10px"}}>
           <IconButton
             size={"small"}
             sx={{position: "absolute", right: "5px", top: "5px"}}
-            disabled={isDisabledToDoList}
+            disabled={toDoList.isDisabledToDoList}
             onClick={onActivateModalClick}
           >
             <Delete fontSize={"small"}/>
           </IconButton>
           <h3>
             <EditableItem
-              currentTitle={title}
+              currentTitle={toDoList.title}
               updateValue={handleUpdateToDoListTitleClickOrBlur}
-              isDisabled={isDisabledToDoList}
+              isDisabled={toDoList.isDisabledToDoList}
             />
           </h3>
-          <Tasks filter={filter} toDoListId={toDoListId} isDisabledToDoList={isDisabledToDoList}/>
+          <Tasks filter={toDoList.filter} toDoListId={toDoList.id} isDisabledToDoList={toDoList.isDisabledToDoList}/>
         </Paper>
       </div>
     </Grid>
