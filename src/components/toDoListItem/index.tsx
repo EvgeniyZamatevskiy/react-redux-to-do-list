@@ -15,6 +15,7 @@ export const ToDoListItem: FC<ToDoListItemPropsType> = ({toDoList}) => {
   const dispatch = useAppDispatch()
 
   const [isActivatedModal, setIsActivatedModal] = useState(false)
+  const [sx, setSx] = useState(1)
 
   const handleUpdateToDoListTitleClickOrBlur = (updatedTitle: string): void => {
     dispatch(updateToDoListTitle({toDoListId: toDoList.id, toDoListTitle: updatedTitle}))
@@ -38,12 +39,17 @@ export const ToDoListItem: FC<ToDoListItemPropsType> = ({toDoList}) => {
 
   const onToDoListDragOver = (event: DragEvent<HTMLDivElement>): void => {
     event.preventDefault()
+    setSx(1.05)
+  }
+
+  const onToDoListDragLeave = (): void => {
+    setSx(1)
   }
 
   const onToDoListDrop = (event: DragEvent<HTMLDivElement>): void => {
     event.preventDefault()
-
     dispatch(setSortedToDoLists({toDoListId: toDoList.id, toDoListOrder: toDoList.order}))
+    setSx(1)
   }
 
   return (
@@ -64,9 +70,18 @@ export const ToDoListItem: FC<ToDoListItemPropsType> = ({toDoList}) => {
         draggable
         onDragStart={onToDoListDragStart}
         onDragOver={onToDoListDragOver}
+        onDragLeave={onToDoListDragLeave}
         onDrop={onToDoListDrop}
       >
-        <Paper sx={{position: "relative", padding: "10px"}}>
+        <Paper
+          sx={{
+            position: "relative",
+            padding: "10px",
+            pointerEvents: "none",
+            transform: `scale(${sx})`,
+            transition: "transform 0.1s ease-out"
+          }}
+        >
           <IconButton
             size={"small"}
             sx={{position: "absolute", right: "5px", top: "5px"}}
