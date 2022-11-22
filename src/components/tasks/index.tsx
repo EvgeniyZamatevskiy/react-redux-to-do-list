@@ -27,12 +27,7 @@ export const Tasks: FC<TasksPropsType> = ({filter, toDoListId, isDisabledToDoLis
     <div className={classes.filterValues}>
       <AddItemForm addItem={handleAddTaskClickOrKeyDown} isDisabled={isDisabledToDoList}/>
       <TasksList tasks={filteredTasks} filter={filter} toDoListId={toDoListId} isDisabledToDoList={isDisabledToDoList}/>
-      <TasksFilter
-        tasks={filteredTasks}
-        filter={filter}
-        toDoListId={toDoListId}
-        isDisabledToDoList={isDisabledToDoList}
-      />
+      <TasksFilter filter={filter} toDoListId={toDoListId} isDisabledToDoList={isDisabledToDoList}/>
     </div>
   )
 }
