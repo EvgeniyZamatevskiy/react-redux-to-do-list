@@ -48,6 +48,7 @@ export const ToDoListItem: FC<ToDoListItemPropsType> = ({toDoList}) => {
 
   const onToDoListDrop = (event: DragEvent<HTMLDivElement>): void => {
     event.preventDefault()
+
     dispatch(setSortedToDoLists({toDoListId: toDoList.id, toDoListOrder: toDoList.order}))
     setSx(1)
   }
@@ -66,22 +67,14 @@ export const ToDoListItem: FC<ToDoListItemPropsType> = ({toDoList}) => {
       </MyModal>
       <div
         className={classes.container}
-        style={{cursor: "grab"}}
+        style={{cursor: "grab", transform: `scale(${sx})`, transition: "transform 0.1s ease-in-out 0s"}}
         draggable
         onDragStart={onToDoListDragStart}
         onDragOver={onToDoListDragOver}
         onDragLeave={onToDoListDragLeave}
         onDrop={onToDoListDrop}
       >
-        <Paper
-          sx={{
-            position: "relative",
-            padding: "10px",
-            pointerEvents: "none",
-            transform: `scale(${sx})`,
-            transition: "transform 0.1s ease-out"
-          }}
-        >
+        <Paper sx={{position: "relative", padding: "10px", pointerEvents: "none"}}>
           <IconButton
             size={"small"}
             sx={{position: "absolute", right: "5px", top: "5px"}}
