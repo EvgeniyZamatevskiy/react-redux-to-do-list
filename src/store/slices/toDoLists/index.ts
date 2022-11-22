@@ -58,14 +58,18 @@ const toDoListsSlice = createSlice({
   extraReducers(builder) {
     builder
       .addCase(getToDoLists.fulfilled, (state, action) => {
-        state.toDoLists = action.payload.map(toDoList => ({
+        const toDoLists = action.payload
+
+        state.toDoLists = toDoLists.map(toDoList => ({
           ...toDoList,
           filter: "all",
           isDisabledToDoList: false
         }))
       })
       .addCase(addToDoList.fulfilled, (state, action) => {
-        state.toDoLists.unshift({...action.payload, filter: "all", isDisabledToDoList: false})
+        const toDoList = action.payload
+
+        state.toDoLists.unshift({...toDoList, filter: "all", isDisabledToDoList: false})
       })
       .addCase(removeToDoList.pending, (state, action) => {
         const toDoListId = action.meta.arg
@@ -84,9 +88,10 @@ const toDoListsSlice = createSlice({
         }
       })
       .addCase(removeToDoList.fulfilled, (state, action) => {
-        // state.toDoLists = state.toDoLists.filter(toDoLists => toDoLists.id !== action.payload)
+        const toDoListId = action.payload
+        // state.toDoLists = state.toDoLists.filter(toDoLists => toDoLists.id !== toDoListId)
 
-        const index = state.toDoLists.findIndex(({id}) => id === action.payload)
+        const index = state.toDoLists.findIndex(({id}) => id === toDoListId)
         if (index > -1) {
           state.toDoLists.splice(index, 1)
         }

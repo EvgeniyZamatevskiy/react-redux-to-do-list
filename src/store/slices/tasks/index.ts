@@ -1,4 +1,4 @@
-import { createSlice } from "@reduxjs/toolkit"
+import { createSlice, PayloadAction } from "@reduxjs/toolkit"
 import { TasksSliceInitialStateType } from "./types"
 import {
   getTasks,
@@ -9,6 +9,7 @@ import {
   getToDoLists,
   logOut, removeToDoList,
 } from "store/asyncActions"
+import { TaskStatus } from "enums"
 
 const initialState: TasksSliceInitialStateType = {
   tasks: {}
@@ -17,20 +18,39 @@ const initialState: TasksSliceInitialStateType = {
 const tasksSlice = createSlice({
   name: "tasks",
   initialState,
-  reducers: {},
+  reducers: {
+    clearCompletedTasks(state, action: PayloadAction<string>) {
+      const toDoListId = action.payload
+      const tasks = state.tasks[toDoListId]
+      // state.tasks[toDoListId] = tasks.map(task => task.status === TaskStatus.COMPLETED
+      //   ? {...task, status: TaskStatus.NEW}
+      //   : task)
+
+      tasks.forEach(task => {
+        if (task.status === TaskStatus.COMPLETED) {
+          task.status = TaskStatus.NEW
+        }
+      })
+    }
+  },
   extraReducers(builder) {
     builder
       .addCase(getToDoLists.fulfilled, (state, action) => {
-        action.payload.forEach(toDoList => {
+        const toDoLists = action.payload
+
+        toDoLists.forEach(toDoList => {
           state.tasks[toDoList.id] = []
         })
       })
       .addCase(addToDoList.fulfilled, (state, action) => {
-        state.tasks[action.payload.id] = []
+        const toDoList = action.payload
+
+        state.tasks[toDoList.id] = []
       })
       .addCase(removeToDoList.fulfilled, (state, action) => {
-        // delete state.tasks[action.payload]
-        const {[action.payload]: [], ...restTasks} = state.tasks
+        const toDoListId = action.payload
+        // delete state.tasks[toDoListId]
+        const {[toDoListId]: [], ...restTasks} = state.tasks
         state.tasks = restTasks
       })
       .addCase(getTasks.fulfilled, (state, action) => {
@@ -79,5 +99,7 @@ const tasksSlice = createSlice({
       })
   },
 })
+
+export const {clearCompletedTasks} = tasksSlice.actions
 
 export default tasksSlice.reducer
