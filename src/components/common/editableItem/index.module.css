@@ -1,6 +1,6 @@
 .span {
-	display: inline-block;
-	cursor: pointer;
-	max-width: 280px;
-	word-wrap: break-word;
+  display: inline-block;
+  cursor: pointer;
+  max-width: 280px;
+  word-wrap: break-word;
 }

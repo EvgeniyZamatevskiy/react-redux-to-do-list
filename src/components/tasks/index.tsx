@@ -5,7 +5,6 @@ import { addTask, getTasks } from "store/asyncActions"
 import { useActiveTasks, useAppDispatch, useTasks } from "hooks"
 import { useSelector } from "react-redux"
 import { selectTasks } from "store/selectors"
-import classes from "./index.module.css"
 
 export const Tasks: FC<TasksPropsType> = ({filter, toDoListId, isDisabledToDoList}) => {
 
@@ -25,7 +24,7 @@ export const Tasks: FC<TasksPropsType> = ({filter, toDoListId, isDisabledToDoLis
   }, [])
 
   return (
-    <div className={classes.filterValues}>
+    <div>
       <AddItemForm addItem={handleAddTaskClickOrKeyDown} isDisabled={isDisabledToDoList}/>
       <TasksList tasks={filteredTasks} isDisabledToDoList={isDisabledToDoList} activeTasks={activeTasks}/>
       <TasksFilter filter={filter} toDoListId={toDoListId} isDisabledToDoList={isDisabledToDoList}/>

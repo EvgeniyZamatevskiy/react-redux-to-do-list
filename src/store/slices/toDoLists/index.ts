@@ -53,6 +53,13 @@ const toDoListsSlice = createSlice({
       if (currentToDoList) {
         currentToDoList.order = action.payload.toDoListOrder
       }
+    },
+    setToDoListFile(state, action: PayloadAction<{ toDoListId: string, file: string }>) {
+      const toDoList = state.toDoLists.find((toDoList) => toDoList.id === action.payload.toDoListId)
+
+      if (toDoList) {
+        toDoList.file = action.payload.file
+      }
     }
   },
   extraReducers(builder) {
@@ -63,13 +70,14 @@ const toDoListsSlice = createSlice({
         state.toDoLists = toDoLists.map(toDoList => ({
           ...toDoList,
           filter: "all",
-          isDisabledToDoList: false
+          isDisabledToDoList: false,
+          file: EMPTY_STRING
         }))
       })
       .addCase(addToDoList.fulfilled, (state, action) => {
         const toDoList = action.payload
 
-        state.toDoLists.unshift({...toDoList, filter: "all", isDisabledToDoList: false})
+        state.toDoLists.unshift({...toDoList, filter: "all", isDisabledToDoList: false, file: EMPTY_STRING})
       })
       .addCase(removeToDoList.pending, (state, action) => {
         const toDoListId = action.meta.arg
@@ -113,7 +121,8 @@ export const {
   changeToDoListFilter,
   setTitleSearchValue,
   setSortedToDoLists,
-  setCurrentToDoList
+  setCurrentToDoList,
+  setToDoListFile
 } = toDoListsSlice.actions
 
 export default toDoListsSlice.reducer

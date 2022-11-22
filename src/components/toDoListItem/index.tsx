@@ -3,11 +3,12 @@ import Delete from "@mui/icons-material/Delete"
 import IconButton from "@mui/material/IconButton"
 import Paper from "@mui/material/Paper"
 import Grid from "@mui/material/Grid"
+import DownloadIcon from "@mui/icons-material/Download"
 import { useAppDispatch } from "hooks"
 import { updateToDoListTitle, removeToDoList } from "store/asyncActions"
-import { Confirm, EditableItem, MyModal, Tasks } from "components"
+import { Confirm, EditableItem, File, MyModal, Tasks } from "components"
 import { ToDoListItemPropsType } from "./types"
-import { setCurrentToDoList, setSortedToDoLists } from "store/slices"
+import { setCurrentToDoList, setSortedToDoLists, setToDoListFile } from "store/slices"
 import classes from "./index.module.css"
 
 export const ToDoListItem: FC<ToDoListItemPropsType> = ({toDoList}) => {
@@ -16,6 +17,10 @@ export const ToDoListItem: FC<ToDoListItemPropsType> = ({toDoList}) => {
 
   const [isActivatedModal, setIsActivatedModal] = useState(false)
   const [sx, setSx] = useState(1)
+
+  const handleUpdatePhotoChange = (file64: string): void => {
+    dispatch(setToDoListFile({toDoListId: toDoList.id, file: file64}))
+  }
 
   const handleUpdateToDoListTitleClickOrBlur = (updatedTitle: string): void => {
     dispatch(updateToDoListTitle({toDoListId: toDoList.id, toDoListTitle: updatedTitle}))
@@ -48,7 +53,6 @@ export const ToDoListItem: FC<ToDoListItemPropsType> = ({toDoList}) => {
 
   const onToDoListDrop = (event: DragEvent<HTMLDivElement>): void => {
     event.preventDefault()
-
     dispatch(setSortedToDoLists({toDoListId: toDoList.id, toDoListOrder: toDoList.order}))
     setSx(1)
   }
@@ -75,21 +79,26 @@ export const ToDoListItem: FC<ToDoListItemPropsType> = ({toDoList}) => {
         onDrop={onToDoListDrop}
       >
         <Paper sx={{position: "relative", padding: "10px"}}>
-          <IconButton
-            size={"small"}
-            sx={{position: "absolute", right: "5px", top: "5px"}}
-            disabled={toDoList.isDisabledToDoList}
-            onClick={onActivateModalClick}
-          >
-            <Delete fontSize={"small"}/>
-          </IconButton>
-          <h3>
-            <EditableItem
-              currentTitle={toDoList.title}
-              updateValue={handleUpdateToDoListTitleClickOrBlur}
-              isDisabled={toDoList.isDisabledToDoList}
-            />
-          </h3>
+          <div className={classes.content}>
+            <div className={classes.body}>
+              <div className={classes.buttons}>
+                <IconButton onClick={onActivateModalClick}>
+                  <Delete fontSize={"small"}/>
+                </IconButton>
+                <File handleUpdatePhotoChange={handleUpdatePhotoChange}>
+                  <DownloadIcon/>
+                </File>
+              </div>
+              {toDoList.file && <img className={classes.fileImage} src={toDoList.file} alt="file"/>}
+            </div>
+            <div className={classes.titleContainer}>
+              <EditableItem
+                currentTitle={toDoList.title}
+                updateValue={handleUpdateToDoListTitleClickOrBlur}
+                isDisabled={toDoList.isDisabledToDoList}
+              />
+            </div>
+          </div>
           <Tasks filter={toDoList.filter} toDoListId={toDoList.id} isDisabledToDoList={toDoList.isDisabledToDoList}/>
         </Paper>
       </div>
