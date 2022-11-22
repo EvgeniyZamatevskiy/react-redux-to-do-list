@@ -4,6 +4,7 @@ import { TaskSupplementedType } from "store/slices/tasks/types"
 import { FilterValueType } from "store/slices/toDoLists/types"
 
 export const useTasks = (tasks: TaskSupplementedType[], filter: FilterValueType): TaskSupplementedType[] => {
+
   const filteredTasks = useMemo(() => {
 
     if (filter === "active") {

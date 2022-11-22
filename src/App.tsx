@@ -8,6 +8,7 @@ import { selectIsInitialized } from "store/selectors/app"
 import { getAuthorizedUser } from "store/asyncActions"
 
 export const App: FC = () => {
+
   const dispatch = useAppDispatch()
 
   const isInitialized = useSelector(selectIsInitialized)

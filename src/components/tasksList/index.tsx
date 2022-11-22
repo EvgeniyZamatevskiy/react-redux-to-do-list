@@ -1,18 +1,11 @@
 import React, { FC } from "react"
 import { TaskItem } from "components"
 import { TasksListPropsType } from "./types"
-import { useSelector } from "react-redux"
-import { selectTasks } from "store/selectors"
-import { useTasks } from "hooks"
 import classes from "./index.module.css"
 
-export const TasksList: FC<TasksListPropsType> = ({isDisabledToDoList, filter, toDoListId}) => {
+export const TasksList: FC<TasksListPropsType> = ({tasks, isDisabledToDoList, filter, toDoListId}) => {
 
-  const tasks = useSelector(selectTasks(toDoListId))
-
-  const filteredTasks = useTasks(tasks, filter)
-
-  const tasksRender = filteredTasks.map(({todoListId, id, status, title, isDisabledTask}) => {
+  const tasksRender = tasks.map(({todoListId, id, status, title, isDisabledTask}) => {
     return (
       <TaskItem
         key={id}

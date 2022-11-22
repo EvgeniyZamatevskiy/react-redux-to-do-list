@@ -5,6 +5,7 @@ import IconButton from "@mui/material/IconButton"
 import { EMPTY_STRING, ERROR_MESSAGE } from "constants/base"
 import { Key } from "enums"
 import { AddItemFormPropsType } from "./types"
+import classes from "./index.module.css"
 
 export const AddItemForm: FC<AddItemFormPropsType> = ({addItem, isDisabled}) => {
 
@@ -37,7 +38,7 @@ export const AddItemForm: FC<AddItemFormPropsType> = ({addItem, isDisabled}) => 
   }
 
   return (
-    <div>
+    <div className={classes.addItemForm}>
       <TextField
         variant="outlined"
         label="Title"

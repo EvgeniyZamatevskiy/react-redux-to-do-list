@@ -13,7 +13,7 @@ const toDoListsSlice = createSlice({
   name: "toDoLists",
   initialState,
   reducers: {
-    changeToDoListFilter(state, action: PayloadAction<{ toDoListId: string, value: FilterValueType }>) {
+    changeToDoListFilter(state, action: PayloadAction<{ toDoListId: string, filterValue: FilterValueType }>) {
       // const toDoLists = state.toDoLists.find(toDoLists => toDoLists.id === action.payload.toDoListId)
       //
       // if (toDoLists) {
@@ -23,7 +23,7 @@ const toDoListsSlice = createSlice({
       const index = state.toDoLists.findIndex(({id}) => id === action.payload.toDoListId)
 
       if (index > -1) {
-        state.toDoLists[index].filter = action.payload.value
+        state.toDoLists[index].filter = action.payload.filterValue
       }
     },
     setTitleSearchValue(state, action: PayloadAction<string>) {

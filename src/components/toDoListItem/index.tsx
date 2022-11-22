@@ -74,7 +74,7 @@ export const ToDoListItem: FC<ToDoListItemPropsType> = ({toDoList}) => {
         onDragLeave={onToDoListDragLeave}
         onDrop={onToDoListDrop}
       >
-        <Paper sx={{position: "relative", padding: "10px", pointerEvents: "none"}}>
+        <Paper sx={{position: "relative", padding: "10px"}}>
           <IconButton
             size={"small"}
             sx={{position: "absolute", right: "5px", top: "5px"}}
