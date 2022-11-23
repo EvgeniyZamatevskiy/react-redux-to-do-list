@@ -26,11 +26,13 @@ const tasksSlice = createSlice({
       //   ? {...task, status: TaskStatus.NEW}
       //   : task)
 
-      tasks.forEach(task => {
-        if (task.status === TaskStatus.COMPLETED) {
-          task.status = TaskStatus.NEW
-        }
-      })
+      // tasks.forEach(task => {
+      //   if (task.status === TaskStatus.COMPLETED) {
+      //     task.status = TaskStatus.NEW
+      //   }
+      // })
+
+      state.tasks[toDoListId] = tasks.filter(({status}) => status !== TaskStatus.COMPLETED)
     }
   },
   extraReducers(builder) {
